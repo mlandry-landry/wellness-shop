@@ -1,0 +1,112 @@
+---
+/**
+ * One modal per page. Any element with data-claim="<special id>" opens it.
+ * On submit: lead is sent to /api/lead with source "claim:<id>" and a per-person voucher code,
+ * then the visitor is sent to /voucher/ with everything needed to render their Red Tag voucher.
+ */
+import { location, specials } from '@/lib/site';
+const specialsJson = JSON.stringify(specials.map((s: any) => ({ id: s.id, title: s.title, value: s.value, valueSub: s.valueSub, claimCode: s.claimCode, endsOn: s.endsOn, voucherDays: s.voucherDays || 7 })));
+---
+<div class="modal" id="claim-modal" hidden role="dialog" aria-modal="true" aria-labelledby="claim-title" data-specials={specialsJson}>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-card">
+    <button class="modal-x" type="button" aria-label="Close" data-close>&times;</button>
+    <div class="modal-tag">
+      <span class="modal-tag-value" id="claim-value"></span>
+      <span class="modal-tag-sub" id="claim-sub"></span>
+    </div>
+    <h3 id="claim-title" style="margin:14px 0 4px">Claim this offer</h3>
+    <p style="color:var(--muted);margin:0 0 14px;font-size:.95rem">We will create your personal Red Tag voucher for the {location.city} showroom. Show it on your phone at the counter. It is valid for <strong id="claim-days">7</strong> days.</p>
+    <form class="form" method="post" action="/api/lead" id="claim-form">
+      <input type="hidden" name="source" id="claim-source" value="claim" />
+      <input type="hidden" name="store" value={location.id} />
+      <input type="hidden" name="page" id="claim-page" value="" />
+      <input type="hidden" name="product" id="claim-product" value="" />
+      <input type="hidden" name="voucherCode" id="claim-code" value="" />
+      <input type="hidden" name="voucherExpires" id="claim-expires" value="" />
+      <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" />
+      <div class="row">
+        <label>First name<input name="name" required autocomplete="given-name" /></label>
+        <label>Mobile<input name="phone" type="tel" required autocomplete="tel" inputmode="tel" /></label>
+      </div>
+      <label>Email<input name="email" type="email" required autocomplete="email" /></label>
+      <label>When do you plan to visit?
+        <select name="message">
+          <option>This week</option><option>This weekend</option><option>Next week</option><option>Not sure yet</option>
+        </select>
+      </label>
+      <button class="btn btn-primary" type="submit" style="width:100%">Get my voucher</button>
+      <p class="fine">Your voucher is tied to your name and mobile number. The {location.city} team will text or call once to confirm your visit. No spam.</p>
+      <div class="msg" role="status"></div>
+    </form>
+  </div>
+</div>
+
+<script>
+  const modal = document.getElementById('claim-modal') as HTMLElement;
+  if (modal) {
+    const specials = JSON.parse(modal.dataset.specials || '[]');
+    const $ = (id: string) => document.getElementById(id) as HTMLInputElement;
+    let current: any = null;
+
+    function codeFor(base: string, phone: string) {
+      // 4 stable characters from the phone number so the store can match voucher to lead
+      const digits = phone.replace(/\D/g, '');
+      let h = 0; for (const ch of digits) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+      const alpha = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      let out = ''; for (let i = 0; i < 4; i++) { out += alpha[h % alpha.length]; h = Math.floor(h / alpha.length) + 7; }
+      return `${base || 'REDTAG'}-${out}`;
+    }
+    function expiryFor(s: any) {
+      const d = new Date(); d.setDate(d.getDate() + (s.voucherDays || 7)); d.setHours(23, 59, 0, 0);
+      if (s.endsOn) { const e = new Date(s.endsOn + 'T23:59:00-04:00'); if (e < d) return e; }
+      return d;
+    }
+    function open(id: string) {
+      current = specials.find((s: any) => s.id === id) || specials[0]; if (!current) return;
+      $('claim-value').textContent = current.value || 'Showroom offer';
+      $('claim-sub').textContent = current.valueSub || current.title;
+      $('claim-days').textContent = String(current.voucherDays || 7);
+      $('claim-source').value = 'claim:' + current.id;
+      $('claim-product').value = current.title;
+      $('claim-page').value = location.pathname;
+      modal.hidden = false; document.body.style.overflow = 'hidden';
+      (modal.querySelector('input[name=name]') as HTMLInputElement).focus();
+      (window as any).wsTrack && (window as any).wsTrack('claim_open', { special: current.id });
+    }
+    function close() { modal.hidden = true; document.body.style.overflow = ''; }
+    document.addEventListener('click', (e) => {
+      const t = (e.target as HTMLElement).closest('[data-claim]') as HTMLElement | null;
+      if (t) { e.preventDefault(); open(t.dataset.claim || ''); }
+      if ((e.target as HTMLElement).closest('[data-close]')) close();
+    });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+    // deep link: /in-store-specials/?claim=<id>
+    const q = new URLSearchParams(location.search).get('claim'); if (q) open(q);
+
+    const form = document.getElementById('claim-form') as HTMLFormElement;
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = form.querySelector('button[type=submit]') as HTMLButtonElement;
+      const msg = form.querySelector('.msg') as HTMLElement;
+      const phone = (form.querySelector('[name=phone]') as HTMLInputElement).value;
+      const name = (form.querySelector('[name=name]') as HTMLInputElement).value.trim();
+      const code = codeFor(current.claimCode, phone);
+      const exp = expiryFor(current);
+      $('claim-code').value = code; $('claim-expires').value = exp.toISOString();
+      btn.disabled = true; btn.textContent = 'Creating your voucher...';
+      try {
+        const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+        const data = await res.json(); if (!res.ok || !data.ok) throw new Error(data.error || 'failed');
+        const v = { s: current.id, c: code, n: name, e: exp.toISOString(), t: Date.now() };
+        try { localStorage.setItem('ws_voucher', JSON.stringify(v)); } catch {}
+        (window as any).wsTrack && (window as any).wsTrack('claim_submit', { special: current.id });
+        location.href = `/voucher/?s=${encodeURIComponent(v.s)}&c=${encodeURIComponent(v.c)}&n=${encodeURIComponent(v.n)}&e=${encodeURIComponent(v.e)}`;
+      } catch {
+        msg.style.display = 'block'; msg.style.background = '#fdecec'; msg.style.color = '#b42318';
+        msg.textContent = 'Sorry, that did not go through. Call us and we will hold it for you.';
+        btn.disabled = false; btn.textContent = 'Try again';
+      }
+    });
+  }
+</script>

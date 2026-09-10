@@ -7,7 +7,7 @@ const clearance = p.notes && /clearance|flash/i.test(p.notes);
   <div class="img">{p.image && <img src={p.image} alt={`${p.brand} ${p.model} ${p.category.replace('-', ' ')}`} loading="lazy" width="600" height="450" />}</div>
   <div class="body">
     <div style="display:flex;justify-content:space-between;gap:8px;align-items:center">
-      <span class="meta">{p.brand} {p.series && p.series !== p.model ? `· ${p.series}` : ''}</span>
+      <span class="meta">{p.brand}{p.series && p.series !== p.model && !p.series.includes(p.brand) ? ` · ${p.series}` : ''}</span>
       {clearance && <span class="badge hot">Floor model deal</span>}
     </div>
     <h3>{p.model}</h3>

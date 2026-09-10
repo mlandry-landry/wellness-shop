@@ -3,6 +3,9 @@ import '@/styles/global.css';
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
 import StickyBar from '@/components/StickyBar.astro';
+import SaleCountdown from '@/components/SaleCountdown.astro';
+import ClaimModal from '@/components/ClaimModal.astro';
+import ClaimPrompt from '@/components/ClaimPrompt.astro';
 import { location, siteUrl, site, displayPhone, openingHoursSpec, fullAddress } from '@/lib/site';
 
 interface Props {
@@ -94,8 +97,11 @@ const gtm = site.analytics.gtmId;
   </head>
   <body>
     <Header />
+    <SaleCountdown />
     <slot />
     <Footer />
+    <ClaimModal />
+    <ClaimPrompt />
     <StickyBar />
   </body>
 </html>

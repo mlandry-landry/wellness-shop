@@ -1,5 +1,5 @@
 {
- "_readme": "In-store specials. These only appear on the /in-store-specials/ page (top 3 also on the home page) and are written to be redeemed at the showroom. Fields: value = the big number/phrase in the card header (keep it to 2 or 3 words, e.g. 'Save $7,300', 'From $26,295', 'Free'); badge = small label; details = up to 3 short lines; claimCode = shown at the counter (null = no code needed); endsOn = YYYY-MM-DD or null; locations = ['all'] or store ids. Set active:false to hide.",
+ "_readme": "In-store specials. These only appear on the /in-store-specials/ page (top 3 also on the home page) and are written to be redeemed at the showroom. Fields: value = the big number/phrase in the card header (keep it to 2 or 3 words, e.g. 'Save $7,300', 'From $26,295', 'Free'); badge = small label; details = up to 3 short lines; claimCode = shown at the counter (null = no code needed); endsOn = YYYY-MM-DD or null; locations = ['all'] or store ids. Set active:false to hide. voucherDays = how many days a claimed voucher stays valid (default 7). voucherTerms = one line of fine print on the voucher.",
  "pageIntro": "These offers are only available when you visit the showroom. Show the claim code on your phone at the counter, or mention it when you call ahead.",
  "specials": [
   {
@@ -19,7 +19,9 @@
     "J-445 from $23,995 and J-435 from $24,995"
    ],
    "claimCode": "FLOOR400",
-   "endsOn": null
+   "endsOn": null,
+   "voucherDays": 7,
+   "voucherTerms": "One floor model per household. Subject to remaining inventory at this showroom. Present voucher with matching name and phone."
   },
   {
    "id": "showroom-visit-bonus",
@@ -38,7 +40,9 @@
     "Cannot be combined with other bundle offers"
    ],
    "claimCode": "VISIT",
-   "endsOn": null
+   "endsOn": null,
+   "voucherDays": 7,
+   "voucherTerms": "With purchase of any new hot tub during your visit. One per household."
   },
   {
    "id": "wet-test",
@@ -57,7 +61,9 @@
     "Same-day often available on weekdays"
    ],
    "claimCode": null,
-   "endsOn": null
+   "endsOn": null,
+   "voucherDays": 7,
+   "voucherTerms": "Bring a swimsuit and towel. Appointment confirmed by phone."
   },
   {
    "id": "j-275-flash",
@@ -76,7 +82,9 @@
     "Limited quantity per showroom"
    ],
    "claimCode": "J275",
-   "endsOn": null
+   "endsOn": null,
+   "voucherDays": 7,
+   "voucherTerms": "While 2025 stock lasts at this showroom. Present voucher with matching name and phone."
   },
   {
    "id": "example-local-event",
@@ -95,7 +103,9 @@
     "Refreshments on us"
    ],
    "claimCode": "OPENHOUSE",
-   "endsOn": "2026-10-31"
+   "endsOn": "2026-10-31",
+   "voucherDays": 7,
+   "voucherTerms": "Valid on the event dates only."
   }
  ]
 }

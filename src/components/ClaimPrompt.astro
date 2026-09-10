@@ -1,0 +1,30 @@
+---
+/** Slide-in that offers the featured special after the visitor has shown intent (scroll depth or time). Once per 7 days. */
+import { location, specials } from '@/lib/site';
+const featured: any = specials[0];
+const path = Astro.url.pathname;
+const skip = !featured || /voucher|thank-you|privacy|api/.test(path);
+---
+{!skip && (
+  <aside class="claim-prompt" id="claim-prompt" hidden data-special={featured.id}>
+    <button class="claim-prompt-x" type="button" aria-label="Dismiss" data-dismiss>&times;</button>
+    <div class="claim-prompt-tag">{featured.value}</div>
+    <div>
+      <strong>{featured.title}</strong>
+      <p>Claim it now and get a Red Tag voucher for the {location.city} showroom, valid {featured.voucherDays || 7} days.</p>
+      <button class="btn btn-primary btn-sm" type="button" data-claim={featured.id}>Claim my voucher</button>
+    </div>
+    <script is:inline>
+      (function () {
+        var el = document.getElementById('claim-prompt'); if (!el) return;
+        var KEY = 'ws_prompt_dismissed'; try { var t = +localStorage.getItem(KEY) || 0; if (Date.now() - t < 7 * 864e5) return; if (localStorage.getItem('ws_voucher')) return; } catch (e) {}
+        var shown = false;
+        function show() { if (shown) return; shown = true; el.hidden = false; requestAnimationFrame(function () { el.classList.add('in'); }); window.wsTrack && window.wsTrack('claim_prompt_view'); }
+        function dismiss() { el.classList.remove('in'); setTimeout(function () { el.hidden = true; }, 300); try { localStorage.setItem(KEY, String(Date.now())); } catch (e) {} }
+        window.addEventListener('scroll', function () { if (window.scrollY / (document.body.scrollHeight - innerHeight) > 0.45) show(); }, { passive: true });
+        setTimeout(show, 25000);
+        el.addEventListener('click', function (e) { if (e.target.closest('[data-dismiss]')) dismiss(); if (e.target.closest('[data-claim]')) dismiss(); });
+      })();
+    </script>
+  </aside>
+)}

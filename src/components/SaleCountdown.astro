@@ -1,0 +1,18 @@
+---
+import { promos } from '@/lib/site';
+const sale = (promos as any).sale;
+const on = sale && sale.active && sale.endsOn && new Date(sale.endsOn + 'T23:59:00-04:00') > new Date();
+---
+{on && (
+  <a class="salebar" href="/in-store-specials/" data-track="salebar_click" data-ends={sale.endsOn + 'T23:59:00-04:00'}>
+    <span class="salebar-tag">{sale.name}</span>
+    <span class="salebar-text">{sale.text} <span class="salebar-when" style="margin-left:4px">{new Date(sale.endsOn + 'T12:00:00').toLocaleDateString('en-CA', { month: 'long', day: 'numeric' })}</span></span>
+    <span class="salebar-timer" id="salebar-timer" aria-live="polite"></span>
+    <script is:inline>
+      (function () { var el = document.getElementById('salebar-timer'); var end = new Date(el.parentElement.dataset.ends);
+        function t() { var ms = end - new Date(); if (ms <= 0) { el.textContent = 'Ends today'; return; }
+          var d = Math.floor(ms / 864e5), h = Math.floor(ms % 864e5 / 36e5), m = Math.floor(ms % 36e5 / 6e4);
+          el.textContent = (d ? d + 'd ' : '') + h + 'h ' + String(m).padStart(2, '0') + 'm left'; setTimeout(t, 30000); } t(); })();
+    </script>
+  </a>
+)}

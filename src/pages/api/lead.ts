@@ -29,6 +29,7 @@ export const POST: APIRoute = async ({ request }) => {
     name, phone, email,
     city: data.city || '', interest: data.interest || '', product: data.product || '', message: data.message || '',
     source: data.source || 'website', page: data.page || '',
+    voucherCode: data.voucherCode || '', voucherExpires: data.voucherExpires || '',
     site: store ? `https://${store.domain}` : request.headers.get('origin') || '',
     utm: Object.fromEntries(Object.entries(data).filter(([k]) => k.startsWith('utm_'))),
     userAgent: request.headers.get('user-agent') || ''
@@ -45,7 +46,7 @@ export const POST: APIRoute = async ({ request }) => {
     } catch (e: any) { results.webhook = 'error ' + e.message; }
   }
   if (env('RESEND_API_KEY') && env('LEAD_TO_EMAIL')) {
-    const rows = Object.entries({ Store: lead.storeName, Name: name, Phone: phone, Email: email, 'City/town': lead.city, Interest: lead.interest, Product: lead.product, Message: lead.message, Source: lead.source, Page: lead.site + lead.page })
+    const rows = Object.entries({ Store: lead.storeName, Name: name, Phone: phone, Email: email, 'City/town': lead.city, Interest: lead.interest, Product: lead.product, 'Voucher code': lead.voucherCode, 'Voucher expires': lead.voucherExpires ? new Date(lead.voucherExpires).toLocaleString('en-CA', { timeZone: 'America/Toronto' }) : '', Message: lead.message, Source: lead.source, Page: lead.site + lead.page })
       .filter(([, v]) => v).map(([k, v]) => `<tr><td style="padding:6px 12px;color:#666">${k}</td><td style="padding:6px 12px"><b>${String(v).replace(/</g, '&lt;')}</b></td></tr>`).join('');
     try {
       const r = await fetch('https://api.resend.com/emails', {
@@ -54,12 +55,34 @@ export const POST: APIRoute = async ({ request }) => {
           from: env('LEAD_FROM_EMAIL') || 'leads@wellnessshop.ca',
           to: env('LEAD_TO_EMAIL').split(',').map((s: string) => s.trim()),
           reply_to: email,
-          subject: `New ${lead.storeCity || ''} lead: ${name} (${lead.interest || lead.product || 'website'})`,
+          subject: `${lead.voucherCode ? 'VOUCHER CLAIMED' : 'New lead'} ${lead.storeCity || ''}: ${name} (${lead.product || lead.interest || 'website'})`,
           html: `<h2 style="font-family:sans-serif">${lead.storeName || 'Website'} lead</h2><table style="font-family:sans-serif;border-collapse:collapse">${rows}</table>`
         })
       });
       results.email = r.ok ? 'ok' : `http ${r.status}`;
     } catch (e: any) { results.email = 'error ' + e.message; }
+  }
+  // Customer copy of the voucher (only for claims, only when email is configured)
+  if (lead.voucherCode && env('RESEND_API_KEY') && store) {
+    const first = encodeURIComponent(name.split(' ')[0]);
+    const link = `${lead.site}/voucher/?s=${encodeURIComponent(lead.source.replace('claim:', ''))}&c=${encodeURIComponent(lead.voucherCode)}&n=${first}&e=${encodeURIComponent(lead.voucherExpires)}`;
+    const exp = lead.voucherExpires ? new Date(lead.voucherExpires).toLocaleDateString('en-CA', { weekday: 'long', month: 'long', day: 'numeric', timeZone: 'America/Toronto' }) : '';
+    try {
+      const r = await fetch('https://api.resend.com/emails', {
+        method: 'POST', headers: { Authorization: `Bearer ${env('RESEND_API_KEY')}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          from: env('LEAD_FROM_EMAIL') || 'leads@wellnessshop.ca', to: [email],
+          subject: `Your Red Tag voucher for ${store.name}: ${lead.voucherCode}`,
+          html: `<div style="font-family:sans-serif;max-width:560px"><h2 style="color:#0b2239">Your voucher is ready, ${name.split(' ')[0]}</h2>
+<p><b>${lead.product}</b></p>
+<p style="font-size:22px;letter-spacing:2px;background:#0b2239;color:#fff;display:inline-block;padding:10px 16px;border-radius:8px">${lead.voucherCode}</p>
+<p>Show it on your phone at <b>${store.name}</b>, ${store.street}${store.unit ? ', ' + store.unit : ''}, ${store.locality}. ${exp ? 'Valid until ' + exp + '.' : ''}</p>
+<p><a href="${link}" style="background:#f2643a;color:#fff;padding:12px 18px;border-radius:999px;text-decoration:none;font-weight:bold">Open my voucher</a></p>
+<p style="color:#666;font-size:13px">Questions or want a wet test set up? Call ${store.phone}. Bring a swimsuit.</p></div>`
+        })
+      });
+      results.customerEmail = r.ok ? 'ok' : `http ${r.status}`;
+    } catch (e: any) { results.customerEmail = 'error ' + e.message; }
   }
   return json({ ok: true, results });
 };

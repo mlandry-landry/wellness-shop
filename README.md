@@ -47,3 +47,18 @@ npm install
 SITE_ID=barrie npm run dev
 npm run build:all   # builds all six into dist-all/
 ```
+
+## Claim flow and Red Tag vouchers
+
+Every offer card has a **Claim this offer** button. It opens a modal (name, mobile, email, planned visit), posts the lead to `/api/lead`
+with `source: claim:<special id>` plus a per-person `voucherCode` (`<claimCode>-XXXX`, the suffix derived from the phone number) and
+`voucherExpires` (claim time + `voucherDays`, capped by the special's `endsOn`). The visitor lands on `/voucher/`, a Red Tag styled ticket
+with their name, code, live countdown, QR to the same page, store address and hours, terms, plus Directions / Call / Add visit reminder (.ics) / Print.
+The voucher is also stored in `localStorage`, so `/voucher/` with no query string shows it again. When `RESEND_API_KEY` is set the
+customer also gets an email with the voucher link, and the store email subject reads "VOUCHER CLAIMED".
+
+- Slide-in prompt: `ClaimPrompt.astro` offers the first active special after 45% scroll or 25s, once per 7 days, never to someone who already holds a voucher.
+- Site-wide sale countdown bar: `promos.json` -> `sale` (`active`, `name`, `endsOn`, `text`). Off by default; set a real date before enabling.
+- Red Tag motif: `RedTag.astro` (SVG). Used in the hero; drop the real Red Tag artwork into `public/images/brand/` to swap it in.
+- Deep link to open a claim: `/in-store-specials/?claim=<special id>` (handy for GBP posts, SMS and ads).
+- Events: `claim_open`, `claim_submit`, `voucher_view`, `claim_prompt_view`, `salebar_click`.

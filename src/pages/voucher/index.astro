@@ -1,0 +1,108 @@
+---
+import Base from '@/layouts/Base.astro';
+import Icons from '@/components/Icons.astro';
+import { location, specials, displayPhone, telHref, fullAddress, hoursRows, siteUrl } from '@/lib/site';
+const specialsJson = JSON.stringify(specials.map((s: any) => ({ id: s.id, title: s.title, value: s.value, valueSub: s.valueSub, summary: s.summary, details: s.details, badge: s.badge, terms: s.voucherTerms })));
+const hours = hoursRows().map((r) => `${r.label} ${r.value}`).join(' · ');
+---
+<Base title={`Your Red Tag Voucher | ${location.name}`} description="Your personal in-store voucher." noindex>
+  <section class="section" style="padding-top:30px">
+    <div class="wrap" style="max-width:820px">
+      <div id="v-empty" hidden>
+        <h1>No voucher yet</h1>
+        <p class="lead">Claim any offer on the <a href="/in-store-specials/">in-store specials</a> page and your voucher will appear here.</p>
+      </div>
+      <div id="v-wrap" hidden data-specials={specialsJson} data-store={location.name} data-address={fullAddress} data-hours={hours} data-phone={displayPhone} data-site={siteUrl}>
+        <div class="v-top">
+          <div>
+            <div class="eyebrow">Your voucher is ready</div>
+            <h1 style="font-size:clamp(1.6rem,3.5vw,2.3rem)">Show this at the <span id="v-city">{location.city}</span> showroom</h1>
+            <p class="lead" style="margin:0">Screenshot it or keep this page open. The team has your name, so the voucher works even if your battery does not.</p>
+          </div>
+        </div>
+
+        <article class="voucher" id="voucher">
+          <div class="v-tag">
+            <div class="v-tag-hole"></div>
+            <div class="v-tag-brand">Red Tag Voucher</div>
+            <div class="v-tag-value" id="v-value"></div>
+            <div class="v-tag-sub" id="v-sub"></div>
+          </div>
+          <div class="v-main">
+            <div class="v-row">
+              <div>
+                <div class="v-label">Issued to</div>
+                <div class="v-big" id="v-name"></div>
+              </div>
+              <div>
+                <div class="v-label">Voucher code</div>
+                <div class="v-code" id="v-code"></div>
+              </div>
+            </div>
+            <h2 class="v-title" id="v-title"></h2>
+            <p class="v-summary" id="v-summary"></p>
+            <ul class="offer-list" id="v-details"></ul>
+            <div class="v-count">
+              <div class="v-label">Valid for</div>
+              <div class="v-timer" id="v-timer" aria-live="polite"><span><b id="t-d">0</b>days</span><span><b id="t-h">00</b>hrs</span><span><b id="t-m">00</b>min</span><span><b id="t-s">00</b>sec</span></div>
+              <div class="v-expires">Expires <span id="v-exp"></span></div>
+            </div>
+            <div class="v-store">
+              <div id="v-qr" class="v-qr" aria-hidden="true"></div>
+              <div>
+                <div class="v-label">Redeem at</div>
+                <strong>{location.name}</strong><br />{fullAddress}<br /><span style="color:var(--muted);font-size:.9rem">{hours}</span>
+              </div>
+            </div>
+            <p class="v-terms" id="v-terms"></p>
+          </div>
+        </article>
+
+        <div class="v-actions">
+          <a class="btn btn-primary" href={location.directionsUrl} target="_blank" rel="noopener" data-loc="voucher"><Icons name="pin" /> Get directions</a>
+          <a class="btn btn-outline" href={telHref} data-loc="voucher"><Icons name="phone" /> Call {displayPhone}</a>
+          <a class="btn btn-outline" id="v-cal" href="#" download="wellness-shop-visit.ics"><Icons name="clock" /> Add visit reminder</a>
+          <button class="btn btn-outline" type="button" onclick="window.print()"><Icons name="download" /> Print</button>
+        </div>
+        <p style="color:var(--muted);font-size:.9rem;margin-top:18px">Bring a swimsuit if you want to wet test. Mention your voucher code when you call and we will have the model filled and heated.</p>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" is:inline></script>
+  <script is:inline>
+    (function () {
+      var wrap = document.getElementById('v-wrap'), empty = document.getElementById('v-empty');
+      var q = new URLSearchParams(location.search); var v = null;
+      if (q.get('s') && q.get('c')) v = { s: q.get('s'), c: q.get('c'), n: q.get('n') || '', e: q.get('e') };
+      else { try { v = JSON.parse(localStorage.getItem('ws_voucher') || 'null'); } catch (e) {} }
+      var specials = JSON.parse(wrap.dataset.specials || '[]');
+      var sp = v && specials.find(function (s) { return s.id === v.s; });
+      if (!v || !sp) { empty.hidden = false; return; }
+      wrap.hidden = false;
+      var $ = function (id) { return document.getElementById(id); };
+      $('v-value').textContent = sp.value || 'Showroom offer'; $('v-sub').textContent = sp.valueSub || '';
+      $('v-name').textContent = v.n || 'Guest'; $('v-code').textContent = v.c; $('v-title').textContent = sp.title; $('v-summary').textContent = sp.summary || '';
+      $('v-terms').textContent = (sp.terms || '') + ' Prices in CAD. Not redeemable for cash. One voucher per household.';
+      (sp.details || []).slice(0, 3).forEach(function (d) { var li = document.createElement('li'); li.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>' + d; $('v-details').appendChild(li); });
+      var exp = v.e ? new Date(v.e) : new Date(Date.now() + 7 * 864e5);
+      $('v-exp').textContent = exp.toLocaleString('en-CA', { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+      function tick() {
+        var ms = exp - new Date();
+        if (ms <= 0) { $('v-timer').innerHTML = '<span class="v-expired">This voucher has expired. Call us, we can usually help.</span>'; return; }
+        var d = Math.floor(ms / 864e5), h = Math.floor(ms % 864e5 / 36e5), m = Math.floor(ms % 36e5 / 6e4), s = Math.floor(ms % 6e4 / 1e3);
+        $('t-d').textContent = d; $('t-h').textContent = String(h).padStart(2, '0'); $('t-m').textContent = String(m).padStart(2, '0'); $('t-s').textContent = String(s).padStart(2, '0');
+        setTimeout(tick, 1000);
+      }
+      tick();
+      try { new QRCode($('v-qr'), { text: wrap.dataset.site + '/voucher/?s=' + encodeURIComponent(v.s) + '&c=' + encodeURIComponent(v.c) + '&n=' + encodeURIComponent(v.n) + '&e=' + encodeURIComponent(v.e || ''), width: 96, height: 96, correctLevel: QRCode.CorrectLevel.M }); } catch (e) {}
+      // calendar reminder: tomorrow 1 PM local, 1 hour
+      var start = new Date(); start.setDate(start.getDate() + 1); start.setHours(13, 0, 0, 0); var end = new Date(start.getTime() + 36e5);
+      var f = function (d) { return d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, ''); };
+      var ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Wellness Shop//Voucher//EN', 'BEGIN:VEVENT', 'UID:' + v.c + '@' + location.host, 'DTSTAMP:' + f(new Date()), 'DTSTART:' + f(start), 'DTEND:' + f(end),
+        'SUMMARY:Showroom visit: ' + sp.title.replace(/,/g, '\\,'), 'LOCATION:' + (wrap.dataset.store + ', ' + wrap.dataset.address).replace(/,/g, '\\,'), 'DESCRIPTION:Voucher code ' + v.c + '. Expires ' + exp.toLocaleDateString('en-CA') + '. ' + wrap.dataset.phone, 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+      $('v-cal').href = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
+      window.wsTrack && window.wsTrack('voucher_view', { special: v.s });
+    })();
+  </script>
+</Base>

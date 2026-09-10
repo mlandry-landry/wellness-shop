@@ -34,5 +34,12 @@
    "endsOn": null,
    "icon": "pool"
   }
- ]
+ ],
+ "sale": {
+  "_readme": "Site-wide countdown bar under the header. Turn on with active:true and a real end date; the bar shows days/hours/minutes left and links to the specials page.",
+  "active": false,
+  "name": "Red Tag Sale",
+  "endsOn": "2026-09-30",
+  "text": "Red Tag pricing on every hot tub, swim spa and sauna ends"
+ }
 }

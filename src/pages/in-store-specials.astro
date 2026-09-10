@@ -21,7 +21,7 @@ const schema = [
       <div style="max-width:760px">
         <div class="eyebrow" style="color:#ffd9cc">Showroom only · {c}</div>
         <h1>In-Store Specials at the {c} Showroom</h1>
-        <p class="lead">{specialsIntro} You will not find these prices on wellnessshop.ca or anywhere else online.</p>
+        <p class="lead">Claim an offer below and we create a personal Red Tag voucher with your name, a code and a countdown. Show it on your phone at the {c} showroom. You will not find these prices on wellnessshop.ca or anywhere else online.</p>
         <div class="cta-row">
           <a class="btn btn-primary" href={location.directionsUrl} target="_blank" rel="noopener" data-loc="specials-hero"><Icons name="pin" /> Get directions</a>
           <a class="btn btn-light" href={telHref} data-loc="specials-hero"><Icons name="phone" /> Call ahead {displayPhone}</a>
@@ -48,9 +48,9 @@ const schema = [
         <div class="eyebrow">How it works</div>
         <h2>Three Steps to the Showroom Deal</h2>
         <div class="steps" style="margin-top:20px">
-          <div><h3>Pick your special</h3><p style="color:var(--muted)">Screenshot it or just remember the claim code. Most offers stack with the sale prices already shown on this site.</p></div>
-          <div><h3>Visit or call ahead</h3><p style="color:var(--muted)">We are open seven days a week. Calling ahead lets us have the right models filled and heated, and we can hold a floor model for you the same day.</p></div>
-          <div><h3>Show the code at the counter</h3><p style="color:var(--muted)">That is it. No coupons to print, no online checkout. The offer is applied to your showroom quote.</p></div>
+          <div><h3>Claim your offer</h3><p style="color:var(--muted)">Tap Claim, give us your name and mobile, and your Red Tag voucher appears instantly with a code and a 7 day countdown.</p></div>
+          <div><h3>We hold it for you</h3><p style="color:var(--muted)">The {c} team gets your voucher the moment you claim it, so the floor model or wet test is set aside under your name.</p></div>
+          <div><h3>Show it at the counter</h3><p style="color:var(--muted)">Open the voucher on your phone or print it. The offer is applied to your showroom quote.</p></div>
         </div>
         {activeBanners.length > 0 && (
           <div style="margin-top:34px">

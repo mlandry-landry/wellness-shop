@@ -20,13 +20,16 @@ const ends = s.endsOn ? new Date(s.endsOn + 'T23:59:00-04:00').toLocaleDateStrin
   <footer class="offer-foot">
     <div class="offer-claim">
       {s.claimCode ? (
-        <><span class="offer-claim-label">Show at the counter</span><span class="code">{s.claimCode}</span></>
+        <><span class="offer-claim-label">Your voucher code starts</span><span class="code">{s.claimCode}</span></>
       ) : (
-        <><span class="offer-claim-label">No code needed</span><span class="offer-claim-note">Just ask when you visit or call</span></>
+        <><span class="offer-claim-label">Voucher on claim</span><span class="offer-claim-note">We text you a personal Red Tag voucher</span></>
       )}
       {ends && <span class="offer-ends">Ends {ends}</span>}
     </div>
-    <a class="btn btn-primary offer-cta" href={location.directionsUrl} target="_blank" rel="noopener" data-loc={`special:${s.id}`}><Icons name="pin" /> Get directions</a>
-    <a class="offer-call" href={telHref} data-loc={`special:${s.id}`}><Icons name="phone" /> Or call {displayPhone} to hold it</a>
+    <button class="btn btn-primary offer-cta" type="button" data-claim={s.id}><Icons name="tag" /> Claim this offer</button>
+    <div class="offer-links">
+      <a href={location.directionsUrl} target="_blank" rel="noopener" data-loc={`special:${s.id}`}><Icons name="pin" /> Directions</a>
+      <a href={telHref} data-loc={`special:${s.id}`}><Icons name="phone" /> {displayPhone}</a>
+    </div>
   </footer>
 </article>
