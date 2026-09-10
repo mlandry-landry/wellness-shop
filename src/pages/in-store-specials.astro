@@ -3,6 +3,7 @@ import Base from '@/layouts/Base.astro';
 import StoreStrip from '@/components/StoreStrip.astro';
 import SpecialCard from '@/components/SpecialCard.astro';
 import LeadForm from '@/components/LeadForm.astro';
+import PromoBanner from '@/components/PromoBanner.astro';
 import Icons from '@/components/Icons.astro';
 import { location, specials, specialsIntro, activeBanners, hoursRows, displayPhone, telHref, fullAddress, siteUrl } from '@/lib/site';
 const c = location.city;
@@ -36,7 +37,7 @@ const schema = [
       {specials.length === 0 ? (
         <p class="lead">New showroom offers are being loaded. Call {displayPhone} and ask what is on the floor this week.</p>
       ) : (
-        <div class="grid cols-3" style="padding-top:10px">{specials.map((s) => <SpecialCard s={s} />)}</div>
+        <div class="offers" style="padding-top:10px">{specials.map((s) => <SpecialCard s={s} />)}</div>
       )}
     </div>
   </section>
@@ -54,7 +55,8 @@ const schema = [
         {activeBanners.length > 0 && (
           <div style="margin-top:34px">
             <h2 style="font-size:1.4rem">Also On Right Now</h2>
-            <ul style="padding-left:18px;color:var(--muted)">{activeBanners.map((b) => <li style="margin-bottom:8px"><strong style="color:var(--ink)">{b.label}:</strong> {b.text} <a href={b.href}>{b.cta}</a></li>)}</ul>
+            <p style="color:var(--muted)">These run on every model and stack with the showroom offers above.</p>
+            <div class="promos" style="grid-template-columns:1fr">{activeBanners.map((b) => <PromoBanner b={b} />)}</div>
           </div>
         )}
       </div>

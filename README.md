@@ -17,8 +17,8 @@ from the project name (or from a `SITE_ID` env var if set). Each project gets it
 | Want to... | Edit |
 |---|---|
 | Change a price, bi-weekly payment, spec or note | `src/data/products.json` (or update `data-source-catalog.xlsx` and run `npm run products`). Clearlight sauna prices are NOT taken from the spreadsheet (its sauna tab was wrong); they live in the `CLEARLIGHT` table at the top of `scripts/build-products.py`, verified against wellnessshop.ca on Sep 10, 2026. |
-| Change the hero headline, sale banners, financing line | `src/data/promos.json` |
-| Add, edit, pause or expire an in-store special | `src/data/specials.json` (`active`, `locations`, `endsOn`, `claimCode`) |
+| Change the hero headline, promo banners (home strip + specials page), financing line | `src/data/promos.json` (`banners[]`: label, text, cta, href, icon tag/truck/pool/sauna, endsOn) |
+| Add, edit, pause or expire an in-store special | `src/data/specials.json`. Each card has: `badge` (small label), `value` (big header line, 2 or 3 words like `Save $7,300` or `Free`), `valueSub`, `title`, `summary`, up to 3 `details`, `claimCode` (null = no code), `endsOn`, `locations`, `active` |
 | Change a store's phone, tracking number, hours, address, staff, service towns, local copy | `src/data/locations/<site>.json` |
 | Swap or add a product image | `public/images/products/<slug>.webp` |
 | Turn on GTM / GA4 | `src/data/site.json` -> `analytics.gtmId` |

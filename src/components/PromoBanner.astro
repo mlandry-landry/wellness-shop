@@ -1,0 +1,15 @@
+---
+import Icons from './Icons.astro';
+const { b } = Astro.props as { b: Record<string, any> };
+const ends = b.endsOn ? new Date(b.endsOn + 'T23:59:00-04:00').toLocaleDateString('en-CA', { month: 'long', day: 'numeric' }) : null;
+const icon = ['tag', 'truck', 'pool', 'sauna'].includes(b.icon) ? b.icon : 'tag';
+---
+<a class="promo" href={b.href} data-track="promo_click" data-loc={`promo:${b.id}`}>
+  <span class="promo-icon"><Icons name={icon} /></span>
+  <span class="promo-text">
+    <strong>{b.label}</strong>
+    <span>{b.text}</span>
+    {ends && <em>Ends {ends}</em>}
+  </span>
+  <span class="promo-cta">{b.cta} &rarr;</span>
+</a>

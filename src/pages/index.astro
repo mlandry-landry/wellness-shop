@@ -5,6 +5,7 @@ import StoreStrip from '@/components/StoreStrip.astro';
 import ProductCard from '@/components/ProductCard.astro';
 import SpecialCard from '@/components/SpecialCard.astro';
 import LeadForm from '@/components/LeadForm.astro';
+import PromoBanner from '@/components/PromoBanner.astro';
 import { location, promos, specials, activeBanners, byCategory, displayPhone, telHref, hoursRows, site, money } from '@/lib/site';
 
 const hotTubs = byCategory('hot-tub');
@@ -55,13 +56,21 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
   </section>
   <StoreStrip />
 
+  {activeBanners.length > 0 && (
+    <section class="section" style="padding:34px 0 10px">
+      <div class="wrap">
+        <div class="promos">{activeBanners.map((b) => <PromoBanner b={b} />)}</div>
+      </div>
+    </section>
+  )}
+
   {specials.length > 0 && (
     <section class="section soft" id="specials">
       <div class="wrap">
         <div class="eyebrow">Only at the showroom</div>
         <h2>In-Store Specials in {location.city}</h2>
         <p class="lead">These offers are not available online. Visit the {location.locality} showroom, show the code at the counter, and walk out with more for less.</p>
-        <div class="grid cols-3" style="margin-top:26px">{specials.slice(0, 3).map((s) => <SpecialCard s={s} />)}</div>
+        <div class="offers" style="margin-top:26px">{specials.slice(0, 3).map((s) => <SpecialCard s={s} />)}</div>
         <p style="margin-top:22px"><a class="btn btn-navy" href="/in-store-specials/" data-track="specials_click" data-loc="home-specials">See all in-store specials</a></p>
       </div>
     </section>

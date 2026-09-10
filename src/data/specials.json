@@ -1,5 +1,5 @@
 {
- "_readme": "In-store specials. These only appear on the /in-store-specials/ page and are written to be redeemed at the showroom. 'locations' is a list of site ids or ['all']. Set active:false to hide. Add per-store floor model clearouts here too.",
+ "_readme": "In-store specials. These only appear on the /in-store-specials/ page (top 3 also on the home page) and are written to be redeemed at the showroom. Fields: value = the big number/phrase in the card header (keep it to 2 or 3 words, e.g. 'Save $7,300', 'From $26,295', 'Free'); badge = small label; details = up to 3 short lines; claimCode = shown at the counter (null = no code needed); endsOn = YYYY-MM-DD or null; locations = ['all'] or store ids. Set active:false to hide.",
  "pageIntro": "These offers are only available when you visit the showroom. Show the claim code on your phone at the counter, or mention it when you call ahead.",
  "specials": [
   {
@@ -8,17 +8,18 @@
    "locations": [
     "all"
    ],
-   "title": "2025 Jacuzzi J-400 Floor Model Clearance",
+   "badge": "In-store only",
+   "value": "From $23,995",
+   "valueSub": "2025 J-400 floor models",
+   "title": "Jacuzzi J-400 Floor Model Clearance",
    "summary": "Showroom floor models from the 2025 J-400 series, fully inspected and covered by the full Jacuzzi warranty. Limited to what each showroom has on the floor.",
    "details": [
-    "J-495 from $31,395 (regular $43,595)",
-    "J-485 and J-475 from $26,295 (regular $39,795)",
-    "J-445 from $23,995 and J-435 from $24,995 (regular $36,895)",
-    "Includes delivery within our service area"
+    "J-495 from $31,395, regular $43,595",
+    "J-485 and J-475 from $26,295, regular $39,795",
+    "J-445 from $23,995 and J-435 from $24,995"
    ],
    "claimCode": "FLOOR400",
-   "endsOn": null,
-   "badge": "In-store only"
+   "endsOn": null
   },
   {
    "id": "showroom-visit-bonus",
@@ -26,16 +27,18 @@
    "locations": [
     "all"
    ],
+   "badge": "Walk-in special",
+   "value": "Free",
+   "valueSub": "cover lifter and steps",
    "title": "DRAFT (needs approval): Free Cover Lifter and Steps with Any Hot Tub Purchased In-Store",
    "summary": "Buy any new hot tub during your showroom visit and we add a matching cover lifter and steps at no charge.",
    "details": [
     "Applies to every hot tub brand we carry",
-    "Mention code at the counter or when you call ahead",
+    "Mention the code at the counter or when you call",
     "Cannot be combined with other bundle offers"
    ],
    "claimCode": "VISIT",
-   "endsOn": null,
-   "badge": "Walk-in special"
+   "endsOn": null
   },
   {
    "id": "wet-test",
@@ -43,16 +46,18 @@
    "locations": [
     "all"
    ],
-   "title": "Book a Private Wet Test",
+   "badge": "By appointment",
+   "value": "Free",
+   "valueSub": "private wet test",
+   "title": "Try Before You Buy: Book a Wet Test",
    "summary": "Bring your swimsuit and try the seats, jets and lounger before you decide. We fill and heat a tub for you, no pressure and no charge.",
    "details": [
     "Weekday and weekend appointments",
     "Private, about 30 minutes",
-    "Ask about same-day availability by phone"
+    "Same-day often available on weekdays"
    ],
    "claimCode": null,
-   "endsOn": null,
-   "badge": "By appointment"
+   "endsOn": null
   },
   {
    "id": "j-275-flash",
@@ -60,16 +65,18 @@
    "locations": [
     "all"
    ],
-   "title": "J-275 Flash Sale: $14,695",
-   "summary": "The 6-seat Jacuzzi J-275 with lounger, 38 jets and CLEARRAY UV-C water care, from $14,695 while 2025 stock lasts. That is $7,300 off the regular price.",
+   "badge": "Limited stock",
+   "value": "Save $7,300",
+   "valueSub": "J-275 now $14,695",
+   "title": "Jacuzzi J-275 Flash Sale",
+   "summary": "The 6-seat Jacuzzi J-275 with lounger, 38 jets and CLEARRAY UV-C water care, now $14,695 while 2025 stock lasts.",
    "details": [
     "Regular $21,995",
-    "From $29.07 per week OAC",
+    "From $29.07 bi-weekly at 0% for 12 months OAC",
     "Limited quantity per showroom"
    ],
    "claimCode": "J275",
-   "endsOn": null,
-   "badge": "Limited stock"
+   "endsOn": null
   },
   {
    "id": "example-local-event",
@@ -77,15 +84,18 @@
    "locations": [
     "barrie"
    ],
+   "badge": "This weekend",
+   "value": "This weekend",
+   "valueSub": "open house markdowns",
    "title": "EXAMPLE: Barrie Open House Weekend",
    "summary": "Template for a store-specific event. Set active to true, pick the location ids, and it appears only on those sites.",
    "details": [
     "Saturday and Sunday, 11 AM to 5 PM",
-    "Refreshments, live demos, extra floor model markdowns"
+    "Live demos and extra floor model markdowns",
+    "Refreshments on us"
    ],
    "claimCode": "OPENHOUSE",
-   "endsOn": "2026-10-31",
-   "badge": "This weekend"
+   "endsOn": "2026-10-31"
   }
  ]
 }

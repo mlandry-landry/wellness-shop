@@ -1,18 +1,32 @@
 ---
+import Icons from './Icons.astro';
 import { location, telHref, displayPhone, type Special } from '@/lib/site';
-const { s } = Astro.props as { s: Special };
+const { s } = Astro.props as { s: Special & Record<string, any> };
+const ends = s.endsOn ? new Date(s.endsOn + 'T23:59:00-04:00').toLocaleDateString('en-CA', { month: 'long', day: 'numeric' }) : null;
 ---
-<article class="special" id={s.id}>
-  {s.badge && <span class="ribbon">{s.badge}</span>}
-  <h3>{s.title}</h3>
-  <p style="margin:0;color:var(--ink)">{s.summary}</p>
-  {s.details?.length > 0 && <ul>{s.details.map((d) => <li>{d}</li>)}</ul>}
-  {s.endsOn && <div class="countdown" data-ends={s.endsOn}>Ends {new Date(s.endsOn + 'T23:59:00-04:00').toLocaleDateString('en-CA', { month: 'long', day: 'numeric' })}</div>}
-  <div class="claim">
-    {s.claimCode ? <><span class="meta" style="font-size:.85rem;color:var(--muted)">Show this code at the counter:</span><span class="code">{s.claimCode}</span></> : <span class="meta" style="font-size:.85rem;color:var(--muted)">Ask for it when you visit or call.</span>}
+<article class="offer" id={s.id}>
+  <header class="offer-head">
+    <div class="offer-badge">{s.badge || 'Showroom offer'}</div>
+    <div class="offer-value">{s.value}</div>
+    {s.valueSub && <div class="offer-sub">{s.valueSub}</div>}
+  </header>
+  <div class="offer-body">
+    <h3>{s.title}</h3>
+    <p class="offer-summary">{s.summary}</p>
+    {s.details?.length > 0 && (
+      <ul class="offer-list">{s.details.slice(0, 3).map((d: string) => <li><Icons name="check" />{d}</li>)}</ul>
+    )}
   </div>
-  <div style="display:flex;gap:10px;flex-wrap:wrap">
-    <a class="btn btn-primary btn-sm" href={location.directionsUrl} target="_blank" rel="noopener" data-loc={`special:${s.id}`}>Get directions</a>
-    <a class="btn btn-outline btn-sm" href={telHref} data-loc={`special:${s.id}`}>Call {displayPhone}</a>
-  </div>
+  <footer class="offer-foot">
+    <div class="offer-claim">
+      {s.claimCode ? (
+        <><span class="offer-claim-label">Show at the counter</span><span class="code">{s.claimCode}</span></>
+      ) : (
+        <><span class="offer-claim-label">No code needed</span><span class="offer-claim-note">Just ask when you visit or call</span></>
+      )}
+      {ends && <span class="offer-ends">Ends {ends}</span>}
+    </div>
+    <a class="btn btn-primary offer-cta" href={location.directionsUrl} target="_blank" rel="noopener" data-loc={`special:${s.id}`}><Icons name="pin" /> Get directions</a>
+    <a class="offer-call" href={telHref} data-loc={`special:${s.id}`}><Icons name="phone" /> Or call {displayPhone} to hold it</a>
+  </footer>
 </article>
