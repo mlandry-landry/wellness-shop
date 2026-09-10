@@ -24,6 +24,7 @@ const schema = [
       <h1 style="margin-top:8px">{h1}</h1>
       <p class="lead">{intro}</p>
       {min && <p class="callout" style="max-width:720px"><strong>From {money(min)}</strong>{priced.some((p) => p.biweekly) && <> or from {biweekly(Math.min(...priced.filter((p) => p.biweekly).map((p) => p.biweekly!)))} at 0% for 12 months OAC*.</>} Every price below is the current sale price at the {location.city} showroom. Floor model and in-store offers are on the <a href="/in-store-specials/">specials page</a>.</p>}
+      <p style="margin:-6px 0 18px"><a href={`/find-my-hot-tub/?type=${cat}`} data-track="quiz_start" data-loc="category" style="font-weight:600">Not sure which one? Take the 60 second finder &rarr;</a></p>
       {filters.length > 1 && (
         <div class="filters" id="filters" role="group" aria-label={`Filter by ${filterKey}`}>
           <button aria-pressed="true" data-f="">All ({items.length})</button>

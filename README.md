@@ -62,3 +62,13 @@ customer also gets an email with the voucher link, and the store email subject r
 - Red Tag motif: `RedTag.astro` (SVG). Used in the hero; drop the real Red Tag artwork into `public/images/brand/` to swap it in.
 - Deep link to open a claim: `/in-store-specials/?claim=<special id>` (handy for GBP posts, SMS and ads).
 - Events: `claim_open`, `claim_submit`, `voucher_view`, `claim_prompt_view`, `salebar_click`.
+
+## Product finder quiz
+
+`/find-my-hot-tub/` (also `?type=hot-tub|swim-spa|sauna` to skip the first question). Four or five taps, no email required:
+hot tubs ask people / lounger vs open / budget / priority; swim spas ask use / length / budget; saunas ask indoor vs outdoor / people / budget.
+Scoring runs client-side over `products.json` (seats fit, seating type, budget band, then a priority bonus: jets per seat, 110V plug-in,
+insulation and water care, savings ratio and price per seat, or premium series). Results show a top match with three plain-language reasons,
+a step-up and a step-down alternative, "Book a wet test" (opens the claim modal) and an optional "Email my matches" form that sends the
+answers and picks to the lead handler as `source: quiz`. Events: `quiz_start`, `quiz_step`, `quiz_complete`.
+To tune the recommendations edit the `scoreHotTub` / `scoreSwim` / `scoreSauna` functions in `src/pages/find-my-hot-tub.astro`.

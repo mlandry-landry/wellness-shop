@@ -7,7 +7,7 @@ const links = [
   ['/hot-tubs/', 'Hot Tubs'],
   ['/swim-spas/', 'Swim Spas'],
   ['/saunas/', 'Saunas'],
-  ['/cold-plunge/', 'Cold Plunge'],
+  ['/find-my-hot-tub/', 'Product Finder'],
   ['/financing/', 'Financing'],
   ['/showroom/', 'Showroom'],
   ['/in-store-specials/', 'In-Store Specials']
@@ -36,6 +36,7 @@ const cur = (h: string) => (path.startsWith(h) ? 'page' : undefined);
   </div>
   <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile">
     {links.map(([h, l]) => <a href={h}>{l}</a>)}
+    <a href="/cold-plunge/">Cold Plunge</a>
     <a href="/price-list/">Download Price List</a>
     <a href={telHref}>Call {displayPhone}</a>
   </nav>

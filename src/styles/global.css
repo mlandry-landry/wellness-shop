@@ -280,3 +280,9 @@ p { margin: 0 0 1em; }
 .claim-prompt-tag { background: linear-gradient(160deg, #e5352b, #b3130d); color: #fff; font-family: var(--font-head); font-weight: 700; font-size: 1rem; line-height: 1.1; padding: 12px 10px; border-radius: 10px; display: grid; place-items: center; text-align: center; min-width: 78px; max-width: 96px; }
 .claim-prompt strong { display: block; color: var(--navy); font-family: var(--font-head); margin-right: 18px; }
 .claim-prompt p { margin: 4px 0 10px; font-size: .85rem; color: var(--muted); }
+
+/* Finder teaser */
+.finder { background: radial-gradient(900px 300px at 90% 0%, #1b4a72 0%, var(--navy) 60%); border-radius: var(--radius); padding: 34px; display: grid; gap: 24px; grid-template-columns: 1fr; align-items: center; color: #fff; }
+@media (min-width: 860px) { .finder { grid-template-columns: 1.4fr .6fr; } }
+
+[hidden] { display: none !important; }

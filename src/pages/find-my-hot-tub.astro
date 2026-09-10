@@ -1,0 +1,224 @@
+---
+import Base from '@/layouts/Base.astro';
+import StoreStrip from '@/components/StoreStrip.astro';
+import Icons from '@/components/Icons.astro';
+import { location, byCategory, specials, displayPhone, telHref, siteUrl } from '@/lib/site';
+const c = location.city;
+const pick = (p: any) => ({ slug: p.slug, cat: p.category, brand: p.brand, model: p.model, series: p.series, seats: p.seats, jets: p.jets, seating: p.seating, sale: p.sale || p.msrp, msrp: p.msrp, savings: p.savings || 0, biweekly: p.biweekly, electrical: p.electrical || '', waterCare: p.waterCare || '', volumeL: p.volumeL, lengthFt: p.lengthFt, sub: p.subcategory, image: p.image, notes: p.notes || '' });
+const data = JSON.stringify([...byCategory('hot-tub'), ...byCategory('swim-spa'), ...byCategory('sauna')].map(pick));
+const hasWetTest = specials.some((s: any) => s.id === 'wet-test');
+const title = `Find Your Hot Tub in 60 Seconds | Quiz | ${location.name}`;
+const description = `Answer four quick questions and we match you to the right Jacuzzi, Nordic, Aquasolus or Wellness Shop hot tub, swim spa or sauna at our ${c} showroom, with real prices.`;
+---
+<Base title={title} description={description}>
+  <StoreStrip />
+  <section class="section" style="padding-top:34px">
+    <div class="wrap" style="max-width:860px">
+      <div class="eyebrow">Product finder</div>
+      <h1 style="font-size:clamp(1.9rem,4vw,2.8rem)">Find the Right One in 60 Seconds</h1>
+      <p class="lead">Four quick questions, no email needed. We match you to the models on the {c} showroom floor with real prices, and tell you why.</p>
+
+      <div class="quiz" id="quiz" data-products={data} data-city={c} data-wettest={hasWetTest ? '1' : ''}>
+        <div class="quiz-progress"><div class="quiz-bar" id="q-bar"></div></div>
+        <div class="quiz-step" id="q-step"></div>
+        <div class="quiz-nav">
+          <button class="btn btn-outline btn-sm" type="button" id="q-back" hidden>Back</button>
+          <span class="quiz-count" id="q-count"></span>
+        </div>
+      </div>
+
+      <div id="q-results" hidden>
+        <div class="eyebrow">Your matches at the {c} showroom</div>
+        <h2 id="r-heading">Our top pick for you</h2>
+        <p class="lead" id="r-sub"></p>
+        <div id="r-top"></div>
+        <h3 style="margin-top:28px">Also worth sitting in</h3>
+        <div class="grid cols-2" id="r-alts"></div>
+        <div class="two-col" style="margin-top:34px">
+          <div class="form-card">
+            <h3>Send me my matches</h3>
+            <p style="color:var(--muted);margin-bottom:12px">We will email your three picks with prices and set aside a time for you to try them in {c}. Optional, but handy.</p>
+            <form class="form" method="post" action="/api/lead" id="q-form">
+              <input type="hidden" name="source" value="quiz" /><input type="hidden" name="store" value={location.id} /><input type="hidden" name="page" value="/find-my-hot-tub/" />
+              <input type="hidden" name="product" id="q-product" /><input type="hidden" name="message" id="q-message" /><input type="hidden" name="interest" id="q-interest" />
+              <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" />
+              <div class="row"><label>Name<input name="name" required autocomplete="name" /></label><label>Mobile<input name="phone" type="tel" required autocomplete="tel" /></label></div>
+              <label>Email<input name="email" type="email" required autocomplete="email" /></label>
+              <button class="btn btn-primary" type="submit">Email my matches</button>
+              <div class="msg" role="status"></div>
+            </form>
+          </div>
+          <div>
+            <div class="callout"><strong>Rather just come in?</strong> Everything we recommended is on the floor at {location.name}. Call <a href={telHref}>{displayPhone}</a> and we will have your picks filled and heated.</div>
+            <p style="margin-top:14px"><button class="btn btn-outline btn-sm" type="button" id="q-restart">Start over</button></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style is:global>
+    .quiz { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 26px; margin-top: 22px; }
+    .quiz-progress { height: 6px; background: var(--bg-soft); border-radius: 3px; overflow: hidden; margin-bottom: 20px; }
+    .quiz-bar { height: 100%; width: 0; background: linear-gradient(90deg, var(--aqua), var(--coral)); transition: width .3s; }
+    .quiz-step h2 { font-size: 1.5rem; margin-bottom: 6px; }
+    .quiz-step .hint { color: var(--muted); margin-bottom: 18px; }
+    .opts { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+    .opt { border: 2px solid var(--line); background: #fff; border-radius: 12px; padding: 16px 16px 14px; text-align: left; cursor: pointer; font: inherit; display: grid; gap: 4px; transition: border-color .12s, transform .12s; }
+    .opt:hover { border-color: var(--aqua); transform: translateY(-1px); }
+    .opt strong { color: var(--navy); font-family: var(--font-head); font-size: 1.05rem; }
+    .opt span { color: var(--muted); font-size: .85rem; }
+    .quiz-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; }
+    .quiz-count { color: var(--muted); font-size: .85rem; }
+    .pick { display: grid; grid-template-columns: 1fr; gap: 22px; background: #fff; border: 2px solid var(--aqua); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); position: relative; }
+    @media (min-width: 760px) { .pick { grid-template-columns: 300px 1fr; } }
+    .pick .img { background: radial-gradient(ellipse at 50% 70%, #fff 0%, var(--bg-soft) 70%); border-radius: 12px; display: grid; place-items: center; padding: 14px; min-height: 220px; }
+    .pick .img img { max-height: 240px; object-fit: contain; }
+    .pick-ribbon { position: absolute; top: -12px; left: 20px; background: var(--aqua); color: #fff; font-weight: 800; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; padding: 5px 10px; border-radius: 6px; }
+    .why { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 7px; }
+    .why li { display: flex; gap: 8px; align-items: flex-start; font-size: .95rem; }
+    .why svg { width: 16px; height: 16px; color: var(--ok); flex: 0 0 16px; margin-top: 3px; }
+    .alt .why { font-size: .9rem; }
+  </style>
+
+  <script is:inline>
+  (function () {
+    var root = document.getElementById('quiz'); var P = JSON.parse(root.dataset.products); var city = root.dataset.city; var hasWet = !!root.dataset.wettest;
+    var step = document.getElementById('q-step'), bar = document.getElementById('q-bar'), back = document.getElementById('q-back'), count = document.getElementById('q-count');
+    var results = document.getElementById('q-results');
+    var answers = {}; var history = [];
+
+    var Q = {
+      type: { q: 'What are you shopping for?', hint: 'Pick the closest. You can start over any time.', opts: [
+        ['hot-tub', 'Hot tub', 'Relax, soak, hydrotherapy'], ['swim-spa', 'Swim spa', 'Swim, train and soak all year'], ['sauna', 'Sauna', 'Infrared indoor or cedar outdoor'], ['unsure', 'Not sure yet', 'Show me the most popular hot tubs']] },
+      people: { q: 'How many people will use it at once, most of the time?', hint: 'Be honest, the everyday number matters more than the party number.', opts: [
+        ['2', '1 to 2', 'Couple or solo'], ['4', '3 to 4', 'Small family or friends'], ['6', '5 to 6', 'Family and guests'], ['8', '7 or more', 'The whole crew']] },
+      seating: { q: 'Lounger or open seating?', hint: 'A lounger is a full-body reclined seat. Open seating fits more people.', opts: [
+        ['lounge', 'Lounger', 'Lie back, jets head to toe'], ['open', 'Open seating', 'More seats, easy to move around'], ['any', 'No preference', 'Show me both']] },
+      budget: { q: 'What budget feels right?', hint: 'Sale prices, before delivery and electrical. Financing is available on everything.', opts: [
+        ['15000', 'Under $15,000', 'From about $15 bi-weekly'], ['22000', '$15,000 to $22,000', 'Most popular range'], ['30000', '$22,000 to $30,000', 'Premium features'], ['99999', '$30,000 and up', 'Top of the range'], ['0', 'Show me everything', 'Budget is flexible']] },
+      priority: { q: 'What matters most?', hint: 'One thing. This decides between close matches.', opts: [
+        ['therapy', 'Massage and therapy', 'The most and best jets'], ['easy', 'Easy install', 'Plugs into a regular outlet'], ['running', 'Low running cost', 'Best insulation and water care'], ['value', 'Best value', 'Most tub for the money'], ['premium', 'Premium brand', 'The best Jacuzzi has']] },
+      use: { q: 'How will you use it?', hint: '', opts: [
+        ['fitness', 'Serious swimming', 'Strong current, long lane'], ['family', 'Family fun and fitness', 'Room to play, some swimming'], ['both', 'Swim lane plus hot tub', 'Two temperatures, one unit']] },
+      length: { q: 'How much room do you have?', hint: 'Length of the spa itself. Add about 3 feet of clearance.', opts: [
+        ['13', 'Up to 14 feet', 'Fits most yards'], ['16', 'About 16 feet', 'Comfortable swim lane'], ['19', '19 feet or more', 'Full length lane'], ['0', 'Not sure', 'Show me all sizes']] },
+      sbudget: { q: 'What budget feels right?', hint: 'Sale prices. Financing available.', opts: [
+        ['45000', 'Under $45,000', ''], ['55000', '$45,000 to $55,000', ''], ['99999', '$55,000 and up', ''], ['0', 'Show me everything', '']] },
+      where: { q: 'Indoor or outdoor?', hint: 'Infrared cabins go inside and plug in. Cedar saunas go in the yard and run hot.', opts: [
+        ['infrared', 'Indoor infrared', 'Basement, spare room, garage'], ['outdoor', 'Outdoor cedar', 'Traditional hot sauna'], ['any', 'Not sure', 'Show me both']] },
+      speople: { q: 'How many people at once?', hint: '', opts: [['1', 'Just me', ''], ['2', '2 people', ''], ['4', '3 to 4 people', '']] },
+      abudget: { q: 'What budget feels right?', hint: 'Sale prices. Financing available.', opts: [
+        ['12000', 'Under $12,000', ''], ['15000', '$12,000 to $15,000', ''], ['99999', '$15,000 and up', ''], ['0', 'Show me everything', '']] }
+    };
+    var flows = { 'hot-tub': ['type', 'people', 'seating', 'budget', 'priority'], 'unsure': ['type', 'people', 'budget'], 'swim-spa': ['type', 'use', 'length', 'sbudget'], 'sauna': ['type', 'where', 'speople', 'abudget'] };
+    function flow() { return flows[answers.type || 'hot-tub'] || flows['hot-tub']; }
+    function render(key) {
+      var def = Q[key]; var f = flow(); var i = f.indexOf(key);
+      bar.style.width = ((i) / f.length * 100) + '%'; count.textContent = 'Question ' + (i + 1) + ' of ' + f.length; back.hidden = i === 0;
+      step.innerHTML = '<h2>' + def.q + '</h2>' + (def.hint ? '<p class="hint">' + def.hint + '</p>' : '') + '<div class="opts">' + def.opts.map(function (o) { return '<button class="opt" type="button" data-v="' + o[0] + '"><strong>' + o[1] + '</strong>' + (o[2] ? '<span>' + o[2] + '</span>' : '') + '</button>'; }).join('') + '</div>';
+      step.querySelectorAll('.opt').forEach(function (b) { b.addEventListener('click', function () { answers[key] = b.dataset.v; history.push(key); next(); }); });
+      window.wsTrack && window.wsTrack('quiz_step', { step: key });
+    }
+    function next() { var f = flow(); var i = f.indexOf(history[history.length - 1]); if (i + 1 < f.length) render(f[i + 1]); else finish(); }
+    back.addEventListener('click', function () { var k = history.pop(); delete answers[k]; render(k); });
+    document.getElementById('q-restart').addEventListener('click', function () { answers = {}; history = []; results.hidden = true; root.hidden = false; render('type'); window.scrollTo({ top: root.offsetTop - 120 }); });
+
+    function money(n) { return '$' + Math.round(n).toLocaleString('en-CA'); }
+    function scoreHotTub(p) {
+      var s = 0, why = [];
+      var want = +answers.people || 4; var seats = p.seats || 0;
+      var ideal = want === 2 ? [3, 5] : want === 4 ? [5, 6] : want === 6 ? [6, 7] : [7, 9];
+      if (seats >= ideal[0] && seats <= ideal[1]) { s += 30; why.push(seats + ' seats, right for ' + (want === 8 ? '7 or more' : want <= 2 ? '1 to 2' : (want - 1) + ' to ' + want) + ' people'); }
+      else if (seats >= ideal[0] - 1 && seats <= ideal[1] + 1) { s += 15; why.push(seats + ' seats'); } else s -= 20;
+      var lounge = /loung/i.test(p.seating || '');
+      if (answers.seating === 'lounge') { if (lounge) { s += 25; why.push('Full-body lounger'); } else s -= 25; }
+      if (answers.seating === 'open') { if (!lounge) { s += 25; why.push('Open seating, easy to move around'); } else s -= 15; }
+      var b = +answers.budget || 0; var lo = b === 15000 ? 0 : b === 22000 ? 15000 : b === 30000 ? 22000 : b === 99999 ? 30000 : 0;
+      if (b) { if (p.sale <= b && p.sale >= lo) { s += 25; why.push(money(p.sale) + ' fits your budget'); } else if (p.sale <= b * 1.08 && p.sale > b) { s += 5; why.push('Just over budget at ' + money(p.sale) + ', worth a look'); } else if (p.sale < lo) { s += 8; } else s -= 40; }
+      var pr = answers.priority; var base = why; why = [];
+      var jetsPerSeat = seats ? (p.jets || 0) / seats : 0;
+      if (pr === 'therapy') { s += Math.min(25, jetsPerSeat * 3); if (/J-400|J5|J4/.test(p.series)) { s += 10; why.push('Jacuzzi PowerPro jets and the most therapy options'); } else if (jetsPerSeat >= 7) why.push((p.jets) + ' jets across ' + seats + ' seats'); }
+      if (pr === 'easy') { if (/110V/.test(p.electrical)) { s += 40; why.push('Plugs into a standard 110V outlet, no electrician'); } else s -= 10; }
+      if (pr === 'running') { if (/Thermal Shield/.test(p.waterCare) || p.brand === 'Jacuzzi') { s += 15; why.push(p.brand === 'Jacuzzi' ? 'Full-foam insulation and CLEARRAY water care' : 'Thermal Shield insulation, built for Ontario winters'); } if (p.volumeL && p.volumeL < 1700) s += 8; }
+      if (pr === 'value') { var ratio = p.savings / (p.msrp || 1); s += ratio * 60; var perSeat = p.sale / (seats || 1); if (perSeat < 3000) { s += 15; why.push('About ' + money(perSeat) + ' per seat, the best value on the floor'); } if (p.savings >= 4000) why.push('Save ' + money(p.savings) + ' off regular price'); }
+      if (pr === 'premium') { if (p.brand === 'Jacuzzi') s += 15; if (/J5|J-400|J4/.test(p.series)) { s += 20; why.push('Top-tier Jacuzzi with the SmartTub app'); } }
+      if (!pr && p.brand === 'Jacuzzi') s += 8;
+      why = why.concat(base);
+      if (p.savings >= 6000 && why.length < 3) why.push('Save ' + money(p.savings) + ' at the current sale price');
+      if (p.biweekly && why.length < 3) why.push('From $' + p.biweekly.toFixed(2) + ' bi-weekly at 0% for 12 months OAC');
+      return { s: s, why: why.slice(0, 3) };
+    }
+    function scoreSwim(p) {
+      var s = 0, why = []; var u = answers.use, L = +answers.length || 0, b = +answers.sbudget || 0;
+      var dt = /DT|DualStream/.test(p.model); var pro = /PowerPro|SwimExpert/.test(p.series); var play = /PowerPlay|Flow/.test(p.series) || /J-12|J-13/.test(p.model);
+      if (u === 'fitness') { if (pro) { s += 30; why.push('Strongest swim current we sell'); } if (dt) s -= 5; if (play) s -= 15; }
+      if (u === 'family') { if (play) { s += 30; why.push('8 seats and room to play'); } else if (/PowerActive|SwimFit/.test(p.series)) { s += 15; why.push('Good swim current at a family price'); } }
+      if (u === 'both') { if (dt) { s += 40; why.push('Separate hot tub end at its own temperature'); } else s -= 10; }
+      if (L) { var len = p.lengthFt || 14; if (L === 13 && len <= 14) { s += 20; why.push(len + ' ft fits a standard yard'); } else if (L === 16 && len >= 15 && len <= 17) { s += 20; why.push(len + ' ft swim lane'); } else if (L === 19 && len >= 19) { s += 20; why.push('Full ' + len + ' ft lane'); } else s -= 15; }
+      var lo = b === 45000 ? 0 : b === 55000 ? 45000 : b === 99999 ? 55000 : 0;
+      if (b) { if (p.sale <= b && p.sale >= lo) { s += 25; why.push(money(p.sale) + ' fits your budget'); } else if (p.sale < lo) s += 5; else s -= 30; }
+      if (p.savings >= 8000 && why.length < 3) why.push('Save ' + money(p.savings) + ' at the current sale price');
+      if (p.biweekly && why.length < 3) why.push('From $' + p.biweekly.toFixed(2) + ' bi-weekly at 0% for 12 months OAC');
+      return { s: s, why: why.slice(0, 3) };
+    }
+    function scoreSauna(p) {
+      var s = 0, why = []; var w = answers.where, n = +answers.speople || 2, b = +answers.abudget || 0;
+      if (w === 'infrared') { if (p.sub === 'infrared') { s += 30; why.push('Indoor full-spectrum infrared'); } else s -= 30; }
+      if (w === 'outdoor') { if (p.sub === 'outdoor') { s += 30; why.push('Canadian-made cedar, up to 194 degrees'); } else s -= 30; }
+      var cap = p.seats || (p.sub === 'outdoor' ? (/Mini/.test(p.model) ? 2 : 4) : 2);
+      if (cap === n || (n === 4 && cap >= 3)) { s += 25; why.push('Sized for ' + (n === 4 ? '3 to 4' : n) + (n === 1 ? ' person' : ' people')); } else if (cap === n + 1) s += 12; else s -= 15;
+      var lo = b === 12000 ? 0 : b === 15000 ? 12000 : b === 99999 ? 15000 : 0;
+      if (b) { if (p.sale <= b && p.sale >= lo) { s += 25; why.push(money(p.sale) + ' fits your budget'); } else if (p.sale < lo) s += 5; else s -= 30; }
+      if (p.notes && /Includes/.test(p.notes) && why.length < 3) why.push(p.notes.replace(/\.$/, ''));
+      if (p.biweekly && why.length < 3) why.push('From $' + p.biweekly.toFixed(2) + ' bi-weekly at 0% for 12 months OAC');
+      return { s: s, why: why.slice(0, 3) };
+    }
+    function card(p, why, top) {
+      var path = (p.cat === 'hot-tub' ? '/hot-tubs/' : p.cat === 'swim-spa' ? '/swim-spas/' : '/saunas/') + p.slug + '/';
+      var meta = [p.seats ? p.seats + ' seats' : '', p.jets ? p.jets + ' jets' : '', p.lengthFt ? p.lengthFt + ' ft' : '', p.seating && !p.lengthFt ? p.seating : ''].filter(Boolean).join(' · ');
+      var ck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+      var cta = top
+        ? '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px"><a class="btn btn-primary" href="' + path + '">See the ' + p.model + '</a>' + (hasWet ? '<button class="btn btn-outline" type="button" data-claim="wet-test">Book a wet test</button>' : '') + '</div>'
+        : '<p style="margin-top:12px"><a class="btn btn-outline btn-sm" href="' + path + '">Details</a></p>';
+      return '<div class="' + (top ? 'pick' : 'card alt') + '">' + (top ? '<span class="pick-ribbon">Top match</span>' : '') +
+        '<div class="img">' + (p.image ? '<img src="' + p.image + '" alt="' + p.brand + ' ' + p.model + '" loading="lazy">' : '') + '</div>' +
+        '<div class="' + (top ? '' : 'body') + '"><span class="meta" style="color:var(--muted)">' + p.brand + (p.series && p.series !== p.model && p.series.indexOf(p.brand) < 0 ? ' · ' + p.series : '') + '</span>' +
+        '<h3 style="margin:2px 0 4px;font-size:' + (top ? '1.6rem' : '1.15rem') + '">' + p.model + '</h3><div class="meta" style="color:var(--muted)">' + meta + '</div>' +
+        '<div class="price" style="margin-top:8px"><span class="sale"' + (top ? ' style="font-size:1.8rem"' : '') + '>' + money(p.sale) + '</span>' + (p.msrp && p.msrp > p.sale ? '<span class="was">' + money(p.msrp) + '</span><span class="save">Save ' + money(p.msrp - p.sale) + '</span>' : '') + '</div>' +
+        (p.biweekly ? '<div class="weekly">or from $' + p.biweekly.toFixed(2) + ' bi-weekly OAC*</div>' : '') +
+        '<ul class="why">' + why.map(function (w) { return '<li>' + ck + w + '</li>'; }).join('') + '</ul>' + cta + '</div></div>';
+    }
+    function finish() {
+      var t = answers.type === 'unsure' ? 'hot-tub' : answers.type;
+      var pool = P.filter(function (p) { return p.cat === t && p.sale; });
+      var fn = t === 'hot-tub' ? scoreHotTub : t === 'swim-spa' ? scoreSwim : scoreSauna;
+      var ranked = pool.map(function (p) { var r = fn(p); return { p: p, s: r.s, why: r.why }; }).sort(function (a, b) { return b.s - a.s; });
+      var top = ranked[0]; var alts = [];
+      // alternates: one a step up in price, one a step down, different from top
+      var up = ranked.slice(1).filter(function (r) { return r.p.sale > top.p.sale; })[0];
+      var down = ranked.slice(1).filter(function (r) { return r.p.sale < top.p.sale; })[0];
+      if (up) alts.push(up); if (down) alts.push(down); if (alts.length < 2) ranked.slice(1).forEach(function (r) { if (alts.length < 2 && alts.indexOf(r) < 0) alts.push(r); });
+      if (up) up.why = ['A step up: ' + (up.why[0] || 'more jets and features')].concat(up.why.slice(1, 3));
+      if (down) down.why = ['Save ' + money(top.p.sale - down.p.sale) + ' vs the top pick'].concat(down.why.slice(0, 2));
+      bar.style.width = '100%'; root.hidden = true; results.hidden = false;
+      document.getElementById('r-sub').textContent = 'Based on your answers, these are the ' + (t === 'hot-tub' ? 'hot tubs' : t === 'swim-spa' ? 'swim spas' : 'saunas') + ' we would walk you to first at the ' + city + ' showroom.';
+      document.getElementById('r-top').innerHTML = card(top.p, top.why, true);
+      document.getElementById('r-alts').innerHTML = alts.map(function (r) { return card(r.p, r.why, false); }).join('');
+      var picks = [top].concat(alts).map(function (r) { return r.p.brand + ' ' + r.p.model + ' (' + money(r.p.sale) + ')'; }).join('; ');
+      document.getElementById('q-product').value = top.p.brand + ' ' + top.p.model;
+      document.getElementById('q-interest').value = t === 'hot-tub' ? 'Hot tub' : t === 'swim-spa' ? 'Swim spa / all season pool' : 'Sauna';
+      document.getElementById('q-message').value = 'Quiz answers: ' + JSON.stringify(answers) + '. Matches: ' + picks;
+      window.scrollTo({ top: results.offsetTop - 110, behavior: 'smooth' });
+      window.wsTrack && window.wsTrack('quiz_complete', { type: t, top: top.p.slug });
+    }
+    document.getElementById('q-form').addEventListener('submit', async function (e) {
+      e.preventDefault(); var f = e.target, btn = f.querySelector('button'), msg = f.querySelector('.msg'); btn.disabled = true; btn.textContent = 'Sending...';
+      try { var r = await fetch(f.action, { method: 'POST', body: new FormData(f), headers: { Accept: 'application/json' } }); var d = await r.json(); if (!r.ok || !d.ok) throw 0;
+        window.wsTrack && window.wsTrack('lead_submit', { source: 'quiz' }); msg.style.display = 'block'; msg.textContent = 'Sent. The ' + city + ' team will be in touch shortly.'; btn.textContent = 'Sent';
+      } catch (err) { msg.style.display = 'block'; msg.style.background = '#fdecec'; msg.style.color = '#b42318'; msg.textContent = 'That did not go through. Please call us instead.'; btn.disabled = false; btn.textContent = 'Try again'; }
+    });
+    var pre = new URLSearchParams(location.search).get('type'); if (pre && flows[pre]) { answers.type = pre; history.push('type'); render(flow()[1]); } else render('type');
+  })();
+  </script>
+</Base>
