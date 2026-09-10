@@ -14,5 +14,8 @@
     "@astrojs/sitemap": "^3.3.0",
     "@astrojs/vercel": "^8.2.0",
     "astro": "^5.10.0"
+  },
+  "engines": {
+    "node": "22.x"
   }
 }
