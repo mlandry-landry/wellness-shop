@@ -45,7 +45,8 @@ export const specials: Special[] = specialsData.specials.filter(
   (s) => s.active && (s.locations.includes('all') || s.locations.includes(siteId))
 );
 export const specialsIntro = specialsData.pageIntro;
-export const activeBanners = promos.banners.filter((b) => b.active);
+const focus = (location as any).homeFocus || 'hot-tub';
+export const activeBanners = (promos.banners as any[]).filter((b) => b.active).sort((a, b) => (b.category === focus ? 1 : 0) - (a.category === focus ? 1 : 0)).slice(0, 3);
 
 /** Number the public sees. Falls back to the real store line until a tracking number is set. */
 export const displayPhone: string = (location as any).trackingPhone || location.phone;

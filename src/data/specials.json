@@ -106,6 +106,27 @@
    "endsOn": "2026-10-31",
    "voucherDays": 7,
    "voucherTerms": "Valid on the event dates only."
+  },
+  {
+   "id": "burlington-sauna-bundle",
+   "active": false,
+   "locations": [
+    "burlington"
+   ],
+   "badge": "Burlington only",
+   "value": "Free",
+   "valueSub": "Chill Tubs Essential bundle",
+   "title": "DRAFT (needs approval): Sauna and Cold Plunge Bundle",
+   "summary": "Buy any Clearlight Sanctuary or Serenity sauna at the Burlington showroom and we include the Chill Tubs Essential bundle, about $3,900 value, for the full contrast routine.",
+   "details": [
+    "Any Sanctuary or Serenity model",
+    "In-store purchase at Burlington only",
+    "Cannot be combined with other bundle offers"
+   ],
+   "claimCode": "CONTRAST",
+   "endsOn": null,
+   "voucherDays": 7,
+   "voucherTerms": "With sauna purchase at the Burlington showroom. One per household."
   }
  ]
 }

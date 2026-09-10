@@ -1,5 +1,5 @@
 {
- "_readme": "Global promotions shown on every site (home page promo strip and the specials page). Edit here, commit, and all six sites redeploy. Set active:false to hide. Fields: label = short heading, text = one sentence, cta/href = button, endsOn = YYYY-MM-DD or null, icon = tag | truck | pool | sauna.",
+ "_readme": "Global promotions shown on every site (home page promo strip and the specials page). Edit here, commit, and all six sites redeploy. Set active:false to hide. Fields: label = short heading, text = one sentence, cta/href = button, endsOn = YYYY-MM-DD or null, icon = tag | truck | pool | sauna. heroByFocus: per-store hero variants selected by each location's homeFocus (hot-tub | sauna | swim-spa).",
  "heroHeadline": "Save up to $9,000 on a New Jacuzzi Hot Tub",
  "heroSub": "Sale pricing on every Jacuzzi, Nordic, Aquasolus and Wellness Shop hot tub, plus in-store extras you only get at the showroom.",
  "financingLine": "Hot tubs from $15 bi-weekly, saunas from $21 bi-weekly, swim spas from $59 bi-weekly. 0% for 12 months OAC.*",
@@ -12,7 +12,8 @@
    "cta": "Shop hot tubs",
    "href": "/hot-tubs/",
    "endsOn": null,
-   "icon": "tag"
+   "icon": "tag",
+   "category": "hot-tub"
   },
   {
    "id": "white-glove",
@@ -22,7 +23,8 @@
    "cta": "Shop hot tubs",
    "href": "/hot-tubs/",
    "endsOn": null,
-   "icon": "truck"
+   "icon": "truck",
+   "category": "hot-tub"
   },
   {
    "id": "swim-spa-sale",
@@ -32,7 +34,19 @@
    "cta": "See swim spas",
    "href": "/swim-spas/",
    "endsOn": null,
-   "icon": "pool"
+   "icon": "pool",
+   "category": "swim-spa"
+  },
+  {
+   "id": "sauna-bundle",
+   "active": true,
+   "label": "Sauna and Cold Plunge Bundle",
+   "text": "Clearlight Sanctuary 2, 3 and Y include the Chill Tubs Essential bundle, about a $3,900 value, for the full hot and cold routine.",
+   "cta": "See saunas",
+   "href": "/saunas/",
+   "endsOn": null,
+   "icon": "sauna",
+   "category": "sauna"
   }
  ],
  "sale": {
@@ -41,5 +55,37 @@
   "name": "Red Tag Sale",
   "endsOn": "2026-09-30",
   "text": "Red Tag pricing on every hot tub, swim spa and sauna ends"
+ },
+ "heroByFocus": {
+  "sauna": {
+   "headline": "Infrared and Cedar Saunas, On the Floor and Heated Up",
+   "sub": "Clearlight full-spectrum infrared cabins from $10,495 and Canadian-made Serenity cedar outdoor saunas, all set up and running so you can step inside before you decide.",
+   "image": "/images/products/sanctuary-retreat.webp",
+   "imageAlt": "Clearlight Sanctuary Retreat infrared sauna",
+   "imageLink": "/saunas/sanctuary-retreat/",
+   "imageCaption": "Clearlight Sanctuary Retreat, 4 person full-spectrum infrared",
+   "tagLine1": "Saunas from $21",
+   "tagLine2": "BI-WEEKLY OAC",
+   "primaryCta": {
+    "label": "Shop saunas",
+    "href": "/saunas/"
+   },
+   "financingLine": "Infrared saunas from $21 bi-weekly, outdoor cedar saunas from $30 bi-weekly, hot tubs from $15 bi-weekly. 0% for 12 months OAC.*"
+  },
+  "swim-spa": {
+   "headline": "Swim, Train and Soak All Year in Your Own Backyard",
+   "sub": "SwimLife and Jacuzzi swim spas from 12 to 19 feet, with sale pricing on every model and the biggest one running on the floor.",
+   "image": "/images/products/j-16-poweractive.webp",
+   "imageAlt": "Jacuzzi J-16 PowerActive swim spa",
+   "imageLink": "/swim-spas/j-16-poweractive/",
+   "imageCaption": "Jacuzzi J-16 PowerActive, 16 ft",
+   "tagLine1": "Save up to $18,900",
+   "tagLine2": "RED TAG PRICING",
+   "primaryCta": {
+    "label": "Shop swim spas",
+    "href": "/swim-spas/"
+   },
+   "financingLine": "Swim spas from $59 bi-weekly, hot tubs from $15 bi-weekly. 0% for 12 months OAC.*"
+  }
  }
 }

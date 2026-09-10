@@ -9,16 +9,24 @@ import PromoBanner from '@/components/PromoBanner.astro';
 import RedTag from '@/components/RedTag.astro';
 import { location, promos, specials, activeBanners, byCategory, displayPhone, telHref, hoursRows, site, money } from '@/lib/site';
 
+const focus: string = (location as any).homeFocus || 'hot-tub';
+const heroV: any = focus !== 'hot-tub' ? ((promos as any).heroByFocus || {})[focus] : null;
 const hotTubs = byCategory('hot-tub');
+const allSaunas = byCategory('sauna');
 const featured = ['j-385', 'j-485', 'j-245', 'ontario-s104', 'retreat-all-in-110v', 'the-cove', 'j-335', 'j-508']
   .map((s) => hotTubs.find((p) => p.slug === s)!).filter(Boolean);
 const swim = byCategory('swim-spa').filter((p) => ['j-16-poweractive', 'swimfit-swimstream-14', 'j-13-powerplay'].includes(p.slug));
-const saunas = byCategory('sauna').filter((p) => ['sanctuary-2', 'sanctuary-y', 'serenity-mini'].includes(p.slug));
+const saunas = focus === 'sauna' ? allSaunas : allSaunas.filter((p) => ['sanctuary-2', 'sanctuary-y', 'serenity-mini'].includes(p.slug));
+const minSauna = Math.min(...allSaunas.map((p) => p.sale || p.msrp));
 const cheapest = hotTubs.filter((p) => p.sale).sort((a, b) => a.sale! - b.sale!)[0];
 const maxSave = Math.max(...hotTubs.map((p) => p.savings || 0));
 
-const title = `Hot Tubs in ${location.city} | Jacuzzi Dealer and Showroom | ${location.name}`;
-const description = `Shop Jacuzzi, Nordic, Aquasolus and Wellness Shop hot tubs, swim spas and saunas at our ${location.locality} showroom. Sale pricing on every model, 0% financing OAC, and in-store specials you only get by visiting. Serving ${location.serviceAreas.slice(0, 4).join(', ')} and all of ${location.region}.`;
+const title = focus === 'sauna'
+  ? `Saunas and Hot Tubs in ${location.city} | Clearlight Infrared, Serenity Cedar, Jacuzzi | ${location.name}`
+  : `Hot Tubs in ${location.city} | Jacuzzi Dealer and Showroom | ${location.name}`;
+const description = focus === 'sauna'
+  ? `Step inside Clearlight infrared and Serenity cedar saunas at our ${location.locality} showroom, from ${money(minSauna)}. Plus Jacuzzi, Nordic, Aquasolus and Wellness Shop hot tubs with sale pricing, 0% financing OAC and in-store specials. Serving ${location.serviceAreas.slice(0, 4).join(', ')} and all of ${location.region}.`
+  : `Shop Jacuzzi, Nordic, Aquasolus and Wellness Shop hot tubs, swim spas and saunas at our ${location.locality} showroom. Sale pricing on every model, 0% financing OAC, and in-store specials you only get by visiting. Serving ${location.serviceAreas.slice(0, 4).join(', ')} and all of ${location.region}.`;
 
 const faq = [
   { q: `How much does a hot tub cost in ${location.city}?`, a: `Our hot tubs start at ${money(cheapest.sale)} for the ${cheapest.brand} ${cheapest.model} and run to ${money(hotTubs.reduce((m, p) => Math.max(m, p.sale || 0), 0))} for a fully loaded Jacuzzi J-500. Most families land between $18,000 and $30,000, or roughly $35 to $55 bi-weekly to start on the 0% for 12 months promotion, on approved credit. Every model on this site shows the current sale price, and the ${location.city} showroom has floor-model and in-store offers on top of that.` },
@@ -27,6 +35,12 @@ const faq = [
   { q: 'Which is better, Jacuzzi or a Wellness Shop Ontario hot tub?', a: 'Jacuzzi is the premium choice: patented jets, the most advanced water care, the SmartTub app and the strongest resale value. Our Wellness Shop Ontario series is built in the USA with two 6 HP pumps and Thermal Shield insulation, and it saves you several thousand dollars for a similar seat count. Both are on the showroom floor so you can compare them side by side.' },
   { q: 'What does it cost to run a hot tub through an Ontario winter?', a: 'A well insulated hot tub with a good cover typically adds $30 to $60 a month to a hydro bill in winter, less in summer. Jacuzzi and Wellness Shop tubs use full foam insulation and Smart Seal covers built for our climate, and we can show you the ratings for any model in the showroom.' }
 ];
+if (focus === 'sauna') {
+  faq.unshift(
+    { q: `How much does a sauna cost in ${location.city}?`, a: `Clearlight Sanctuary infrared cabins run from ${money(minSauna)} for the one-person Sanctuary 1 to $15,295 for the four-person Sanctuary Retreat, in Basswood or Mahogany. Serenity outdoor cedar saunas start at $14,995 in knotty cedar before the heater. Every model shows its sale price and a bi-weekly payment on this site, and all of them are set up and heated at the ${location.city} showroom.` },
+    { q: 'Infrared or traditional sauna, which is right for me?', a: 'Infrared heats you rather than the air, runs at 120 to 150 degrees, plugs into a household circuit for the 1 and 2 person cabins, and fits in a basement or spare room. Serenity cedar saunas are the traditional hot experience, up to 194 degrees with steam, and live in the yard. Most people know within a minute of stepping into each one, which is why we keep both running on the floor.' }
+  );
+}
 const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) };
 ---
 <Base title={title} description={description} schema={faqSchema}>
@@ -34,14 +48,14 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
     <div class="wrap">
       <div>
         <div class="eyebrow" style="color:#9fd3e3">{location.name}</div>
-        <h1>{promos.heroHeadline}</h1>
-        <p class="lead">{promos.heroSub} Everything is on the floor at our {location.locality} showroom, {location.landmark}.</p>
+        <h1>{heroV ? heroV.headline : promos.heroHeadline}</h1>
+        <p class="lead">{heroV ? heroV.sub : promos.heroSub} Everything is on the floor at our {location.locality} showroom, {location.landmark}.</p>
         <div class="cta-row">
-          <a class="btn btn-primary" href="/in-store-specials/" data-track="specials_click" data-loc="hero"><Icons name="tag" /> See in-store specials</a>
-          <a class="btn btn-light" href="/hot-tubs/">Shop hot tubs</a>
+          {heroV ? <a class="btn btn-primary" href={heroV.primaryCta.href}>{heroV.primaryCta.label}</a> : <a class="btn btn-primary" href="/in-store-specials/" data-track="specials_click" data-loc="hero"><Icons name="tag" /> See in-store specials</a>}
+          {heroV ? <a class="btn btn-light" href="/in-store-specials/" data-track="specials_click" data-loc="hero"><Icons name="tag" /> In-store specials</a> : <a class="btn btn-light" href="/hot-tubs/">Shop hot tubs</a>}
           <a class="btn btn-outline" style="border-color:#fff;color:#fff" href={telHref} data-loc="hero"><Icons name="phone" /> {displayPhone}</a>
         </div>
-        <p class="fine">{promos.financingLine}</p>
+        <p class="fine">{heroV?.financingLine || promos.financingLine}</p>
         <div class="trust">
           <span><Icons name="check" /> Authorized Jacuzzi dealer</span>
           <span><Icons name="check" /> Free delivery and install in our area</span>
@@ -50,9 +64,11 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
         </div>
       </div>
       <div class="art">
-        <span class="pill-tag"><RedTag line1={`Save up to ${money(maxSave)}`} line2="RED TAG PRICING" size={190} /></span>
-        <img src="/images/products/j-509.webp" alt="Jacuzzi J-509 hot tub, the flagship J5 series" width="853" height="501" fetchpriority="high" />
-        <a class="hero-caption" href="/hot-tubs/j-509/">Jacuzzi J-509, 8 seats, 76 jets &rarr;</a>
+        <span class="pill-tag"><RedTag line1={heroV ? heroV.tagLine1 : `Save up to ${money(maxSave)}`} line2={heroV ? heroV.tagLine2 : 'RED TAG PRICING'} size={190} /></span>
+        {heroV
+          ? <img class="hero-img-tall" src={heroV.image} alt={heroV.imageAlt} width="453" height="484" fetchpriority="high" />
+          : <img src="/images/products/j-509.webp" alt="Jacuzzi J-509 hot tub, the flagship J5 series" width="853" height="501" fetchpriority="high" />}
+        <a class="hero-caption" href={heroV ? heroV.imageLink : '/hot-tubs/j-509/'}>{heroV ? heroV.imageCaption : 'Jacuzzi J-509, 8 seats, 76 jets'} &rarr;</a>
       </div>
     </div>
   </section>
@@ -78,7 +94,28 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
     </section>
   )}
 
-  <section class="section">
+
+  {focus === 'sauna' && (
+    <section class="section">
+      <div class="wrap">
+        <div class="eyebrow">Saunas</div>
+        <h2>Every Sauna We Sell Is Running at the {location.city} Showroom</h2>
+        <p class="lead">Seven Clearlight Sanctuary infrared cabins from one to four people, in Basswood or Mahogany, and two Serenity cedar outdoor saunas. Real prices, bi-weekly payments, and a door you can open today.</p>
+        <div class="grid cols-3" style="margin-top:26px">{saunas.map((p) => <ProductCard p={p} />)}</div>
+        <div class="grid cols-3" style="margin-top:34px">
+          <div class="callout"><strong>Infrared, indoors.</strong> Clearlight True Wave full-spectrum heaters, low EMF, lifetime warranty on cabin and heaters. The 1 and 2 person cabins run on a standard household circuit.</div>
+          <div class="callout"><strong>Cedar, outdoors.</strong> Serenity saunas are built in Canada from Western red cedar and run up to 194 degrees with a HUUM or Karhu heater. Add water for steam.</div>
+          <div class="callout"><strong>Contrast routine.</strong> Pair either with a Chill Tubs cold plunge. Sanctuary 2, 3 and Y currently include the Chill Tubs Essential bundle.</div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:26px">
+          <a class="btn btn-primary" href="/saunas/">Compare all saunas</a>
+          <a class="btn btn-outline" href="/find-my-hot-tub/?type=sauna" data-track="quiz_start" data-loc="home-sauna">Find my sauna in 60 seconds</a>
+          <a class="btn btn-outline" href="/cold-plunge/">Cold plunge tubs</a>
+        </div>
+      </div>
+    </section>
+  )}
+  <section class={`section ${focus === 'sauna' ? 'soft' : ''}`}>
     <div class="wrap">
       <div class="eyebrow">Hot tubs</div>
       <h2>Popular Hot Tubs at Our {location.city} Showroom</h2>
@@ -93,13 +130,14 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
       <div class="finder">
         <div>
           <div class="eyebrow" style="color:#9fd3e3">Not sure where to start?</div>
-          <h2 style="color:#fff">Find the Right Hot Tub in 60 Seconds</h2>
+          <h2 style="color:#fff">Find the Right {focus === 'sauna' ? 'Sauna' : 'Hot Tub'} in 60 Seconds</h2>
           <p style="color:#cfe0ea;max-width:56ch">Four quick questions about how many people, lounger or open seating, budget and what matters most. We match you to the models on the {location.city} floor and tell you why. No email needed.</p>
         </div>
         <div style="display:grid;gap:10px">
-          <a class="btn btn-primary" href="/find-my-hot-tub/?type=hot-tub" data-track="quiz_start" data-loc="home">Find my hot tub</a>
+          {focus === 'sauna' && <a class="btn btn-primary" href="/find-my-hot-tub/?type=sauna" data-track="quiz_start" data-loc="home">Find my sauna</a>}
+          <a class={`btn ${focus === 'sauna' ? 'btn-light' : 'btn-primary'}`} href="/find-my-hot-tub/?type=hot-tub" data-track="quiz_start" data-loc="home">Find my hot tub</a>
           <a class="btn btn-light" href="/find-my-hot-tub/?type=swim-spa" data-track="quiz_start" data-loc="home">Find my swim spa</a>
-          <a class="btn btn-light" href="/find-my-hot-tub/?type=sauna" data-track="quiz_start" data-loc="home">Find my sauna</a>
+          {focus !== 'sauna' && <a class="btn btn-light" href="/find-my-hot-tub/?type=sauna" data-track="quiz_start" data-loc="home">Find my sauna</a>}
         </div>
       </div>
     </div>
@@ -144,13 +182,13 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
           <p style="margin-top:18px"><a class="btn btn-outline btn-sm" href="/swim-spas/">All swim spas</a></p>
         </div>
       </div>
-      <div style="margin-top:44px">
+      {focus !== 'sauna' && <div style="margin-top:44px">
         <div class="eyebrow">Saunas</div>
         <h2>Infrared and Outdoor Saunas</h2>
         <p class="lead">Clearlight full-spectrum infrared cabins from $10,495 and Canadian-made Serenity cedar outdoor saunas from $14,995.</p>
         <div class="grid cols-3" style="margin-top:18px">{saunas.map((p) => <ProductCard p={p} />)}</div>
         <p style="margin-top:18px"><a class="btn btn-outline btn-sm" href="/saunas/">All saunas</a></p>
-      </div>
+      </div>}
     </div>
   </section>
 

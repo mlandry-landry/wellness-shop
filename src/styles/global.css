@@ -289,3 +289,5 @@ p { margin: 0 0 1em; }
 @media (min-width: 860px) { .finder { grid-template-columns: 1.4fr .6fr; } }
 
 [hidden] { display: none !important; }
+
+.hero .art .hero-img-tall { width: auto; max-height: 460px; margin: 0 auto; }
