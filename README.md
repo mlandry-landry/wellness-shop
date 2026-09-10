@@ -1,8 +1,7 @@
 # Wellness Shop regional sites
 
-One Astro codebase, six deployments. Each Vercel project sets `SITE_ID` to one of
-`hamilton | whitby | burlington | barrie | kitchener | london` and gets its own domain.
-Every push to `main` rebuilds all six.
+One Astro codebase, six deployments. Each Vercel project is named `hottubsin<city>` and the build infers the store
+from the project name (or from a `SITE_ID` env var if set). Each project gets its own domain. Every push to `main` rebuilds all six.
 
 | Site | Domain |
 |---|---|
