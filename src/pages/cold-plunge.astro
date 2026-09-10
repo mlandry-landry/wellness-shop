@@ -1,0 +1,12 @@
+---
+import QuotePage from '@/components/QuotePage.astro';
+import { location } from '@/lib/site';
+---
+<QuotePage cat="cold-plunge" title={`Cold Plunge Tubs in ${location.city} | Chill Tubs | ${location.name}`}
+  description={`Chill Tubs cold plunge tubs on display at our ${location.locality} showroom. Essential Bath, Essential Pod, Obsidian and Pro. Pair with a hot tub or sauna for contrast therapy. Showroom pricing.`}
+  h1={`Cold Plunge Tubs in ${location.city}`}
+  intro="Chill Tubs are purpose-built cold plunges with integrated chillers that hold 3 to 5 degrees Celsius year round, filtered and ozone treated so you are not dumping ice in a stock tank. See them running in the showroom."
+  body={[
+    'The Essential Bath and Essential Pod are the lightweight entry points at 498 litres, easy to move and simple to plug in. The Obsidian is the design piece with a 400 litre insulated shell, and the Pro is the 700 litre two-person unit for serious contrast routines.',
+    `Cold plunge pricing is quoted at the ${location.city} showroom because it changes with inventory and bundle offers. Ask about pairing a Chill Tub with a Serenity outdoor sauna or Clearlight infrared cabin.`
+  ]} />

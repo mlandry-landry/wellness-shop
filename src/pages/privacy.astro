@@ -1,0 +1,12 @@
+---
+import Base from '@/layouts/Base.astro';
+import { location, site } from '@/lib/site';
+---
+<Base title={`Privacy Policy | ${location.name}`} description={`How ${location.name} collects and uses information submitted through this website.`} noindex>
+  <section class="section"><div class="wrap" style="max-width:760px">
+    <h1>Privacy Policy</h1>
+    <p>This website is operated by {site.brand} for the {location.name} showroom. When you submit a form we collect the details you provide (name, phone, email, city, message and the product or offer you asked about) along with the page you were on. We use that information to respond to your request, to schedule showroom visits and deliveries, and to follow up about the products you asked about. Leads are stored in our customer relationship management system and shared with the {location.city} showroom team.</p>
+    <p>We use analytics tools to measure calls, direction requests and form submissions so we can improve the site. These tools may set cookies. We do not sell personal information. You can ask us to update or delete your information at any time by contacting the showroom at the phone number on this page or through <a href={site.parentUrl}>wellnessshop.ca</a>.</p>
+    <p>Prices shown are in Canadian dollars, reflect current sale pricing at the {location.city} showroom and are subject to change without notice. Financing is offered on approved credit through third-party lenders.</p>
+  </div></section>
+</Base>

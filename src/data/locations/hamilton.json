@@ -1,0 +1,75 @@
+{
+ "id": "hamilton",
+ "domain": "hottubsinhamilton.ca",
+ "city": "Hamilton",
+ "cityShort": "Hamilton",
+ "region": "Hamilton and Ancaster",
+ "name": "Wellness Shop at Jacuzzi Hamilton",
+ "street": "1015 Golf Links Rd",
+ "unit": null,
+ "locality": "Ancaster",
+ "postal": "L9K 1L6",
+ "phone": "905-318-9823",
+ "trackingPhone": null,
+ "gbpId": "/g/1hg4y50t7",
+ "rating": 4.6,
+ "reviewCount": 271,
+ "lat": 43.2207,
+ "lng": -79.9417,
+ "landmark": "in the Meadowlands, just off Highway 403 at Golf Links Road",
+ "serviceAreas": [
+  "Ancaster",
+  "Dundas",
+  "Stoney Creek",
+  "Waterdown",
+  "Binbrook",
+  "Caledonia",
+  "Brantford",
+  "Grimsby",
+  "Mount Hope",
+  "Flamborough"
+ ],
+ "neighbours": [
+  "Burlington",
+  "Niagara"
+ ],
+ "province": "ON",
+ "country": "CA",
+ "hours": {
+  "monday": [
+   "11:00",
+   "19:00"
+  ],
+  "tuesday": [
+   "11:00",
+   "19:00"
+  ],
+  "wednesday": [
+   "11:00",
+   "19:00"
+  ],
+  "thursday": [
+   "11:00",
+   "19:00"
+  ],
+  "friday": [
+   "11:00",
+   "19:00"
+  ],
+  "saturday": [
+   "11:00",
+   "18:00"
+  ],
+  "sunday": [
+   "11:00",
+   "17:00"
+  ]
+ },
+ "email": null,
+ "staff": [],
+ "directionsUrl": "https://www.google.com/maps/dir/?api=1&destination=1015+Golf+Links+Rd+Ancaster+ON+L9K+1L6",
+ "reviewUrl": null,
+ "localIntro": "Hamilton backyards run the full range, from Ancaster and Dundas lots with mature trees to new builds in Binbrook and Stoney Creek, and a hot tub earns its keep here through long escarpment winters and humid summers alike. Our Ancaster showroom in the Meadowlands is the easiest place in the region to sit in a Jacuzzi, walk around a swim spa and step inside an infrared sauna before you decide.",
+ "whyVisit": "Off Highway 403 at Golf Links Road with free parking at the door, we are ten minutes from downtown Hamilton, Dundas and Waterdown and an easy drive from Brantford, Caledonia and Grimsby.",
+ "deliveryNote": "We deliver and install across Hamilton, the Mountain, Ancaster, Dundas, Stoney Creek, Waterdown and out to Brantford and Grimsby, and our crews know the escarpment driveways and tight side yards that come with older Hamilton homes."
+}

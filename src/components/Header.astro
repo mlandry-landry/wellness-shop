@@ -1,0 +1,42 @@
+---
+import Icons from './Icons.astro';
+import OpenBadge from './OpenBadge.astro';
+import { location, displayPhone, telHref, fullAddress } from '@/lib/site';
+const path = Astro.url.pathname;
+const links = [
+  ['/hot-tubs/', 'Hot Tubs'],
+  ['/swim-spas/', 'Swim Spas'],
+  ['/saunas/', 'Saunas'],
+  ['/cold-plunge/', 'Cold Plunge'],
+  ['/financing/', 'Financing'],
+  ['/showroom/', 'Showroom'],
+  ['/in-store-specials/', 'In-Store Specials']
+];
+const cur = (h: string) => (path.startsWith(h) ? 'page' : undefined);
+---
+<header class="header">
+  <div class="topbar">
+    <div class="wrap">
+      <OpenBadge />
+      <a class="addr" href={location.directionsUrl} target="_blank" rel="noopener" data-loc="topbar">{fullAddress}</a>
+    </div>
+  </div>
+  <div class="wrap nav">
+    <a class="logo" href="/" aria-label={location.name}>
+      <span class="brand">Wellness Shop <span style="opacity:.75;font-weight:600">at Jacuzzi</span></span>
+      <span class="sub">{location.city} Showroom</span>
+    </a>
+    <ul class="menu">
+      {links.map(([h, l]) => <li><a href={h} aria-current={cur(h)} class={h.includes('specials') ? 'specials' : ''}>{l}</a></li>)}
+    </ul>
+    <div class="nav-cta">
+      <a class="btn btn-light btn-sm" href={telHref} data-loc="header"><Icons name="phone" />{displayPhone}</a>
+    </div>
+    <button class="burger" aria-expanded="false" aria-controls="mobile-menu" onclick="var m=document.getElementById('mobile-menu');var o=m.classList.toggle('open');this.setAttribute('aria-expanded',o)">Menu</button>
+  </div>
+  <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile">
+    {links.map(([h, l]) => <a href={h}>{l}</a>)}
+    <a href="/price-list/">Download Price List</a>
+    <a href={telHref}>Call {displayPhone}</a>
+  </nav>
+</header>

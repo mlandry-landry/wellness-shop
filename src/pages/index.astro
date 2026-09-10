@@ -1,0 +1,154 @@
+---
+import Base from '@/layouts/Base.astro';
+import Icons from '@/components/Icons.astro';
+import StoreStrip from '@/components/StoreStrip.astro';
+import ProductCard from '@/components/ProductCard.astro';
+import SpecialCard from '@/components/SpecialCard.astro';
+import LeadForm from '@/components/LeadForm.astro';
+import { location, promos, specials, activeBanners, byCategory, displayPhone, telHref, hoursRows, site, money } from '@/lib/site';
+
+const hotTubs = byCategory('hot-tub');
+const featured = ['j-385', 'j-485', 'j-245', 'ontario-s104', 'retreat-all-in-110v', 'the-cove', 'j-335', 'j-508']
+  .map((s) => hotTubs.find((p) => p.slug === s)!).filter(Boolean);
+const swim = byCategory('swim-spa').filter((p) => ['j-16-poweractive', 'swimfit-swimstream-14', 'j-13-powerplay'].includes(p.slug));
+const saunas = byCategory('sauna').filter((p) => ['sanctuary-2', 'sanctuary-y', 'serenity-mini'].includes(p.slug));
+const cheapest = hotTubs.filter((p) => p.sale).sort((a, b) => a.sale! - b.sale!)[0];
+const maxSave = Math.max(...hotTubs.map((p) => p.savings || 0));
+
+const title = `Hot Tubs in ${location.city} | Jacuzzi Dealer and Showroom | ${location.name}`;
+const description = `Shop Jacuzzi, Nordic, Aquasolus and Wellness Shop hot tubs, swim spas and saunas at our ${location.locality} showroom. Sale pricing on every model, 0% financing OAC, and in-store specials you only get by visiting. Serving ${location.serviceAreas.slice(0, 4).join(', ')} and all of ${location.region}.`;
+
+const faq = [
+  { q: `How much does a hot tub cost in ${location.city}?`, a: `Our hot tubs start at ${money(cheapest.sale)} for the ${cheapest.brand} ${cheapest.model} and run to ${money(hotTubs.reduce((m, p) => Math.max(m, p.sale || 0), 0))} for a fully loaded Jacuzzi J-500. Most families land between $18,000 and $30,000, or roughly $35 to $55 a week on 0% financing. Every model on this site shows the current sale price, and the ${location.city} showroom has floor-model and in-store offers on top of that.` },
+  { q: 'Do you deliver and install?', a: location.deliveryNote },
+  { q: 'Can I try a hot tub before I buy?', a: `Yes. Book a private wet test at the ${location.city} showroom, bring a swimsuit, and we will have a tub filled and heated for you. It is the best way to know if a lounger or an open seating layout is right for you.` },
+  { q: 'Which is better, Jacuzzi or a Wellness Shop Ontario hot tub?', a: 'Jacuzzi is the premium choice: patented jets, the most advanced water care, the SmartTub app and the strongest resale value. Our Wellness Shop Ontario series is built in the USA with two 6 HP pumps and Thermal Shield insulation, and it saves you several thousand dollars for a similar seat count. Both are on the showroom floor so you can compare them side by side.' },
+  { q: 'What does it cost to run a hot tub through an Ontario winter?', a: 'A well insulated hot tub with a good cover typically adds $30 to $60 a month to a hydro bill in winter, less in summer. Jacuzzi and Wellness Shop tubs use full foam insulation and Smart Seal covers built for our climate, and we can show you the ratings for any model in the showroom.' }
+];
+const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) };
+---
+<Base title={title} description={description} schema={faqSchema}>
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow" style="color:#9fd3e3">{location.name}</div>
+        <h1>{promos.heroHeadline}</h1>
+        <p class="lead">{promos.heroSub} Everything is on the floor at our {location.locality} showroom, {location.landmark}.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="/in-store-specials/" data-track="specials_click" data-loc="hero"><Icons name="tag" /> See in-store specials</a>
+          <a class="btn btn-light" href="/hot-tubs/">Shop hot tubs</a>
+          <a class="btn btn-outline" style="border-color:#fff;color:#fff" href={telHref} data-loc="hero"><Icons name="phone" /> {displayPhone}</a>
+        </div>
+        <p class="fine">{promos.financingLine}</p>
+        <div class="trust">
+          <span><Icons name="check" /> Authorized Jacuzzi dealer</span>
+          <span><Icons name="check" /> Free delivery and install in our area</span>
+          <span><Icons name="check" /> Local service team</span>
+          {location.rating && <span><Icons name="star" /> {location.rating} stars on Google</span>}
+        </div>
+      </div>
+      <div class="art">
+        <span class="pill">Save up to {money(maxSave)}</span>
+        <img src="/images/products/j-485.webp" alt="Jacuzzi J-485 hot tub" width="720" height="540" fetchpriority="high" />
+      </div>
+    </div>
+  </section>
+  <StoreStrip />
+
+  {specials.length > 0 && (
+    <section class="section soft" id="specials">
+      <div class="wrap">
+        <div class="eyebrow">Only at the showroom</div>
+        <h2>In-Store Specials in {location.city}</h2>
+        <p class="lead">These offers are not available online. Visit the {location.locality} showroom, show the code at the counter, and walk out with more for less.</p>
+        <div class="grid cols-3" style="margin-top:26px">{specials.slice(0, 3).map((s) => <SpecialCard s={s} />)}</div>
+        <p style="margin-top:22px"><a class="btn btn-navy" href="/in-store-specials/" data-track="specials_click" data-loc="home-specials">See all in-store specials</a></p>
+      </div>
+    </section>
+  )}
+
+  <section class="section">
+    <div class="wrap">
+      <div class="eyebrow">Hot tubs</div>
+      <h2>Popular Hot Tubs at Our {location.city} Showroom</h2>
+      <p class="lead">Real prices on every model, not "call for pricing". Jacuzzi J-200 to J-500 series, Nordic plug-and-play, Aquasolus with the free bundle, and our own Wellness Shop Ontario series.</p>
+      <div class="grid cols-4" style="margin-top:26px">{featured.map((p) => <ProductCard p={p} />)}</div>
+      <p style="margin-top:22px"><a class="btn btn-outline" href="/hot-tubs/">See all {hotTubs.length} hot tubs</a></p>
+    </div>
+  </section>
+
+  <section class="section soft">
+    <div class="wrap two-col">
+      <div>
+        <div class="eyebrow">Why buy in person</div>
+        <h2>Come Sit in One</h2>
+        <p>{location.localIntro}</p>
+        <p>{location.whyVisit}</p>
+        <div class="steps" style="margin-top:22px">
+          <div><h3>Try the seats and jets</h3><p style="color:var(--muted)">Book a wet test and feel the difference between a lounger and open seating before you commit.</p></div>
+          <div><h3>See real water care and covers</h3><p style="color:var(--muted)">CLEARRAY, ozone, SmartTub and Smart Seal covers are all running on the floor.</p></div>
+          <div><h3>Get the showroom deal</h3><p style="color:var(--muted)">Floor model markdowns and in-store bundles are only offered to people who visit.</p></div>
+        </div>
+      </div>
+      <div>
+        <div class="form-card" style="margin-bottom:18px">
+          <h3>{location.name}</h3>
+          <p style="color:var(--muted)">{location.street}{location.unit ? `, ${location.unit}` : ''}<br />{location.locality}, ON {location.postal}</p>
+          <table class="hours">{hoursRows().map((r) => <tr><td>{r.label}</td><td>{r.value}</td></tr>)}</table>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+            <a class="btn btn-primary btn-sm" href={location.directionsUrl} target="_blank" rel="noopener" data-loc="home-store">Get directions</a>
+            <a class="btn btn-outline btn-sm" href={telHref} data-loc="home-store">Call {displayPhone}</a>
+          </div>
+        </div>
+        <iframe class="map" loading="lazy" title={`Map to ${location.name}`} referrerpolicy="no-referrer-when-downgrade" src={`https://www.google.com/maps?q=${encodeURIComponent(location.name + ' ' + location.street + ' ' + location.locality + ' ON')}&output=embed`}></iframe>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="grid cols-2">
+        <div>
+          <div class="eyebrow">Swim spas</div>
+          <h2>All Season Pools</h2>
+          <p class="lead">Swim, train and soak in a 12 to 19 foot pool that runs all year. SwimLife and Jacuzzi swim spas from $59 a week.</p>
+          <div class="grid cols-3" style="margin-top:18px">{swim.map((p) => <ProductCard p={p} />)}</div>
+          <p style="margin-top:18px"><a class="btn btn-outline btn-sm" href="/swim-spas/">All swim spas</a></p>
+        </div>
+      </div>
+      <div style="margin-top:44px">
+        <div class="eyebrow">Saunas</div>
+        <h2>Infrared and Outdoor Saunas</h2>
+        <p class="lead">Clearlight full-spectrum infrared cabins from $4,599 and Canadian-made Serenity cedar outdoor saunas.</p>
+        <div class="grid cols-3" style="margin-top:18px">{saunas.map((p) => <ProductCard p={p} />)}</div>
+        <p style="margin-top:18px"><a class="btn btn-outline btn-sm" href="/saunas/">All saunas</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section navy">
+    <div class="wrap two-col">
+      <div>
+        <div class="eyebrow" style="color:#9fd3e3">Brands we carry</div>
+        <h2>One Showroom, Every Serious Brand</h2>
+        <div class="grid cols-2" style="margin-top:18px">
+          {Object.entries(site.brands).map(([name, b]) => <div><h3 style="color:#fff;font-size:1.05rem;margin-bottom:4px">{name}</h3><p style="color:#b8cbd8;font-size:.95rem;margin:0">{b.blurb}</p></div>)}
+        </div>
+      </div>
+      <LeadForm source="home" title={`Ask the ${location.city} team`} />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="eyebrow">Delivery and service</div>
+      <h2>Serving {location.region}</h2>
+      <p class="lead">{location.deliveryNote}</p>
+      <p style="margin-top:10px">{location.serviceAreas.map((t, i) => <><a href={`/service-areas/${t.toLowerCase().replace(/[^a-z]+/g, '-')}/`}>Hot tubs in {t}</a>{i < location.serviceAreas.length - 1 ? ' · ' : ''}</>)}</p>
+      <div class="faq" style="margin-top:36px;max-width:820px">
+        <h2 style="font-size:1.5rem">Common Questions</h2>
+        {faq.map((f) => <details><summary>{f.q}</summary><p>{f.a}</p></details>)}
+      </div>
+    </div>
+  </section>
+</Base>

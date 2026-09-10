@@ -1,0 +1,33 @@
+---
+import Base from '@/layouts/Base.astro';
+import StoreStrip from '@/components/StoreStrip.astro';
+import LeadForm from '@/components/LeadForm.astro';
+import { location, byCategory, money, weekly } from '@/lib/site';
+const c = location.city;
+const hot = byCategory('hot-tub').filter((p) => p.sale).sort((a, b) => a.sale! - b.sale!);
+const title = `Hot Tub Price List ${new Date().getFullYear()} | ${c} | ${location.name}`;
+const description = `Download the current ${c} price list for every Jacuzzi, Nordic, Aquasolus and Wellness Shop hot tub, swim spa and sauna, including weekly payments and this month's showroom offers.`;
+---
+<Base title={title} description={description}>
+  <StoreStrip />
+  <section class="section">
+    <div class="wrap two-col">
+      <div>
+        <div class="eyebrow">Price list</div>
+        <h1>{c} Hot Tub, Swim Spa and Sauna Price List</h1>
+        <p class="lead">Every price on this site is already public. The downloadable price list adds the pieces we do not publish: weekly payment tables at every term, delivery and electrical checklists, the current floor model inventory at the {c} showroom, and the in-store offers that go with it.</p>
+        <h2 style="font-size:1.4rem;margin-top:28px">Hot tubs at a glance</h2>
+        <div style="overflow-x:auto">
+        <table class="specs">
+          <thead><tr><th>Model</th><th>Seats</th><th>Jets</th><th>Sale</th><th>Weekly</th></tr></thead>
+          <tbody>{hot.map((p) => <tr><th style="width:auto;color:var(--ink)"><a href={`/hot-tubs/${p.slug}/`}>{p.brand} {p.model}</a></th><td>{p.seats}</td><td>{p.jets}</td><td><strong>{money(p.sale)}</strong> <span class="was" style="font-size:.8rem">{money(p.msrp)}</span></td><td>{p.weekly ? weekly(p.weekly) : p.notes?.match(/\$[\d.]+ bi-weekly/i)?.[0] || ''}</td></tr>)}</tbody>
+        </table>
+        </div>
+        <p style="color:var(--muted);font-size:.85rem;margin-top:10px">Prices in CAD at the {location.name} showroom. Sale pricing changes; the list is refreshed when it does.</p>
+      </div>
+      <div>
+        <LeadForm source="price-list" title="Send me the full price list" sub={`We will email the PDF right away and the ${c} team will follow up once to see if you have questions. Nothing more.`} button="Email me the price list" compact />
+      </div>
+    </div>
+  </section>
+</Base>

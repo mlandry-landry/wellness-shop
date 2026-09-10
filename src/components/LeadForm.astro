@@ -1,0 +1,57 @@
+---
+import { location, byCategory } from '@/lib/site';
+interface Props { title?: string; sub?: string; source: string; product?: string; button?: string; compact?: boolean; }
+const { title = 'Get Showroom Pricing', sub = `Tell us what you are looking for and the ${location.city} team will call or text you back, usually within the hour during showroom hours.`, source, product, button = 'Send my request', compact = false } = Astro.props;
+const interests = ['Hot tub', 'Swim spa / all season pool', 'Infrared sauna', 'Outdoor sauna', 'Cold plunge', 'Not sure yet'];
+const fid = 'f' + Math.random().toString(36).slice(2, 7);
+---
+<div class="form-card" id={fid}>
+  <h3>{title}</h3>
+  <p class="meta" style="color:var(--muted);margin-bottom:14px">{sub}</p>
+  <form class="form" method="post" action="/api/lead" data-lead>
+    <input type="hidden" name="source" value={source} />
+    <input type="hidden" name="store" value={location.id} />
+    <input type="hidden" name="page" value={Astro.url.pathname} />
+    {product && <input type="hidden" name="product" value={product} />}
+    <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" />
+    <div class="row">
+      <label>Name<input name="name" required autocomplete="name" /></label>
+      <label>Phone<input name="phone" type="tel" required autocomplete="tel" inputmode="tel" /></label>
+    </div>
+    <div class="row">
+      <label>Email<input name="email" type="email" required autocomplete="email" /></label>
+      <label>City or town<input name="city" autocomplete="address-level2" placeholder={location.city} /></label>
+    </div>
+    {!compact && (
+      <label>I am interested in
+        <select name="interest">{interests.map((i) => <option>{i}</option>)}</select>
+      </label>
+    )}
+    {!compact && <label>Anything else?<textarea name="message" rows="3" placeholder="Backyard size, timeline, models you like, trade-in..."></textarea></label>}
+    <button class="btn btn-primary" type="submit">{button}</button>
+    <p class="fine">No spam, no obligation. We will only contact you about your request. Prefer to talk now? Call <a href={`tel:+1${location.phone.replace(/\D/g,'')}`}>{location.phone}</a>.</p>
+    <div class="msg" role="status"></div>
+  </form>
+</div>
+<script>
+  document.querySelectorAll('form[data-lead]').forEach((form) => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const f = form as HTMLFormElement;
+      const btn = f.querySelector('button') as HTMLButtonElement;
+      const msg = f.querySelector('.msg') as HTMLElement;
+      btn.disabled = true; btn.textContent = 'Sending...';
+      try {
+        const res = await fetch(f.action, { method: 'POST', body: new FormData(f), headers: { Accept: 'application/json' } });
+        const data = await res.json();
+        if (!res.ok || !data.ok) throw new Error(data.error || 'Something went wrong');
+        (window as any).wsTrack && (window as any).wsTrack('lead_submit', { source: (f.querySelector('[name=source]') as HTMLInputElement).value });
+        window.location.href = '/thank-you/';
+      } catch (err: any) {
+        msg.style.display = 'block'; msg.style.background = '#fdecec'; msg.style.color = '#b42318';
+        msg.textContent = 'Sorry, that did not go through. Please call us instead.';
+        btn.disabled = false; btn.textContent = 'Try again';
+      }
+    });
+  });
+</script>

@@ -1,0 +1,101 @@
+---
+import '@/styles/global.css';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import StickyBar from '@/components/StickyBar.astro';
+import { location, siteUrl, site, displayPhone, openingHoursSpec, fullAddress } from '@/lib/site';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  schema?: Record<string, any> | Record<string, any>[];
+  noindex?: boolean;
+}
+const { title, description, image = '/images/brand/jacuzzi-collage-pergola.webp', schema, noindex = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, siteUrl).href;
+const ogImage = new URL(image, siteUrl).href;
+
+const localBusiness = {
+  '@context': 'https://schema.org',
+  '@type': 'HomeAndConstructionBusiness',
+  additionalType: 'https://schema.org/Store',
+  '@id': `${siteUrl}/#store`,
+  name: location.name,
+  url: siteUrl,
+  telephone: `+1-${displayPhone}`,
+  image: ogImage,
+  priceRange: '$$$',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: location.street + (location.unit ? `, ${location.unit}` : ''),
+    addressLocality: location.locality,
+    addressRegion: 'ON',
+    postalCode: location.postal,
+    addressCountry: 'CA'
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: location.lat, longitude: location.lng },
+  openingHoursSpecification: openingHoursSpec(),
+  areaServed: [location.city, ...location.serviceAreas].map((n) => ({ '@type': 'City', name: n })),
+  parentOrganization: { '@type': 'Organization', name: site.brand, url: site.parentUrl },
+  sameAs: Object.values(site.social),
+  ...(location.rating && location.reviewCount
+    ? { aggregateRating: { '@type': 'AggregateRating', ratingValue: location.rating, reviewCount: location.reviewCount } }
+    : {})
+};
+const schemas = [localBusiness, ...(schema ? (Array.isArray(schema) ? schema : [schema]) : [])];
+const gtm = site.analytics.gtmId;
+---
+<!doctype html>
+<html lang="en-CA">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex,nofollow" />}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={location.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="en_CA" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#0b2239" />
+    <meta name="geo.region" content="CA-ON" />
+    <meta name="geo.placename" content={location.locality} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700&display=swap" rel="stylesheet" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    {schemas.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+    {gtm && (
+      <script is:inline define:vars={{ gtm }}>
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer',gtm);
+      </script>
+    )}
+    <script is:inline define:vars={{ storeId: location.id, storeName: location.name }}>
+      window.dataLayer = window.dataLayer || [];
+      window.wsTrack = function (event, extra) {
+        window.dataLayer.push(Object.assign({ event: event, store_id: storeId, store_name: storeName }, extra || {}));
+      };
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest && e.target.closest('a');
+        if (!a) return;
+        var h = a.getAttribute('href') || '';
+        if (h.indexOf('tel:') === 0) window.wsTrack('call_click', { phone: h.slice(4), location: a.dataset.loc || 'page' });
+        else if (h.indexOf('google.com/maps') > -1) window.wsTrack('directions_click', { location: a.dataset.loc || 'page' });
+        else if (a.dataset.track) window.wsTrack(a.dataset.track, { location: a.dataset.loc || 'page' });
+      });
+    </script>
+  </head>
+  <body>
+    <Header />
+    <slot />
+    <Footer />
+    <StickyBar />
+  </body>
+</html>

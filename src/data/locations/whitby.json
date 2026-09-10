@@ -1,0 +1,74 @@
+{
+ "id": "whitby",
+ "domain": "hottubsinwhitby.ca",
+ "city": "Whitby",
+ "cityShort": "Whitby",
+ "region": "Whitby and Durham Region",
+ "name": "Wellness Shop at Jacuzzi Whitby",
+ "street": "1549 Dundas St E",
+ "unit": "Unit 3",
+ "locality": "Whitby",
+ "postal": "L1N 5R4",
+ "phone": "289-545-0002",
+ "trackingPhone": null,
+ "gbpId": "/g/11bbrlhk8_",
+ "rating": null,
+ "reviewCount": null,
+ "lat": 43.8883,
+ "lng": -78.9089,
+ "landmark": "on Dundas Street East, minutes from Highway 401 and the Whitby GO",
+ "serviceAreas": [
+  "Oshawa",
+  "Ajax",
+  "Pickering",
+  "Bowmanville",
+  "Courtice",
+  "Brooklin",
+  "Port Perry",
+  "Clarington",
+  "Uxbridge",
+  "Newcastle"
+ ],
+ "neighbours": [
+  "Vaughan"
+ ],
+ "province": "ON",
+ "country": "CA",
+ "hours": {
+  "monday": [
+   "11:00",
+   "19:00"
+  ],
+  "tuesday": [
+   "11:00",
+   "19:00"
+  ],
+  "wednesday": [
+   "11:00",
+   "19:00"
+  ],
+  "thursday": [
+   "11:00",
+   "19:00"
+  ],
+  "friday": [
+   "11:00",
+   "19:00"
+  ],
+  "saturday": [
+   "11:00",
+   "18:00"
+  ],
+  "sunday": [
+   "11:00",
+   "17:00"
+  ]
+ },
+ "email": null,
+ "staff": [],
+ "directionsUrl": "https://www.google.com/maps/dir/?api=1&destination=1549+Dundas+St+E+Whitby+ON+L1N+5R4",
+ "reviewUrl": null,
+ "localIntro": "Durham Region families spend a lot of time in the backyard, and with lake-effect winters off Lake Ontario a hot tub gets used twelve months a year in Whitby, Oshawa, Ajax and Pickering. Our Whitby showroom on Dundas Street East is where east GTA shoppers come to compare Jacuzzi, Nordic and Aquasolus hot tubs side by side, try a swim spa and see the saunas in person.",
+ "whyVisit": "We are on Dundas Street East just north of Highway 401, minutes from the Whitby GO and central to Oshawa, Ajax, Pickering, Bowmanville and Brooklin.",
+ "deliveryNote": "Our delivery and install crews cover all of Durham Region, from Pickering and Ajax through Whitby, Oshawa, Courtice and Bowmanville, and north to Brooklin, Port Perry and Uxbridge."
+}

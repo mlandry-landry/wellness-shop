@@ -1,0 +1,18 @@
+---
+import { location, telHref, displayPhone, type Special } from '@/lib/site';
+const { s } = Astro.props as { s: Special };
+---
+<article class="special" id={s.id}>
+  {s.badge && <span class="ribbon">{s.badge}</span>}
+  <h3>{s.title}</h3>
+  <p style="margin:0;color:var(--ink)">{s.summary}</p>
+  {s.details?.length > 0 && <ul>{s.details.map((d) => <li>{d}</li>)}</ul>}
+  {s.endsOn && <div class="countdown" data-ends={s.endsOn}>Ends {new Date(s.endsOn + 'T23:59:00-04:00').toLocaleDateString('en-CA', { month: 'long', day: 'numeric' })}</div>}
+  <div class="claim">
+    {s.claimCode ? <><span class="meta" style="font-size:.85rem;color:var(--muted)">Show this code at the counter:</span><span class="code">{s.claimCode}</span></> : <span class="meta" style="font-size:.85rem;color:var(--muted)">Ask for it when you visit or call.</span>}
+  </div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap">
+    <a class="btn btn-primary btn-sm" href={location.directionsUrl} target="_blank" rel="noopener" data-loc={`special:${s.id}`}>Get directions</a>
+    <a class="btn btn-outline btn-sm" href={telHref} data-loc={`special:${s.id}`}>Call {displayPhone}</a>
+  </div>
+</article>

@@ -1,0 +1,42 @@
+---
+import Base from '@/layouts/Base.astro';
+import LeadForm from '@/components/LeadForm.astro';
+import Icons from '@/components/Icons.astro';
+import { location, hoursRows, displayPhone, telHref, fullAddress, otherLocations, site } from '@/lib/site';
+const c = location.city;
+const title = `${c} Hot Tub Showroom | Hours, Directions, Wet Tests | ${location.name}`;
+const description = `Visit ${location.name} at ${fullAddress}. Open 7 days. Jacuzzi hot tubs, swim spas and saunas on the floor, wet tests by appointment, free parking. Call ${displayPhone}.`;
+---
+<Base title={title} description={description}>
+  <section class="section">
+    <div class="wrap two-col">
+      <div>
+        <div class="eyebrow">Showroom</div>
+        <h1>{location.name}</h1>
+        <p class="lead">{location.localIntro}</p>
+        <p>{location.whyVisit}</p>
+        <div class="grid cols-2" style="margin-top:24px">
+          <div class="form-card">
+            <h3>Address</h3>
+            <p>{location.street}{location.unit ? `, ${location.unit}` : ''}<br />{location.locality}, ON {location.postal}</p>
+            <a class="btn btn-primary btn-sm" href={location.directionsUrl} target="_blank" rel="noopener" data-loc="showroom"><Icons name="pin" /> Get directions</a>
+          </div>
+          <div class="form-card">
+            <h3>Hours</h3>
+            <table class="hours">{hoursRows().map((r) => <tr><td>{r.label}</td><td>{r.value}</td></tr>)}</table>
+            <a class="btn btn-outline btn-sm" style="margin-top:12px" href={telHref} data-loc="showroom"><Icons name="phone" /> {displayPhone}</a>
+          </div>
+        </div>
+        <iframe class="map" style="margin-top:24px;height:380px" loading="lazy" title={`Map to ${location.name}`} referrerpolicy="no-referrer-when-downgrade" src={`https://www.google.com/maps?q=${encodeURIComponent(location.name + ' ' + location.street + ' ' + location.locality + ' ON')}&output=embed`}></iframe>
+        <h2 style="font-size:1.4rem;margin-top:34px">What is on the floor</h2>
+        <p>Jacuzzi J-200, J-300, J-400 and J-500 series hot tubs, Nordic plug-and-play round tubs, Aquasolus and Wellness Shop Ontario hot tubs, Jacuzzi and SwimLife swim spas, Clearlight infrared saunas, Serenity outdoor cedar saunas, Chill Tubs cold plunges, massage chairs and Visscher gazebos. Water care, filters and covers are stocked for pickup.</p>
+        <h2 style="font-size:1.4rem;margin-top:26px">Wet tests</h2>
+        <p>Bring a swimsuit and we will fill and heat the model you are considering. Book by phone or with the form and give us a day of notice when you can; same-day is often possible on weekdays.</p>
+        {location.staff.length > 0 && <><h2 style="font-size:1.4rem;margin-top:26px">Meet the team</h2><div class="grid cols-3">{location.staff.map((s: any) => <div><strong>{s.name}</strong><br /><span style="color:var(--muted)">{s.role}</span></div>)}</div></>}
+        <h2 style="font-size:1.4rem;margin-top:26px">Other Wellness Shop showrooms</h2>
+        <p style="color:var(--muted)">Closer to another store? Wellness Shop also has showrooms in {otherLocations().map((l) => l.city).join(', ')}, Niagara and Vaughan. Find them all at <a href={site.parentUrl + '/locations/'} rel="noopener">wellnessshop.ca</a>.</p>
+      </div>
+      <div><LeadForm source="showroom" title="Book a showroom visit" sub={`Pick a day and we will have the models you want to see filled, heated and ready in ${c}.`} button="Book my visit" /></div>
+    </div>
+  </section>
+</Base>

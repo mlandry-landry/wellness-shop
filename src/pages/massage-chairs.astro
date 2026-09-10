@@ -1,0 +1,9 @@
+---
+import QuotePage from '@/components/QuotePage.astro';
+import { location } from '@/lib/site';
+---
+<QuotePage cat="massage-chair" title={`Massage Chairs in ${location.city} | Summit and Dreamcatcher | ${location.name}`}
+  description={`Try the Wellness Shop Summit WS190 and Dreamcatcher WS170 massage chairs at our ${location.locality} showroom. Full-body 4D massage, heat and zero gravity. Showroom pricing.`}
+  h1={`Massage Chairs in ${location.city}`}
+  intro="Sit in one for ten minutes and you will understand why we carry them. Both chairs are on the showroom floor and ready to try."
+  body={[`Pricing is quoted at the ${location.city} showroom. Financing is available OAC and delivery is included within our service area.`]} />

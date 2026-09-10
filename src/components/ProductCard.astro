@@ -1,0 +1,29 @@
+---
+import { money, weekly, productPath, type Product } from '@/lib/site';
+const { p } = Astro.props as { p: Product };
+const clearance = p.notes && /clearance|flash/i.test(p.notes);
+---
+<a class="card" href={productPath(p)} style="text-decoration:none;color:inherit" data-brand={p.brand} data-seats={p.seats} data-series={p.series}>
+  <div class="img">{p.image && <img src={p.image} alt={`${p.brand} ${p.model} ${p.category.replace('-', ' ')}`} loading="lazy" width="600" height="450" />}</div>
+  <div class="body">
+    <div style="display:flex;justify-content:space-between;gap:8px;align-items:center">
+      <span class="meta">{p.brand} {p.series && p.series !== p.model ? `· ${p.series}` : ''}</span>
+      {clearance && <span class="badge hot">Floor model deal</span>}
+    </div>
+    <h3>{p.model}</h3>
+    <div class="meta">
+      {p.seats && <>{p.seats} seats</>}{p.jets && <> · {p.jets} jets</>}{p.lengthFt && <> · {p.lengthFt} ft</>}{p.seating && !p.lengthFt && <> · {p.seating}</>}
+    </div>
+    {p.quoteOnly ? (
+      <div class="price"><span class="sale" style="font-size:1.05rem">Showroom pricing</span></div>
+    ) : (
+      <>
+        <div class="price">
+          {p.sale ? <><span class="sale">{money(p.sale)}</span><span class="was">{money(p.msrp)}</span>{p.savings && <span class="save">Save {money(p.savings)}</span>}</> : <span class="sale">{money(p.msrp)}</span>}
+        </div>
+        {p.weekly && <div class="weekly">or {weekly(p.weekly)} at 0% OAC</div>}
+        {p.biweekly && <div class="weekly">or from {p.biweekly.split('/')[0].trim()} bi-weekly OAC</div>}
+      </>
+    )}
+  </div>
+</a>

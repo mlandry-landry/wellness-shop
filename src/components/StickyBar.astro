@@ -1,0 +1,9 @@
+---
+import Icons from './Icons.astro';
+import { location, telHref } from '@/lib/site';
+---
+<nav class="sticky-bar" aria-label="Quick actions">
+  <a href={telHref} data-loc="sticky"><Icons name="phone" />Call</a>
+  <a href={location.directionsUrl} target="_blank" rel="noopener" data-loc="sticky"><Icons name="pin" />Directions</a>
+  <a href="/in-store-specials/" class="hot" data-track="specials_click" data-loc="sticky"><Icons name="tag" />Specials</a>
+</nav>

@@ -1,0 +1,26 @@
+---
+import Base from '@/layouts/Base.astro';
+import StoreStrip from '@/components/StoreStrip.astro';
+import LeadForm from '@/components/LeadForm.astro';
+import { location, byCategory, categories } from '@/lib/site';
+interface Props { cat: keyof typeof categories; title: string; description: string; h1: string; intro: string; body: string[]; }
+const { cat, title, description, h1, intro, body } = Astro.props;
+const items = byCategory(cat);
+---
+<Base title={title} description={description}>
+  <StoreStrip />
+  <section class="section">
+    <div class="wrap two-col">
+      <div>
+        <nav class="breadcrumbs"><a href="/">Home</a> / {categories[cat].label}</nav>
+        <h1 style="margin-top:8px">{h1}</h1>
+        <p class="lead">{intro}</p>
+        <div class="grid cols-2" style="margin:24px 0">
+          {items.map((p) => <div class="card"><div class="body"><span class="meta">{p.brand}</span><h3>{p.model}</h3><div class="meta">{[p.capacity, p.weight, p.size, p.style].filter(Boolean).join(' · ')}</div><div class="price"><span class="sale" style="font-size:1rem">Showroom pricing</span></div></div></div>)}
+        </div>
+        {body.map((b) => <p>{b}</p>)}
+      </div>
+      <div><LeadForm source={`category:${cat}`} title={`${categories[cat].label} pricing`} sub={`Pricing on these is quoted at the ${location.city} showroom. Tell us which model and we will send current pricing and availability.`} button="Send me pricing" /></div>
+    </div>
+  </section>
+</Base>

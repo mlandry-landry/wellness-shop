@@ -1,0 +1,37 @@
+---
+import { location, site, displayPhone, telHref, fullAddress, hoursRows } from '@/lib/site';
+const year = new Date().getFullYear();
+---
+<footer class="footer">
+  <div class="wrap grid cols-4">
+    <div>
+      <h4>{location.name}</h4>
+      <p>{fullAddress}<br /><a href={telHref} data-loc="footer">{displayPhone}</a></p>
+      <p><a href={location.directionsUrl} target="_blank" rel="noopener" data-loc="footer">Get directions</a></p>
+    </div>
+    <div>
+      <h4>Showroom hours</h4>
+      <ul>{hoursRows().map((r) => <li>{r.label}: {r.value}</li>)}</ul>
+    </div>
+    <div>
+      <h4>Shop</h4>
+      <ul>
+        <li><a href="/hot-tubs/">Hot tubs</a></li>
+        <li><a href="/swim-spas/">Swim spas and all season pools</a></li>
+        <li><a href="/saunas/">Infrared and outdoor saunas</a></li>
+        <li><a href="/cold-plunge/">Cold plunge tubs</a></li>
+        <li><a href="/in-store-specials/">In-store specials</a></li>
+        <li><a href="/price-list/">Price list</a></li>
+        <li><a href="/financing/">Financing</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Serving {location.region}</h4>
+      <ul>{location.serviceAreas.slice(0, 8).map((t) => <li><a href={`/service-areas/${t.toLowerCase().replace(/[^a-z]+/g, '-')}/`}>Hot tubs in {t}</a></li>)}</ul>
+    </div>
+  </div>
+  <div class="wrap legal">
+    <span>&copy; {year} {site.brand}. {location.name} is a showroom of <a href={site.parentUrl} rel="noopener">Wellness Shop</a>, an authorized Jacuzzi dealer in Ontario.</span>
+    <span><a href="/privacy/">Privacy</a> &middot; Prices in CAD, subject to change. Financing OAC.</span>
+  </div>
+</footer>

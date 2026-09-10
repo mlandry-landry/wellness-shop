@@ -1,0 +1,9 @@
+---
+import QuotePage from '@/components/QuotePage.astro';
+import { location } from '@/lib/site';
+---
+<QuotePage cat="gazebo" title={`Hot Tub Gazebos in ${location.city} | Visscher Cedar | ${location.name}`}
+  description={`Visscher cedar gazebos and enclosures for hot tubs and swim spas at our ${location.locality} showroom. Duke, Cypress, Hudson, Sequoia, Sedona and Savannah. Showroom pricing.`}
+  h1={`Hot Tub Gazebos in ${location.city}`}
+  intro="A gazebo turns a hot tub into a room. Visscher builds theirs in Western red cedar in enclosed and open-air styles, with louvered roofs and privacy panels for Ontario winters."
+  body={[`Gazebo pricing depends on size, style and delivery, so we quote it at the ${location.city} showroom. Bring your yard measurements or a photo and we will size it for you.`]} />

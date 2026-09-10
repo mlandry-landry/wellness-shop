@@ -1,0 +1,10 @@
+---
+import Base from '@/layouts/Base.astro';
+import { location, displayPhone, telHref } from '@/lib/site';
+---
+<Base title={`Page not found | ${location.name}`} description="That page does not exist." noindex>
+  <section class="section"><div class="wrap" style="max-width:640px">
+    <h1>That page took a wrong turn</h1>
+    <p class="lead">Try the <a href="/hot-tubs/">hot tubs</a>, <a href="/in-store-specials/">in-store specials</a>, or call the {location.city} showroom at <a href={telHref}>{displayPhone}</a>.</p>
+  </div></section>
+</Base>

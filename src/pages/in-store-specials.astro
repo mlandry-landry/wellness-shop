@@ -1,0 +1,82 @@
+---
+import Base from '@/layouts/Base.astro';
+import StoreStrip from '@/components/StoreStrip.astro';
+import SpecialCard from '@/components/SpecialCard.astro';
+import LeadForm from '@/components/LeadForm.astro';
+import Icons from '@/components/Icons.astro';
+import { location, specials, specialsIntro, activeBanners, hoursRows, displayPhone, telHref, fullAddress, siteUrl } from '@/lib/site';
+const c = location.city;
+const title = `In-Store Specials and Walk-In Deals | ${location.name}`;
+const description = `Showroom-only hot tub, swim spa and sauna offers at ${location.name}, ${fullAddress}. Floor model clearance, bundles and flash pricing you can only get by visiting. Open 7 days.`;
+const schema = [
+  { '@context': 'https://schema.org', '@type': 'OfferCatalog', name: `In-store specials at ${location.name}`, url: siteUrl + '/in-store-specials/',
+    itemListElement: specials.map((s) => ({ '@type': 'Offer', name: s.title, description: s.summary, availability: 'https://schema.org/InStoreOnly', availableAtOrFrom: { '@id': `${siteUrl}/#store` }, ...(s.endsOn ? { validThrough: s.endsOn } : {}) })) },
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl + '/' }, { '@type': 'ListItem', position: 2, name: 'In-Store Specials', item: siteUrl + '/in-store-specials/' }] }
+];
+---
+<Base title={title} description={description} schema={schema}>
+  <section class="hero" style="padding:44px 0 40px">
+    <div class="wrap" style="grid-template-columns:1fr">
+      <div style="max-width:760px">
+        <div class="eyebrow" style="color:#ffd9cc">Showroom only · {c}</div>
+        <h1>In-Store Specials at the {c} Showroom</h1>
+        <p class="lead">{specialsIntro} You will not find these prices on wellnessshop.ca or anywhere else online.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href={location.directionsUrl} target="_blank" rel="noopener" data-loc="specials-hero"><Icons name="pin" /> Get directions</a>
+          <a class="btn btn-light" href={telHref} data-loc="specials-hero"><Icons name="phone" /> Call ahead {displayPhone}</a>
+        </div>
+        <p class="fine" style="margin-top:14px">{fullAddress} · {hoursRows().map((r) => `${r.label} ${r.value}`).join(' · ')}</p>
+      </div>
+    </div>
+  </section>
+  <StoreStrip />
+
+  <section class="section">
+    <div class="wrap">
+      {specials.length === 0 ? (
+        <p class="lead">New showroom offers are being loaded. Call {displayPhone} and ask what is on the floor this week.</p>
+      ) : (
+        <div class="grid cols-3" style="padding-top:10px">{specials.map((s) => <SpecialCard s={s} />)}</div>
+      )}
+    </div>
+  </section>
+
+  <section class="section soft">
+    <div class="wrap two-col">
+      <div>
+        <div class="eyebrow">How it works</div>
+        <h2>Three Steps to the Showroom Deal</h2>
+        <div class="steps" style="margin-top:20px">
+          <div><h3>Pick your special</h3><p style="color:var(--muted)">Screenshot it or just remember the claim code. Most offers stack with the sale prices already shown on this site.</p></div>
+          <div><h3>Visit or call ahead</h3><p style="color:var(--muted)">We are open seven days a week. Calling ahead lets us have the right models filled and heated, and we can hold a floor model for you the same day.</p></div>
+          <div><h3>Show the code at the counter</h3><p style="color:var(--muted)">That is it. No coupons to print, no online checkout. The offer is applied to your showroom quote.</p></div>
+        </div>
+        {activeBanners.length > 0 && (
+          <div style="margin-top:34px">
+            <h2 style="font-size:1.4rem">Also On Right Now</h2>
+            <ul style="padding-left:18px;color:var(--muted)">{activeBanners.map((b) => <li style="margin-bottom:8px"><strong style="color:var(--ink)">{b.label}:</strong> {b.text} <a href={b.href}>{b.cta}</a></li>)}</ul>
+          </div>
+        )}
+      </div>
+      <div>
+        <LeadForm source="specials" title="Hold a special for me" sub={`Tell us which offer you want and when you plan to visit and the ${c} team will confirm availability and set it aside.`} button="Hold it for me" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section navy">
+    <div class="wrap two-col">
+      <div>
+        <h2>Visit {location.name}</h2>
+        <p style="color:#cfe0ea">{location.whyVisit}</p>
+        <p style="color:#cfe0ea">{fullAddress}</p>
+        <table class="hours" style="color:#fff;max-width:420px">{hoursRows().map((r) => <tr><td style="border-color:rgba(255,255,255,.15)">{r.label}</td><td style="border-color:rgba(255,255,255,.15)">{r.value}</td></tr>)}</table>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">
+          <a class="btn btn-primary" href={location.directionsUrl} target="_blank" rel="noopener" data-loc="specials-footer">Get directions</a>
+          <a class="btn btn-light" href={telHref} data-loc="specials-footer">Call {displayPhone}</a>
+        </div>
+      </div>
+      <iframe class="map" loading="lazy" title={`Map to ${location.name}`} referrerpolicy="no-referrer-when-downgrade" src={`https://www.google.com/maps?q=${encodeURIComponent(location.name + ' ' + location.street + ' ' + location.locality + ' ON')}&output=embed`}></iframe>
+    </div>
+  </section>
+</Base>

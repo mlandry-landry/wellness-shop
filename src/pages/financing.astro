@@ -1,0 +1,38 @@
+---
+import Base from '@/layouts/Base.astro';
+import StoreStrip from '@/components/StoreStrip.astro';
+import LeadForm from '@/components/LeadForm.astro';
+import ProductCard from '@/components/ProductCard.astro';
+import { location, byCategory, money, weekly } from '@/lib/site';
+const c = location.city;
+const picks = ['j-215', 'j-245', 'j-335', 'j-385', 'j-445', 'j-508'].map((s) => byCategory('hot-tub').find((p) => p.slug === s)!);
+const title = `Hot Tub Financing in ${c} | 0% OAC from $15 Bi-Weekly | ${location.name}`;
+const description = `Finance a Jacuzzi, Nordic, Aquasolus or Wellness Shop hot tub, swim spa or sauna at 0% OAC. Weekly payments shown on every model. Apply in minutes at the ${c} showroom or online.`;
+const faq = [
+  { q: 'What does 0% OAC mean?', a: 'On approved credit, the financing carries no interest for the promotional term, so the total you pay equals the price of the hot tub. Approval depends on your credit profile; most applicants get an answer within minutes.' },
+  { q: 'How are the weekly payments calculated?', a: 'The weekly figures on this site are the advertised 0% OAC payments for each model at the current sale price. Terms and payment frequency can be adjusted at the showroom, and the full table is in the price list.' },
+  { q: 'Can I include delivery, electrical or accessories?', a: 'Yes. Covers, lifters, steps, chemicals and in-store bundles can be rolled into one payment. Electrical work is billed by your electrician separately.' },
+  { q: 'Is there a down payment?', a: 'Usually no down payment is required on approved credit. Ask the team in ' + c + ' about the current promotion.' }
+];
+const schema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) };
+---
+<Base title={title} description={description} schema={schema}>
+  <StoreStrip />
+  <section class="section">
+    <div class="wrap two-col">
+      <div>
+        <div class="eyebrow">Financing</div>
+        <h1>Hot Tub Financing in {c}</h1>
+        <p class="lead">Own a Jacuzzi for about the cost of a family takeout night each week. 0% financing OAC on every hot tub, swim spa and sauna we sell, with the weekly payment shown right on the product page.</p>
+        <div class="grid cols-3" style="margin:24px 0">{picks.map((p) => <ProductCard p={p} />)}</div>
+        <div class="steps">
+          <div><h3>Pick a model</h3><p style="color:var(--muted)">Every product page shows the sale price and the weekly payment side by side.</p></div>
+          <div><h3>Apply in minutes</h3><p style="color:var(--muted)">Apply at the {c} showroom or ask us to send the secure link. Decisions are usually immediate.</p></div>
+          <div><h3>Schedule delivery</h3><p style="color:var(--muted)">Once approved we book delivery and coordinate with your electrician.</p></div>
+        </div>
+        <div class="faq" style="margin-top:32px">{faq.map((f) => <details><summary>{f.q}</summary><p>{f.a}</p></details>)}</div>
+      </div>
+      <div><LeadForm source="financing" title="Get pre-approved" sub={`Tell us which model you are considering and the ${c} team will send the secure application link and current terms.`} button="Send me the application" /></div>
+    </div>
+  </section>
+</Base>

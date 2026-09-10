@@ -1,0 +1,7 @@
+---
+import ProductPage from '@/components/ProductPage.astro';
+import { byCategory } from '@/lib/site';
+export function getStaticPaths() { return byCategory('swim-spa').map((p) => ({ params: { slug: p.slug }, props: { p } })); }
+const { p } = Astro.props;
+---
+<ProductPage p={p} />

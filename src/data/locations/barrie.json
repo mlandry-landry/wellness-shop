@@ -1,0 +1,74 @@
+{
+ "id": "barrie",
+ "domain": "hottubsinbarrie.ca",
+ "city": "Barrie",
+ "cityShort": "Barrie",
+ "region": "Barrie and Simcoe County",
+ "name": "Wellness Shop at Jacuzzi Barrie",
+ "street": "508 Bryne Dr",
+ "unit": null,
+ "locality": "Barrie",
+ "postal": "L4N 9P6",
+ "phone": "705-722-9220",
+ "trackingPhone": null,
+ "gbpId": "/g/1hhms1pzr",
+ "rating": null,
+ "reviewCount": null,
+ "lat": 44.3376,
+ "lng": -79.6889,
+ "landmark": "on Bryne Drive in south Barrie, just off Highway 400 at Mapleview",
+ "serviceAreas": [
+  "Innisfil",
+  "Orillia",
+  "Alliston",
+  "Midland",
+  "Collingwood",
+  "Wasaga Beach",
+  "Bradford",
+  "Angus",
+  "Oro-Medonte",
+  "Newmarket"
+ ],
+ "neighbours": [
+  "Vaughan"
+ ],
+ "province": "ON",
+ "country": "CA",
+ "hours": {
+  "monday": [
+   "11:00",
+   "19:00"
+  ],
+  "tuesday": [
+   "11:00",
+   "19:00"
+  ],
+  "wednesday": [
+   "11:00",
+   "19:00"
+  ],
+  "thursday": [
+   "11:00",
+   "19:00"
+  ],
+  "friday": [
+   "11:00",
+   "19:00"
+  ],
+  "saturday": [
+   "11:00",
+   "18:00"
+  ],
+  "sunday": [
+   "11:00",
+   "17:00"
+  ]
+ },
+ "email": null,
+ "staff": [],
+ "directionsUrl": "https://www.google.com/maps/dir/?api=1&destination=508+Bryne+Dr+Barrie+ON+L4N+9P6",
+ "reviewUrl": null,
+ "localIntro": "Nothing beats a hot tub on a Barrie night in January, and with cottage country at your doorstep a lot of our customers here buy for the lake as well as the backyard. Our Barrie showroom on Bryne Drive serves Simcoe County from Innisfil and Bradford up to Orillia, Midland, Collingwood and Wasaga Beach, with Jacuzzi, Nordic and Aquasolus hot tubs, swim spas and saunas all on the floor.",
+ "whyVisit": "South Barrie off Highway 400 at Mapleview Drive, an easy stop on the way to or from the cottage, with everything heated and running so you can see it working.",
+ "deliveryNote": "Our crews deliver and install across Barrie, Innisfil, Orillia, Alliston, Bradford, Midland, Collingwood and Wasaga Beach, including cottage and waterfront properties with seasonal road access."
+}

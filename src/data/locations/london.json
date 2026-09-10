@@ -1,0 +1,74 @@
+{
+ "id": "london",
+ "domain": "hottubsinlondon.ca",
+ "city": "London",
+ "cityShort": "London",
+ "region": "London and Southwestern Ontario",
+ "name": "Wellness Shop at Jacuzzi London",
+ "street": "410 Southdale Rd W",
+ "unit": null,
+ "locality": "London",
+ "postal": "N6K 3X4",
+ "phone": "519-937-1417",
+ "trackingPhone": null,
+ "gbpId": "/g/11b7w0b2sc",
+ "rating": 4.6,
+ "reviewCount": 420,
+ "lat": 42.9425,
+ "lng": -81.2884,
+ "landmark": "on Southdale Road West in Westmount, near Wonderland Road",
+ "serviceAreas": [
+  "St. Thomas",
+  "Strathroy",
+  "Woodstock",
+  "Ingersoll",
+  "Sarnia",
+  "Dorchester",
+  "Komoka",
+  "Lucan",
+  "Ilderton",
+  "Byron"
+ ],
+ "neighbours": [
+  "Kitchener"
+ ],
+ "province": "ON",
+ "country": "CA",
+ "hours": {
+  "monday": [
+   "11:00",
+   "19:00"
+  ],
+  "tuesday": [
+   "11:00",
+   "19:00"
+  ],
+  "wednesday": [
+   "11:00",
+   "19:00"
+  ],
+  "thursday": [
+   "11:00",
+   "19:00"
+  ],
+  "friday": [
+   "11:00",
+   "19:00"
+  ],
+  "saturday": [
+   "11:00",
+   "18:00"
+  ],
+  "sunday": [
+   "11:00",
+   "17:00"
+  ]
+ },
+ "email": null,
+ "staff": [],
+ "directionsUrl": "https://www.google.com/maps/dir/?api=1&destination=410+Southdale+Rd+W+London+ON+N6K+3X4",
+ "reviewUrl": null,
+ "localIntro": "London is a city of big backyards, and from Byron and Westmount to Masonville, Lambeth and out to St. Thomas and Strathroy, a hot tub or swim spa gets used year round in the snow belt. Our Southdale Road West showroom is the largest hot tub and sauna showroom in Southwestern Ontario, with Jacuzzi, Nordic, Aquasolus and Wellness Shop hot tubs, SwimLife and Jacuzzi swim spas, and Clearlight and Serenity saunas.",
+ "whyVisit": "On Southdale Road West in Westmount near Wonderland Road, with free parking, heated hot tubs running on the floor and a team that has been selling and servicing in London for years.",
+ "deliveryNote": "Our London crews deliver and install across London, St. Thomas, Strathroy, Woodstock, Ingersoll, Dorchester, Komoka, Lucan and Ilderton, and as far as Sarnia and Chatham by arrangement."
+}

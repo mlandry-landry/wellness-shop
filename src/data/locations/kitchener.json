@@ -1,0 +1,75 @@
+{
+ "id": "kitchener",
+ "domain": "hottubsinkitchener.ca",
+ "city": "Kitchener",
+ "cityShort": "Kitchener",
+ "region": "Kitchener-Waterloo",
+ "name": "Wellness Shop at Jacuzzi Kitchener",
+ "street": "842 Victoria St N",
+ "unit": "Unit 14",
+ "locality": "Kitchener",
+ "postal": "N2B 3C1",
+ "phone": "519-578-1883",
+ "trackingPhone": null,
+ "gbpId": "/g/1tfln1v7",
+ "rating": 4.6,
+ "reviewCount": 364,
+ "lat": 43.4653,
+ "lng": -80.4595,
+ "landmark": "on Victoria Street North, a few minutes from the Conestoga Parkway",
+ "serviceAreas": [
+  "Waterloo",
+  "Cambridge",
+  "Guelph",
+  "Stratford",
+  "Woodstock",
+  "Elmira",
+  "New Hamburg",
+  "Fergus",
+  "Elora",
+  "Baden"
+ ],
+ "neighbours": [
+  "London",
+  "Hamilton"
+ ],
+ "province": "ON",
+ "country": "CA",
+ "hours": {
+  "monday": [
+   "11:00",
+   "19:00"
+  ],
+  "tuesday": [
+   "11:00",
+   "19:00"
+  ],
+  "wednesday": [
+   "11:00",
+   "19:00"
+  ],
+  "thursday": [
+   "11:00",
+   "19:00"
+  ],
+  "friday": [
+   "11:00",
+   "19:00"
+  ],
+  "saturday": [
+   "11:00",
+   "18:00"
+  ],
+  "sunday": [
+   "11:00",
+   "17:00"
+  ]
+ },
+ "email": null,
+ "staff": [],
+ "directionsUrl": "https://www.google.com/maps/dir/?api=1&destination=842+Victoria+St+N+Kitchener+ON+N2B+3C1",
+ "reviewUrl": null,
+ "localIntro": "Kitchener-Waterloo, Cambridge and Guelph homeowners have been coming to our Victoria Street North showroom for years, and the mix here runs from first hot tubs for young families in Doon and Laurelwood to swim spas for serious swimmers and infrared saunas for recovery. Every Jacuzzi series is on the floor, along with Nordic, Aquasolus and our own Wellness Shop Ontario hot tubs.",
+ "whyVisit": "On Victoria Street North a few minutes from the Conestoga Parkway, central to Kitchener, Waterloo, Cambridge and Guelph, with wet tests available by appointment.",
+ "deliveryNote": "We deliver and install throughout Kitchener, Waterloo, Cambridge, Guelph, Stratford, Woodstock, Elmira, New Hamburg, Fergus and Elora."
+}

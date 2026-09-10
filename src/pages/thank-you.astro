@@ -1,0 +1,20 @@
+---
+import Base from '@/layouts/Base.astro';
+import { location, displayPhone, telHref, hoursRows, specials } from '@/lib/site';
+---
+<Base title={`Thanks | ${location.name}`} description="We received your request." noindex>
+  <section class="section">
+    <div class="wrap" style="max-width:720px">
+      <div class="eyebrow">Got it</div>
+      <h1>Thanks, the {location.city} team has your request</h1>
+      <p class="lead">We reply during showroom hours, usually within the hour. If you would rather talk now, call <a href={telHref}>{displayPhone}</a>.</p>
+      <p><strong>Showroom hours:</strong> {hoursRows().map((r) => `${r.label} ${r.value}`).join(' · ')}</p>
+      {specials.length > 0 && <p>While you wait, have a look at the <a href="/in-store-specials/">in-store specials</a> so you know what to ask for when you visit.</p>}
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">
+        <a class="btn btn-primary" href={location.directionsUrl} target="_blank" rel="noopener">Get directions</a>
+        <a class="btn btn-outline" href="/hot-tubs/">Keep browsing hot tubs</a>
+      </div>
+    </div>
+  </section>
+  <script is:inline>window.wsTrack && window.wsTrack('lead_thank_you');</script>
+</Base>

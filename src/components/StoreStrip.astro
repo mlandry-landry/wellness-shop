@@ -1,0 +1,12 @@
+---
+import Icons from './Icons.astro';
+import { location, fullAddress, displayPhone, telHref } from '@/lib/site';
+---
+<div class="store-strip">
+  <div class="wrap">
+    <span><Icons name="pin" /> <strong>{location.name}</strong> · {fullAddress}</span>
+    <a href={telHref} data-loc="strip"><strong>{displayPhone}</strong></a>
+    <a href={location.directionsUrl} target="_blank" rel="noopener" data-loc="strip">Directions</a>
+    {location.rating && <span class="rating"><span class="stars">★★★★★</span> {location.rating} ({location.reviewCount} Google reviews)</span>}
+  </div>
+</div>

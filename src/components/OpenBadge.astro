@@ -1,0 +1,23 @@
+---
+import { hoursJson } from '@/lib/site';
+---
+<span class="open-badge" id="open-badge" data-hours={hoursJson}><span class="dot"></span><span class="txt">Showroom hours</span></span>
+<script is:inline>
+  (function () {
+    var el = document.getElementById('open-badge'); if (!el) return;
+    var hours = JSON.parse(el.dataset.hours);
+    var days = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
+    var now = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Toronto' }));
+    var h = hours[days[now.getDay()]];
+    var mins = now.getHours() * 60 + now.getMinutes();
+    function m(t){ var p=t.split(':'); return +p[0]*60 + +p[1]; }
+    function f(t){ var p=t.split(':'); var H=+p[0]; var ap=H>=12?'PM':'AM'; var hh=H%12||12; return hh + (p[1]!=='00'?':'+p[1]:'') + ' ' + ap; }
+    var txt = el.querySelector('.txt');
+    if (h && mins >= m(h[0]) && mins < m(h[1])) { el.classList.add('open'); txt.textContent = 'Open now, closes ' + f(h[1]); }
+    else {
+      var d = now.getDay(), nh = null, label = '';
+      for (var i = 0; i < 7; i++) { var dd = (d + i) % 7; var hh = hours[days[dd]]; if (!hh) continue; if (i === 0 && mins < m(hh[0])) { nh = hh; label = 'today'; break; } if (i > 0) { nh = hh; label = i === 1 ? 'tomorrow' : days[dd][0].toUpperCase() + days[dd].slice(1); break; } }
+      el.classList.add('closed'); txt.textContent = nh ? 'Closed now, opens ' + label + ' at ' + f(nh[0]) : 'Closed now';
+    }
+  })();
+</script>

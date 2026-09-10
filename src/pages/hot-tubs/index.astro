@@ -1,0 +1,21 @@
+---
+import CategoryPage from '@/components/CategoryPage.astro';
+import { location } from '@/lib/site';
+const c = location.city;
+---
+<CategoryPage cat="hot-tub"
+  title={`Hot Tubs for Sale in ${c} | Jacuzzi, Nordic, Aquasolus | ${location.name}`}
+  description={`36 hot tubs with real sale prices at our ${location.locality} showroom. Jacuzzi J-200 to J-500, Nordic plug-and-play, Aquasolus and Wellness Shop Ontario series. 0% financing OAC, free delivery in ${location.region}.`}
+  h1={`Hot Tubs for Sale in ${c}`}
+  intro={`Every hot tub we sell, with the price you would pay at the ${c} showroom today. Filter by brand, compare seats and jets, then come sit in your shortlist.`}
+  body={[
+    `Choosing a hot tub in ${location.region} comes down to four things: how many people actually use it, whether you want a lounger, how much you want to spend on water care and hydro each month, and how it will get into your yard. ${location.deliveryNote}`,
+    `Jacuzzi is our flagship line. The J-200 series is the entry point with CLEARRAY UV-C water care; the J-300 adds the ProClear skimmer and more powerful jets; the J-400 is the design series with the illuminated waterfall and the SmartTub app; and the J-500 is the top of the range with ProClarity six-stage filtration and 56 to 76 jets. Nordic round tubs are the simplest to own, run on a standard 110V outlet, and start under $10,000. Aquasolus comes with a free $4,292 bundle, and our own Wellness Shop Ontario series is built in the USA and priced to compete.`,
+    `All of these are running on the floor in ${location.locality}. Book a wet test, bring the family, and we will help you narrow it down in about an hour.`
+  ]}
+  faq={[
+    { q: 'What is the difference between a lounger and open seating?', a: 'A lounger is a full-body reclined seat with jets from neck to calves, and it takes the space of roughly two upright seats. Open seating fits more people and is easier to move around in. Couples tend to love loungers; families with kids usually pick open seating. Trying both in the showroom settles it fast.' },
+    { q: 'Do I need an electrician?', a: 'Most hot tubs need a dedicated 220V/240V 40 to 60 amp GFCI circuit installed by a licensed electrician. Nordic All-In-110V models plug into a standard outlet. We coordinate delivery with your electrician and can recommend trades we work with regularly.' },
+    { q: `Is there a Jacuzzi warranty and who services it in ${c}?`, a: `Yes. Jacuzzi hot tubs carry a multi-year structure, shell, components and cabinet warranty, and Wellness Shop has its own service team covering ${location.region}. You buy from us and you get serviced by us.` },
+    { q: 'Can I trade in my old hot tub?', a: 'Yes. Tell us the brand, age and condition and we will give you a trade-in value toward a new tub, and we can haul away the old one at delivery.' }
+  ]} />

@@ -1,0 +1,108 @@
+---
+import Base from '@/layouts/Base.astro';
+import StoreStrip from '@/components/StoreStrip.astro';
+import ProductCard from '@/components/ProductCard.astro';
+import LeadForm from '@/components/LeadForm.astro';
+import Icons from '@/components/Icons.astro';
+import { location, byCategory, categories, money, weekly, telHref, displayPhone, siteUrl, productPath, specials, site, type Product } from '@/lib/site';
+const { p } = Astro.props as { p: Product };
+const cat = categories[p.category as keyof typeof categories];
+const catLabel = cat.singular.toLowerCase();
+const c = location.city;
+const siblings = byCategory(p.category as any).filter((x) => x.slug !== p.slug && (x.series === p.series || x.brand === p.brand)).slice(0, 4);
+const brandBlurb = (site.brands as any)[p.brand]?.blurb;
+const isClearance = p.notes && /clearance|flash/i.test(p.notes);
+const priceLine = p.quoteOnly ? 'Showroom pricing' : p.sale ? `${money(p.sale)}, regular ${money(p.msrp)}` : money(p.msrp);
+const title = `${p.brand} ${p.model} ${cat.singular} in ${c} | ${p.quoteOnly ? 'Showroom Pricing' : money(p.sale || p.msrp)} | ${location.name}`;
+const description = `${p.brand} ${p.model}${p.seats ? `, ${p.seats} seats` : ''}${p.jets ? `, ${p.jets} jets` : ''}${p.lengthFt ? `, ${p.lengthFt} ft` : ''}. ${p.quoteOnly ? 'See it at' : `${priceLine}${p.weekly ? ` or ${weekly(p.weekly)} OAC` : ''}, on the floor at`} our ${location.locality} showroom. Wet tests, delivery and install across ${location.region}.`;
+
+const specRows: [string, any][] = [
+  ['Brand', p.brand], ['Series', p.series && p.series !== p.model ? p.series : null], ['Seating', p.seats ? `${p.seats} adults${p.seating ? ` (${p.seating})` : ''}` : p.seating],
+  ['Jets', p.jets], ['Length', p.lengthFt ? `${p.lengthFt} ft` : null], ['Dimensions', p.dimensions ? `${p.dimensions} in` : null],
+  ['Water capacity', p.volumeL ? `${Number(p.volumeL).toLocaleString()} L (${Number(p.volumeGal).toLocaleString()} gal)` : p.capacity],
+  ['Dry weight', p.dryWeightLb ? `${Number(p.dryWeightLb).toLocaleString()} lb` : p.weight], ['Filled weight', p.filledWeightLb ? `${Number(p.filledWeightLb).toLocaleString()} lb` : null],
+  ['Filtration', p.filtration], ['Water care', p.waterCare], ['Electrical', p.electrical], ['Sauna type', p.saunaType], ['Max temperature', p.maxTemp], ['Size', p.size], ['Style', p.style]
+].filter(([, v]) => v);
+
+const schema: any[] = [{
+  '@context': 'https://schema.org', '@type': 'Product', name: `${p.brand} ${p.model}`, brand: { '@type': 'Brand', name: p.brand },
+  category: cat.label, sku: p.slug.toUpperCase(), image: p.image ? siteUrl + p.image : undefined, description,
+  ...(p.sale || p.msrp ? { offers: { '@type': 'Offer', priceCurrency: 'CAD', price: p.sale || p.msrp, availability: 'https://schema.org/InStock', itemCondition: 'https://schema.org/NewCondition', url: siteUrl + productPath(p), seller: { '@id': `${siteUrl}/#store` }, areaServed: location.region } } : {})
+}, { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+  { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl + '/' }, { '@type': 'ListItem', position: 2, name: cat.label, item: siteUrl + cat.path }, { '@type': 'ListItem', position: 3, name: `${p.brand} ${p.model}`, item: siteUrl + productPath(p) }] }];
+---
+<Base title={title} description={description} image={p.image || undefined} schema={schema}>
+  <StoreStrip />
+  <section class="section" style="padding-top:20px">
+    <div class="wrap">
+      <nav class="breadcrumbs"><a href="/">Home</a> / <a href={cat.path}>{cat.label}</a> / {p.model}</nav>
+      <div class="two-col" style="margin-top:16px;grid-template-columns:1fr">
+        <div class="grid" style="grid-template-columns:1fr;gap:30px" id="pd">
+          <div class="pd-img">{p.image && <img src={p.image} alt={`${p.brand} ${p.model} ${catLabel}`} width="900" height="675" fetchpriority="high" />}</div>
+          <div>
+            <div class="eyebrow">{p.brand}{p.series && p.series !== p.model ? ` · ${p.series} series` : ''}</div>
+            <h1 style="font-size:clamp(1.8rem,3.5vw,2.6rem)">{p.model} {cat.singular}</h1>
+            <p class="meta" style="color:var(--muted);font-size:1.05rem">
+              {p.seats && <>{p.seats} adults</>}{p.jets && <> · {p.jets} jets</>}{p.seating && <> · {p.seating} seating</>}{p.lengthFt && <> · {p.lengthFt} ft swim lane</>}{p.saunaType && <> · {p.saunaType}</>}
+            </p>
+            {p.quoteOnly ? (
+              <div class="price" style="margin:10px 0"><span class="sale">Showroom pricing</span></div>
+            ) : (
+              <div style="margin:10px 0 4px">
+                <div class="price">
+                  <span class="sale" style="font-size:2rem">{money(p.sale || p.msrp)}</span>
+                  {p.sale && <span class="was" style="font-size:1.1rem">Regular {money(p.msrp)}</span>}
+                  {p.savings && <span class="save" style="font-size:.95rem">You save {money(p.savings)}</span>}
+                </div>
+                {p.weekly && <div class="weekly" style="font-size:1rem">or <strong>{weekly(p.weekly)}</strong> at 0% financing OAC</div>}
+                {p.biweekly && <div class="weekly" style="font-size:1rem">or from <strong>{p.biweekly.split('/')[0].trim()} bi-weekly</strong> OAC (knotty cedar). Clear cedar {money(p.saleClear)}.</div>}
+                {p.notes && p.notes.toLowerCase().includes('bi-weekly') && <div class="weekly" style="font-size:1rem">{p.notes.split(';')[0]}</div>}
+              </div>
+            )}
+            {isClearance && <p class="callout" style="margin-top:12px"><strong>Floor model deal at the showroom.</strong> {p.notes}. Ask about it when you visit or call; these go fast and each store has one or two at most.</p>}
+            {p.brand === 'Aquasolus' && <p class="callout" style="margin-top:12px"><strong>Includes the free $4,292 25th Anniversary bundle:</strong> cover, cover lifter, steps, audio, LED lighting, ozone, chemical starter kit and delivery.</p>}
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 10px">
+              <a class="btn btn-primary" href="#quote" data-track="product_cta" data-loc="product">Get showroom pricing</a>
+              <a class="btn btn-outline" href={telHref} data-loc="product"><Icons name="phone" /> {displayPhone}</a>
+              <a class="btn btn-outline" href={location.directionsUrl} target="_blank" rel="noopener" data-loc="product"><Icons name="pin" /> See it in {location.locality}</a>
+            </div>
+            <p class="fine" style="color:var(--muted);font-size:.85rem">On the floor at {location.name}, {location.street}, {location.locality}. Wet tests by appointment. Prices in CAD and include the current sale; delivery within our service area, electrical by a licensed electrician.</p>
+            {brandBlurb && <p style="margin-top:14px">{brandBlurb}</p>}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section soft">
+    <div class="wrap two-col">
+      <div>
+        <h2 style="font-size:1.5rem">{p.model} Specifications</h2>
+        <table class="specs">{specRows.map(([k, v]) => <tr><th>{k}</th><td>{v}</td></tr>)}</table>
+        {p.notes && !isClearance && !p.notes.toLowerCase().includes('bi-weekly') && <p style="margin-top:12px;color:var(--muted)">{p.notes}</p>}
+        <h2 style="font-size:1.5rem;margin-top:34px">Why buy the {p.model} in {c}</h2>
+        <p>{location.whyVisit} The {p.model} is one of the models we keep on the floor, so you can see the cabinet colours, feel the seat depth and hear how quiet the pumps are before you decide.</p>
+        <p>{location.deliveryNote}</p>
+        {specials.length > 0 && <p><strong>Showroom extras:</strong> see the <a href="/in-store-specials/">in-store specials</a> for floor model pricing and bundles you only get by visiting.</p>}
+      </div>
+      <div id="quote">
+        <LeadForm source={`product:${p.slug}`} product={`${p.brand} ${p.model}`} title={`Ask about the ${p.model}`} sub={`Get current showroom pricing, delivery timing and what colours are on the floor in ${c}.`} button="Get my quote" compact />
+      </div>
+    </div>
+  </section>
+
+  {siblings.length > 0 && (
+    <section class="section">
+      <div class="wrap">
+        <h2 style="font-size:1.5rem">Compare with other {p.brand} {cat.label.toLowerCase()}</h2>
+        <div class="grid cols-4">{siblings.map((s) => <ProductCard p={s} />)}</div>
+        <p style="margin-top:18px"><a class="btn btn-outline btn-sm" href={cat.path}>All {cat.label.toLowerCase()}</a></p>
+      </div>
+    </section>
+  )}
+  <style>
+    .pd-img { background: radial-gradient(ellipse at 50% 70%, #fff 0%, var(--bg-soft) 70%); border-radius: var(--radius); padding: 24px; display: flex; align-items: center; justify-content: center; min-height: 280px; }
+    .pd-img img { max-height: 420px; width: auto; object-fit: contain; filter: drop-shadow(0 20px 30px rgba(11,34,57,.15)); }
+    @media (min-width: 900px) { #pd { grid-template-columns: 1fr 1fr !important; align-items: start; } }
+  </style>
+</Base>

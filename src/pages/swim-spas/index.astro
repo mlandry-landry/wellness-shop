@@ -1,0 +1,20 @@
+---
+import CategoryPage from '@/components/CategoryPage.astro';
+import { location } from '@/lib/site';
+const c = location.city;
+---
+<CategoryPage cat="swim-spa"
+  title={`Swim Spas and All Season Pools in ${c} | SwimLife and Jacuzzi | ${location.name}`}
+  description={`15 swim spas from 12 to 19 feet with real sale prices at our ${location.locality} showroom. Jacuzzi PowerPro, PowerActive and PowerPlay, SwimLife SwimExpert and SwimFit. From $59 a week OAC.`}
+  h1={`Swim Spas and All Season Pools in ${c}`}
+  intro={`A swim spa is a heated, current-driven pool you can swim, train and soak in all year, in a footprint that fits most ${location.region} backyards. Every model below shows the current sale price.`}
+  body={[
+    `Swim spas have replaced a lot of in-ground pools in ${location.region}. They install in a day or two, cost a fraction of a pool to run, and they are open in January. The 14 foot models suit fitness swimmers and families; the 16 and 19 foot models give serious swimmers room to stretch out; and the dual-temperature DT models pair a cool swim lane with a hot tub end that stays at 102 degrees.`,
+    `Jacuzzi PowerPro has the strongest swim current we sell, PowerActive is the value pick in the same shells, and PowerPlay is the family option with more seats. SwimLife SwimExpert and SwimFit use ClearStream mineral water care and offer the biggest savings right now, up to $18,900 off.`,
+    `Delivery is by crane in most cases and we manage the whole process, including the electrical requirements and pad or deck design. Come see one running in ${location.locality} and ask about a swim test.`
+  ]}
+  faq={[
+    { q: 'How big a space do I need for a swim spa?', a: 'Plan on the spa dimensions plus about three feet of clearance on the access sides. A 14 foot model needs roughly 8 by 17 feet; a 19 foot model needs about 8 by 22 feet. They can sit on a reinforced concrete pad, be partially sunk, or be built into a deck.' },
+    { q: 'What does a swim spa cost to run?', a: 'With a good cover and full-foam insulation most owners see $60 to $120 a month in hydro through winter and less in summer, far below a heated in-ground pool, and there is no closing or opening cost.' },
+    { q: 'Do you offer financing on swim spas?', a: 'Yes, 0% financing OAC on every model. Weekly payments are shown on each product page and start at $59 a week.' }
+  ]} />

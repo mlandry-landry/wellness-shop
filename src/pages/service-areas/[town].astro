@@ -1,0 +1,37 @@
+---
+import Base from '@/layouts/Base.astro';
+import StoreStrip from '@/components/StoreStrip.astro';
+import ProductCard from '@/components/ProductCard.astro';
+import LeadForm from '@/components/LeadForm.astro';
+import { location, byCategory, displayPhone, telHref, fullAddress, siteUrl, specials } from '@/lib/site';
+export function getStaticPaths() {
+  return location.serviceAreas.map((t) => ({ params: { town: t.toLowerCase().replace(/[^a-z]+/g, '-') }, props: { town: t } }));
+}
+const { town } = Astro.props as { town: string };
+const c = location.city;
+const picks = ['j-245', 'j-335', 'j-485', 'ontario-s104', 'retreat-all-in-110v', 'the-cove', 'j-13-powerplay', 'sanctuary-2'].map((s) => [...byCategory('hot-tub'), ...byCategory('swim-spa'), ...byCategory('sauna')].find((p) => p.slug === s)!);
+const others = location.serviceAreas.filter((t) => t !== town);
+const title = `Hot Tubs in ${town} | Delivery and Install from ${c} | ${location.name}`;
+const description = `Shopping for a hot tub, swim spa or sauna in ${town}? ${location.name} delivers and installs across ${town} from our ${location.locality} showroom. Jacuzzi, Nordic, Aquasolus and Wellness Shop with sale pricing and 0% financing OAC.`;
+const schema = { '@context': 'https://schema.org', '@type': 'Service', name: `Hot tub sales, delivery and installation in ${town}`, provider: { '@id': `${siteUrl}/#store` }, areaServed: { '@type': 'City', name: town }, serviceType: 'Hot tub, swim spa and sauna sales and installation' };
+---
+<Base title={title} description={description} schema={schema}>
+  <StoreStrip />
+  <section class="section">
+    <div class="wrap two-col">
+      <div>
+        <nav class="breadcrumbs"><a href="/">Home</a> / Service areas / {town}</nav>
+        <h1 style="margin-top:8px">Hot Tubs, Swim Spas and Saunas in {town}</h1>
+        <p class="lead">{town} homeowners buy from {location.name} because the showroom is a short drive away, everything is on the floor to try, and the same local team that sells the tub delivers, installs and services it.</p>
+        <p>{location.deliveryNote} That includes {town}: our crews know the area, we quote delivery up front, and we handle the crane or side-yard access if your lot needs it.</p>
+        <p>{location.whyVisit} Come see the full Jacuzzi range, Nordic plug-and-play tubs, Aquasolus with the free bundle, our own Wellness Shop Ontario series, SwimLife and Jacuzzi swim spas, and Clearlight and Serenity saunas. Then check the <a href="/in-store-specials/">in-store specials</a> before you drive over.</p>
+        <h2 style="font-size:1.4rem;margin-top:28px">Popular picks for {town} backyards</h2>
+        <div class="grid cols-4">{picks.map((p) => <ProductCard p={p} />)}</div>
+        <h2 style="font-size:1.4rem;margin-top:34px">Getting to the {c} showroom from {town}</h2>
+        <p>{location.name} is at {fullAddress}, {location.landmark}. <a href={location.directionsUrl} target="_blank" rel="noopener">Get directions</a> or call <a href={telHref}>{displayPhone}</a> and we will have your shortlist filled and heated when you arrive.</p>
+        <p style="color:var(--muted);font-size:.9rem">We also serve {others.map((t, i) => <><a href={`/service-areas/${t.toLowerCase().replace(/[^a-z]+/g, '-')}/`}>{t}</a>{i < others.length - 1 ? ', ' : ''}</>)} and all of {location.region}.</p>
+      </div>
+      <div><LeadForm source={`service-area:${town}`} title={`${town} pricing and delivery`} sub={`Tell us what you are looking for and we will confirm delivery to ${town} and current showroom pricing.`} /></div>
+    </div>
+  </section>
+</Base>
