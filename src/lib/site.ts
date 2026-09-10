@@ -55,10 +55,12 @@ export function money(n?: number | null): string {
   if (n == null) return '';
   return '$' + Math.round(n).toLocaleString('en-CA');
 }
-export function weekly(n?: number | null): string {
+export function biweekly(n?: number | null): string {
   if (n == null) return '';
-  return `$${Math.ceil(n)}/week`;
+  return `$${n.toFixed(2)} bi-weekly`;
 }
+/** Matches the financing disclaimer on wellnessshop.ca */
+export const financeNote = '0% interest for 12 months bi-weekly finance payment, on approved credit. Amortization period varies by product. Other financing options are available.';
 
 export const fullAddress = [location.street + (location.unit ? `, ${location.unit}` : ''), `${location.locality}, ON ${location.postal}`].join(', ');
 

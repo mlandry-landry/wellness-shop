@@ -16,7 +16,7 @@ from the project name (or from a `SITE_ID` env var if set). Each project gets it
 
 | Want to... | Edit |
 |---|---|
-| Change a price, weekly payment, spec or note | `src/data/products.json` (or update `data-source-catalog.xlsx` and run `npm run products`) |
+| Change a price, bi-weekly payment, spec or note | `src/data/products.json` (or update `data-source-catalog.xlsx` and run `npm run products`). Clearlight sauna prices are NOT taken from the spreadsheet (its sauna tab was wrong); they live in the `CLEARLIGHT` table at the top of `scripts/build-products.py`, verified against wellnessshop.ca on Sep 10, 2026. |
 | Change the hero headline, sale banners, financing line | `src/data/promos.json` |
 | Add, edit, pause or expire an in-store special | `src/data/specials.json` (`active`, `locations`, `endsOn`, `claimCode`) |
 | Change a store's phone, tracking number, hours, address, staff, service towns, local copy | `src/data/locations/<site>.json` |

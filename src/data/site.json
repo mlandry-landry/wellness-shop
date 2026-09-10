@@ -2,15 +2,44 @@
  "brand": "Wellness Shop",
  "parentUrl": "https://www.wellnessshop.ca",
  "tagline": "Hot Tubs, Swim Spas and Saunas",
- "social": {"instagram":"https://www.instagram.com/wellness_shop.ca/","facebook":"https://www.facebook.com/wellnessshopca","youtube":"https://www.youtube.com/@wellnessshop","linkedin":"https://www.linkedin.com/company/wellness-shop"},
- "brands": {
-  "Jacuzzi": {"slug":"jacuzzi","blurb":"The original hot tub brand since 1956. Patented PowerPro jets, CLEARRAY water care and the SmartTub app."},
-  "Nordic": {"slug":"nordic","blurb":"Simple, tough, plug-and-play round hot tubs built in Michigan. Great value and easy 110V installs."},
-  "Wellness Shop": {"slug":"wellness-shop","blurb":"Our own Ontario series, built in the USA with two 6 HP pumps and Thermal Shield insulation for Canadian winters."},
-  "Aquasolus": {"slug":"aquasolus","blurb":"European-built by Superior Wellness. Every Aquasolus includes a free $4,292 anniversary bundle."},
-  "SwimLife": {"slug":"swimlife","blurb":"SwimExpert and SwimFit swim spas with ClearStream mineral water care and dual-temperature options."},
-  "Clearlight": {"slug":"clearlight","blurb":"Full-spectrum infrared saunas with True Wave heaters and a lifetime warranty on the cabin and heaters."},
-  "Serenity": {"slug":"serenity","blurb":"Canadian-made outdoor cedar saunas in knotty or clear cedar, ready for an electric or wood-burning heater."}
+ "social": {
+  "instagram": "https://www.instagram.com/wellness_shop.ca/",
+  "facebook": "https://www.facebook.com/wellnessshopca",
+  "youtube": "https://www.youtube.com/@wellnessshop",
+  "linkedin": "https://www.linkedin.com/company/wellness-shop"
  },
- "analytics": {"gtmId": null, "ga4Id": null}
+ "brands": {
+  "Jacuzzi": {
+   "slug": "jacuzzi",
+   "blurb": "The original hot tub brand since 1956. Patented PowerPro jets, CLEARRAY water care and the SmartTub app."
+  },
+  "Nordic": {
+   "slug": "nordic",
+   "blurb": "Simple, tough, plug-and-play round hot tubs built in Michigan. Great value and easy 110V installs."
+  },
+  "Wellness Shop": {
+   "slug": "wellness-shop",
+   "blurb": "Our own Ontario series, built in the USA with two 6 HP pumps and Thermal Shield insulation for Canadian winters."
+  },
+  "Aquasolus": {
+   "slug": "aquasolus",
+   "blurb": "European-built by Superior Wellness. The most affordable way into a full-size 6 or 7 seat hot tub, from $10,995."
+  },
+  "SwimLife": {
+   "slug": "swimlife",
+   "blurb": "SwimExpert and SwimFit swim spas with ClearStream mineral water care and dual-temperature options."
+  },
+  "Clearlight": {
+   "slug": "clearlight",
+   "blurb": "Full-spectrum infrared saunas in Basswood or Mahogany with True Wave heaters and a lifetime warranty on the cabin and heaters."
+  },
+  "Serenity": {
+   "slug": "serenity",
+   "blurb": "Canadian-made outdoor cedar saunas in knotty or clear cedar, ready for an electric or wood-burning heater."
+  }
+ },
+ "analytics": {
+  "gtmId": null,
+  "ga4Id": null
+ }
 }

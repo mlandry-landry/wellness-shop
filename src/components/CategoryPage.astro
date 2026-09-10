@@ -3,7 +3,7 @@ import Base from '@/layouts/Base.astro';
 import StoreStrip from '@/components/StoreStrip.astro';
 import ProductCard from '@/components/ProductCard.astro';
 import LeadForm from '@/components/LeadForm.astro';
-import { location, byCategory, categories, money, weekly, telHref, displayPhone, siteUrl, productPath } from '@/lib/site';
+import { location, byCategory, categories, money, biweekly, financeNote, telHref, displayPhone, siteUrl, productPath } from '@/lib/site';
 interface Props { cat: keyof typeof categories; title: string; description: string; h1: string; intro: string; body: string[]; faq: { q: string; a: string }[]; filterKey?: 'brand' | 'series'; }
 const { cat, title, description, h1, intro, body, faq, filterKey = 'brand' } = Astro.props;
 const items = byCategory(cat);
@@ -23,7 +23,7 @@ const schema = [
       <nav class="breadcrumbs"><a href="/">Home</a> / {categories[cat].label}</nav>
       <h1 style="margin-top:8px">{h1}</h1>
       <p class="lead">{intro}</p>
-      {min && <p class="callout" style="max-width:720px"><strong>From {money(min)}</strong>{cat !== 'sauna' && <> or about {weekly(Math.min(...priced.filter((p) => p.weekly).map((p) => p.weekly!)))} at 0% OAC.</>} Every price below is the current sale price at the {location.city} showroom. Floor model and in-store offers are on the <a href="/in-store-specials/">specials page</a>.</p>}
+      {min && <p class="callout" style="max-width:720px"><strong>From {money(min)}</strong>{priced.some((p) => p.biweekly) && <> or from {biweekly(Math.min(...priced.filter((p) => p.biweekly).map((p) => p.biweekly!)))} at 0% for 12 months OAC*.</>} Every price below is the current sale price at the {location.city} showroom. Floor model and in-store offers are on the <a href="/in-store-specials/">specials page</a>.</p>}
       {filters.length > 1 && (
         <div class="filters" id="filters" role="group" aria-label={`Filter by ${filterKey}`}>
           <button aria-pressed="true" data-f="">All ({items.length})</button>
@@ -31,6 +31,7 @@ const schema = [
         </div>
       )}
       <div class="grid cols-4" id="grid">{items.map((p) => <ProductCard p={p} />)}</div>
+      <p class="fine" style="color:var(--muted);font-size:.8rem;margin-top:18px">*{financeNote} Prices in CAD at the {location.city} showroom and subject to change.</p>
     </div>
   </section>
   <section class="section soft">

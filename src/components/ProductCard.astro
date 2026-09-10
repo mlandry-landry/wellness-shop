@@ -1,5 +1,5 @@
 ---
-import { money, weekly, productPath, type Product } from '@/lib/site';
+import { money, biweekly, productPath, type Product } from '@/lib/site';
 const { p } = Astro.props as { p: Product };
 const clearance = p.notes && /clearance|flash/i.test(p.notes);
 ---
@@ -21,8 +21,7 @@ const clearance = p.notes && /clearance|flash/i.test(p.notes);
         <div class="price">
           {p.sale ? <><span class="sale">{money(p.sale)}</span><span class="was">{money(p.msrp)}</span>{p.savings && <span class="save">Save {money(p.savings)}</span>}</> : <span class="sale">{money(p.msrp)}</span>}
         </div>
-        {p.weekly && <div class="weekly">or {weekly(p.weekly)} at 0% OAC</div>}
-        {p.biweekly && <div class="weekly">or from {p.biweekly.split('/')[0].trim()} bi-weekly OAC</div>}
+        {p.biweekly && <div class="weekly">or from {biweekly(p.biweekly)} OAC*</div>}
       </>
     )}
   </div>

@@ -2,7 +2,7 @@
  "_readme": "Global promotions shown on every site. Edit here, commit, and all six sites redeploy. Set active:false to hide. Dates are YYYY-MM-DD; endsOn is shown as a countdown when present.",
  "heroHeadline": "Save up to $9,000 on a New Jacuzzi Hot Tub",
  "heroSub": "Sale pricing on every Jacuzzi, Nordic, Aquasolus and Wellness Shop hot tub, plus in-store extras you only get at the showroom.",
- "financingLine": "Hot tubs from $15 bi-weekly, swim spas from $59 a week, outdoor saunas from $30 bi-weekly. 0% financing OAC.",
+ "financingLine": "Hot tubs from $15 bi-weekly, saunas from $21 bi-weekly, swim spas from $59 bi-weekly. 0% for 12 months OAC.*",
  "banners": [
   {
    "id": "jacuzzi-sale",
@@ -14,12 +14,12 @@
    "endsOn": null
   },
   {
-   "id": "aquasolus-bundle",
+   "id": "white-glove",
    "active": true,
-   "label": "Aquasolus 25th Anniversary",
-   "text": "Every Aquasolus hot tub includes a free $4,292 bundle: cover, cover lifter, steps, audio, LED lighting, ozone, chemical starter kit and delivery.",
-   "cta": "See Aquasolus",
-   "href": "/hot-tubs/?brand=aquasolus",
+   "label": "Free White Glove Delivery",
+   "text": "White Glove Service from start to soak on every hot tub: in-home site inspection, electrical coordination, placement and levelling, first fill and water balancing, and a cover setup walkthrough. Up to a $1,900 value, free.",
+   "cta": "Shop hot tubs",
+   "href": "/hot-tubs/",
    "endsOn": null
   },
   {
