@@ -83,7 +83,7 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
         </div>
       )}
     </div>
-    {!heroV && <div class="hero-foot"><div class="wrap"><span class="open-badge-lite"><span class="dot"></span>Showroom open 7 days</span><span>{location.street}{location.unit ? `, ${location.unit}` : ''}, {location.locality}</span><a href={location.directionsUrl} target="_blank" rel="noopener" data-loc="hero-foot">Directions &rarr;</a></div></div>}
+    {!heroV && <div class="hero-foot"><div class="wrap"><span class="open-badge-lite">Showroom open 7 days</span><span>{location.street}{location.unit ? `, ${location.unit}` : ''}, {location.locality}</span><a href={location.directionsUrl} target="_blank" rel="noopener" data-loc="hero-foot">Directions &rarr;</a></div></div>}
   </section>
   <StoreStrip />
 
