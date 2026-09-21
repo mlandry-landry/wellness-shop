@@ -1,6 +1,7 @@
 ---
 import Icons from './Icons.astro';
 import OpenBadge from './OpenBadge.astro';
+import Logo from './Logo.astro';
 import { location, displayPhone, telHref, fullAddress } from '@/lib/site';
 const path = Astro.url.pathname;
 const links = [
@@ -23,8 +24,8 @@ const cur = (h: string) => (path.startsWith(h) ? 'page' : undefined);
   </div>
   <div class="wrap nav">
     <a class="logo" href="/" aria-label={location.name}>
-      <span class="brand">Wellness Shop <span style="opacity:.75;font-weight:600">at Jacuzzi</span></span>
-      <span class="sub">{location.city} Showroom</span>
+      <Logo variant="horizontal" height={30} />
+      <span class="sub">at Jacuzzi <span class="sub-city">{location.city}</span></span>
     </a>
     <ul class="menu">
       {links.map(([h, l]) => <li><a href={h} aria-current={cur(h)} class={h.includes('specials') ? 'specials' : ''}>{l}</a></li>)}

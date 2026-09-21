@@ -32,8 +32,40 @@ const schema = [
   </section>
   <StoreStrip />
 
-  <section class="section">
+  <section class="section redtag-feature" id="red-tag-clearance">
+    <div class="wrap two-col" style="align-items:center">
+      <div>
+        <div class="eyebrow" style="color:#e5352b">Jacuzzi exclusive Red Tag · Inventory clearance</div>
+        <h2>Why Would We Take 20% Off a Brand New Jacuzzi?</h2>
+        <p class="lead">Three honest reasons, and none of them are about the tubs.</p>
+        <ol class="reasons">
+          <li><b>New model year.</b> The 2027 Jacuzzi lineup needs the floor space, so every remaining 2026 unit has to move.</li>
+          <li><b>Stock on hand.</b> There are 65 new 2026 Jacuzzi hot tubs across our Ontario showrooms, already here and already paid for.</li>
+          <li><b>A two month window.</b> We would rather deliver them to backyards in {c} before the snow than store them over winter.</li>
+        </ol>
+        <p>So we replaced both old Red Tag offers, $1,000 off and free electrical, with one bigger one: 20% off every new 2026 Jacuzzi in stock. Same model, same full Jacuzzi warranty, delivery and setup included. The only thing on clearance is the price.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#jacuzzi-red-tag-20"><Icons name="tag" /> Claim your Red Tag price</a>
+          <a class="btn btn-navy" href="/hot-tubs/?brand=Jacuzzi">See the 2026 Jacuzzi models</a>
+        </div>
+        <p class="fine">Applies to in-stock new 2026 Jacuzzi hot tub models while quantities last. Not combinable with the $1,000 off or free electrical offers. Prices and availability vary by showroom; see the {c} team for details.</p>
+      </div>
+      <a class="redtag-visual" href="#jacuzzi-red-tag-20" aria-label="Claim the 20% off Red Tag price">
+        <img src="/images/promo/redtag-couple.webp" alt="Couple relaxing in a new Jacuzzi hot tub with a 20% off Red Tag" width="1400" height="1757" loading="lazy" />
+      </a>
+    </div>
+    <div class="wrap redtag-strip">
+      <a href="/hot-tubs/?brand=Jacuzzi" aria-label="See which 2026 Jacuzzi models are still available"><img src="/images/promo/redtag-two-months.webp" alt="Two months to clear 65 Jacuzzi hot tubs" width="1000" height="1255" loading="lazy" /></a>
+      <a href="#jacuzzi-red-tag-20" aria-label="Claim the 20% off Red Tag price"><img src="/images/promo/redtag-one-bigger-offer.webp" alt="We replaced the $1,000 off and free electrical offers with 20% off every new 2026 model in stock" width="1000" height="1255" loading="lazy" /></a>
+      <a href="/showroom/" aria-label="Book a showroom visit"><img src="/images/promo/redtag-showroom-floor.webp" alt="Showroom floor with a Red Tag on every Jacuzzi hot tub" width="1200" height="1200" loading="lazy" /></a>
+    </div>
+  </section>
+
+  <section class="section soft">
     <div class="wrap">
+      <div class="eyebrow">Claim at the counter</div>
+      <h2 style="margin-bottom:6px">Showroom Offers in {c}</h2>
+      <p class="lead" style="margin-top:0">{specialsIntro}</p>
       {specials.length === 0 ? (
         <p class="lead">New showroom offers are being loaded. Call {displayPhone} and ask what is on the floor this week.</p>
       ) : (

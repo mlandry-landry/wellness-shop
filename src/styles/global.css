@@ -87,9 +87,13 @@ p { margin: 0 0 1em; }
 .open-badge.open .dot { background: #34d17a; }
 .open-badge.closed .dot { background: #f26b3a; }
 .nav { display: flex; align-items: center; justify-content: space-between; gap: 14px; min-height: 68px; }
-.logo { display: flex; flex-direction: column; white-space: nowrap; flex-shrink: 0; line-height: 1.05; color: #fff; text-decoration: none !important; }
-.logo .brand { font-family: var(--font-head); font-weight: 700; font-size: 1.25rem; letter-spacing: -0.01em; }
-.logo .sub { font-size: .72rem; text-transform: uppercase; letter-spacing: .14em; color: #9fd3e3; margin-top: 2px; }
+.logo { display: flex; flex-direction: column; white-space: nowrap; flex-shrink: 0; line-height: 1.05; color: #fff; text-decoration: none !important; gap: 4px; }
+.ws-logo { display: block; color: inherit; }
+.ws-logo svg { fill: currentColor; }
+.logo .sub { font-size: .68rem; text-transform: uppercase; letter-spacing: .16em; color: #9fd3e3; }
+.logo .sub-city { color: #fff; font-weight: 700; }
+.footer-logo { display: inline-block; color: #fff; margin-bottom: 14px; }
+@media (max-width: 480px) { .logo .ws-logo svg { height: 24px !important; } }
 .menu { display: none; gap: 4px; list-style: none; margin: 0; padding: 0; }
 .menu a { white-space: nowrap; color: #e6eef3; padding: 9px 9px; border-radius: 8px; font-weight: 500; font-size: .9rem; }
 .menu a:hover, .menu a[aria-current="page"] { background: rgba(255,255,255,.1); text-decoration: none; }
@@ -226,10 +230,16 @@ p { margin: 0 0 1em; }
 .offer-links svg { width: 14px; height: 14px; }
 
 /* Sale countdown bar */
-.salebar { display: flex; align-items: center; justify-content: center; gap: 10px 16px; flex-wrap: wrap; background: linear-gradient(90deg, #b3130d, #e5352b); color: #fff; padding: 9px 16px; text-decoration: none !important; font-size: .92rem; }
-.salebar-tag { background: #fff; color: #b3130d; font-weight: 800; font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; padding: 4px 9px; border-radius: 6px; }
-.salebar-when { font-weight: 700; }
-.salebar-timer { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-weight: 700; background: rgba(0,0,0,.25); padding: 4px 10px; border-radius: 6px; }
+.salebar { display: flex; align-items: center; justify-content: center; gap: 8px 18px; flex-wrap: wrap; background: linear-gradient(90deg, #9e0f0a, #d92a1f 55%, #b3130d); color: #fff; padding: 10px 16px; text-decoration: none !important; font-size: .95rem; box-shadow: inset 0 -1px 0 rgba(0,0,0,.25); }
+.salebar:hover .salebar-tag { background: #ffe8e5; }
+.salebar-tag { background: #fff; color: #b3130d; font-weight: 800; font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; padding: 5px 10px; border-radius: 6px; position: relative; }
+.salebar-tag::before { content: ""; position: absolute; left: -6px; top: 50%; width: 10px; height: 10px; background: #b3130d; border-radius: 50%; transform: translateY(-50%); border: 2px solid #fff; }
+.salebar-when { font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
+.salebar-timer { display: inline-flex; gap: 6px; font-family: 'Outfit', 'Inter', sans-serif; }
+.salebar-timer .t { display: inline-flex; flex-direction: column; align-items: center; min-width: 44px; background: rgba(0,0,0,.28); border-radius: 7px; padding: 3px 6px 4px; line-height: 1; }
+.salebar-timer .t b { font-size: 1.15rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.salebar-timer .t small { font-size: .58rem; letter-spacing: .08em; text-transform: uppercase; opacity: .85; margin-top: 2px; }
+@media (max-width: 640px) { .salebar { font-size: .86rem; gap: 6px 10px; padding: 8px 10px; } .salebar-text { flex-basis: 100%; text-align: center; } .salebar-timer .t { min-width: 40px; } }
 
 /* Claim modal */
 .modal[hidden] { display: none; }
@@ -355,3 +365,30 @@ h2 { font-size: clamp(1.75rem, 3.2vw, 2.5rem); letter-spacing: -0.02em; }
 .faq details { border-bottom: 1px solid var(--line); padding: 16px 0; }
 .faq summary::marker { color: var(--coral); }
 .map { box-shadow: var(--shadow); }
+
+/* Red Tag clearance feature (specials page + home) */
+.redtag-feature { background: #0f1620; color: #fff; }
+.redtag-feature h2, .redtag-feature .lead { color: #fff; }
+.redtag-feature p, .redtag-feature li { color: #d7dee6; }
+.redtag-feature .fine { color: #9aa7b4; }
+.reasons { counter-reset: r; list-style: none; padding: 0; margin: 18px 0 20px; display: grid; gap: 12px; }
+.reasons li { position: relative; padding-left: 52px; font-size: 1.02rem; line-height: 1.5; }
+.reasons li::before { counter-increment: r; content: counter(r); position: absolute; left: 0; top: 0; width: 38px; height: 38px; border-radius: 8px; background: #e5352b; color: #fff; font-weight: 800; font-family: 'Outfit', sans-serif; display: grid; place-items: center; font-size: 1.1rem; }
+.reasons b { color: #fff; }
+.redtag-visual img { width: 100%; height: auto; border-radius: 16px; box-shadow: 0 30px 60px rgba(0,0,0,.45); display: block; }
+.redtag-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 40px; }
+.redtag-strip a { display: block; transition: transform .2s ease; }
+.redtag-strip a:hover { transform: translateY(-4px); }
+.redtag-strip img { width: 100%; height: auto; border-radius: 12px; display: block; border: 1px solid rgba(255,255,255,.08); }
+@media (max-width: 820px) { .redtag-strip { grid-template-columns: 1fr 1fr; } .redtag-strip a:last-child { display: none; } }
+.redtag-visual { display: block; }
+.redtag-home { background: #0f1620; color: #fff; padding: 0; overflow: hidden; }
+.redtag-home .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: center; padding-top: 48px; padding-bottom: 48px; }
+.redtag-home h2 { color: #fff; font-size: clamp(1.8rem, 3.4vw, 2.6rem); }
+.redtag-home p { color: #d7dee6; }
+.redtag-home .big { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: clamp(3rem, 8vw, 5.2rem); line-height: .95; color: #ff3b30; letter-spacing: -.02em; }
+.redtag-home .big small { display: block; font-size: .28em; color: #fff; letter-spacing: .1em; text-transform: uppercase; margin-top: 8px; }
+.redtag-home img { width: 100%; height: auto; border-radius: 14px; display: block; box-shadow: 0 30px 60px rgba(0,0,0,.45); }
+@media (max-width: 820px) { .redtag-home .wrap { grid-template-columns: 1fr; } }
+.redtag-callout { border-left: 4px solid #e5352b !important; background: #fff3f1 !important; color: var(--navy) !important; }
+.redtag-callout strong { color: #b3130d; }

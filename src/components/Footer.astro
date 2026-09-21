@@ -1,10 +1,12 @@
 ---
 import { location, site, displayPhone, telHref, fullAddress, hoursRows } from '@/lib/site';
+import Logo from './Logo.astro';
 const year = new Date().getFullYear();
 ---
 <footer class="footer">
   <div class="wrap grid cols-4">
     <div>
+      <a href="/" class="footer-logo" aria-label={location.name}><Logo variant="stacked" height={92} /></a>
       <h4>{location.name}</h4>
       <p>{fullAddress}<br /><a href={telHref} data-loc="footer">{displayPhone}</a></p>
       <p><a href={location.directionsUrl} target="_blank" rel="noopener" data-loc="footer">Get directions</a></p>

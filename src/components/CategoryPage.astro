@@ -3,9 +3,15 @@ import Base from '@/layouts/Base.astro';
 import StoreStrip from '@/components/StoreStrip.astro';
 import ProductCard from '@/components/ProductCard.astro';
 import LeadForm from '@/components/LeadForm.astro';
-import { location, byCategory, categories, money, biweekly, financeNote, telHref, displayPhone, siteUrl, productPath } from '@/lib/site';
+import { copy, location, byCategory, categories, money, biweekly, financeNote, telHref, displayPhone, siteUrl, productPath } from '@/lib/site';
 interface Props { cat: keyof typeof categories; title: string; description: string; h1: string; intro: string; body: string[]; faq: { q: string; a: string }[]; filterKey?: 'brand' | 'series'; }
-const { cat, title, description, h1, intro, body, faq, filterKey = 'brand' } = Astro.props;
+const props = Astro.props;
+const local = (copy.categories as any)[props.cat];
+// Store-written copy wins over the shared defaults so each site reads differently.
+const { cat, title, description, h1, filterKey = 'brand' } = props;
+const intro = local?.intro || props.intro;
+const body: string[] = local?.body || props.body;
+const faq: { q: string; a: string }[] = local?.faq || props.faq;
 const items = byCategory(cat);
 const priced = items.filter((p) => p.sale || p.msrp);
 const min = priced.length ? Math.min(...priced.map((p) => p.sale || p.msrp!)) : null;

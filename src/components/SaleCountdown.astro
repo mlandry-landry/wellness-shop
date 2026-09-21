@@ -1,18 +1,43 @@
 ---
 import { promos } from '@/lib/site';
 const sale = (promos as any).sale;
-const on = sale && sale.active && sale.endsOn && new Date(sale.endsOn + 'T23:59:00-04:00') > new Date();
+// 'month-end' rolls to the last day of the current month in the browser; a fixed date is checked at build time.
+const rolling = sale && sale.endsOn === 'month-end';
+const fixedEnd = !rolling && sale?.endsOn ? new Date(sale.endsOn + 'T23:59:00-04:00') : null;
+const on = sale && sale.active && (rolling || (fixedEnd && fixedEnd > new Date()));
+const fixedLabel = fixedEnd ? new Date(sale.endsOn + 'T12:00:00').toLocaleDateString('en-CA', { month: 'long', day: 'numeric' }) : '';
 ---
 {on && (
-  <a class="salebar" href="/in-store-specials/" data-track="salebar_click" data-ends={sale.endsOn + 'T23:59:00-04:00'}>
+  <a class="salebar" href="/in-store-specials/" data-track="salebar_click" data-ends={rolling ? 'month-end' : sale.endsOn + 'T23:59:00-04:00'}>
     <span class="salebar-tag">{sale.name}</span>
-    <span class="salebar-text">{sale.text} <span class="salebar-when" style="margin-left:4px">{new Date(sale.endsOn + 'T12:00:00').toLocaleDateString('en-CA', { month: 'long', day: 'numeric' })}</span></span>
-    <span class="salebar-timer" id="salebar-timer" aria-live="polite"></span>
+    <span class="salebar-text">{sale.text}{' '}<span class="salebar-when" id="salebar-when">{fixedLabel}</span></span>
+    <span class="salebar-timer" id="salebar-timer" aria-live="polite">
+      <span class="t"><b data-u="d">--</b><small>days</small></span>
+      <span class="t"><b data-u="h">--</b><small>hrs</small></span>
+      <span class="t"><b data-u="m">--</b><small>min</small></span>
+      <span class="t"><b data-u="s">--</b><small>sec</small></span>
+    </span>
     <script is:inline>
-      (function () { var el = document.getElementById('salebar-timer'); var end = new Date(el.parentElement.dataset.ends);
-        function t() { var ms = end - new Date(); if (ms <= 0) { el.textContent = 'Ends today'; return; }
-          var d = Math.floor(ms / 864e5), h = Math.floor(ms % 864e5 / 36e5), m = Math.floor(ms % 36e5 / 6e4);
-          el.textContent = (d ? d + 'd ' : '') + h + 'h ' + String(m).padStart(2, '0') + 'm left'; setTimeout(t, 30000); } t(); })();
+      (function () {
+        var bar = document.querySelector('.salebar'); if (!bar) return;
+        var when = document.getElementById('salebar-when');
+        function endDate() {
+          if (bar.dataset.ends !== 'month-end') return new Date(bar.dataset.ends);
+          var n = new Date(); var e = new Date(n.getFullYear(), n.getMonth() + 1, 0, 23, 59, 59); return e;
+        }
+        var end = endDate();
+        if (bar.dataset.ends === 'month-end' && when) when.textContent = end.toLocaleDateString('en-CA', { month: 'long', day: 'numeric' });
+        var u = {}; bar.querySelectorAll('[data-u]').forEach(function (b) { u[b.dataset.u] = b; });
+        function pad(n) { return String(n).padStart(2, '0'); }
+        function tick() {
+          var ms = end - new Date();
+          if (ms <= 0) { end = endDate(); ms = end - new Date(); if (ms <= 0) { bar.querySelector('.salebar-timer').textContent = 'Ends tonight'; return; } }
+          u.d.textContent = Math.floor(ms / 864e5); u.h.textContent = pad(Math.floor(ms % 864e5 / 36e5));
+          u.m.textContent = pad(Math.floor(ms % 36e5 / 6e4)); u.s.textContent = pad(Math.floor(ms % 6e4 / 1e3));
+          setTimeout(tick, 1000);
+        }
+        tick();
+      })();
     </script>
   </a>
 )}

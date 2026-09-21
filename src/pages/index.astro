@@ -7,7 +7,7 @@ import SpecialCard from '@/components/SpecialCard.astro';
 import LeadForm from '@/components/LeadForm.astro';
 import PromoBanner from '@/components/PromoBanner.astro';
 import RedTag from '@/components/RedTag.astro';
-import { location, promos, specials, activeBanners, byCategory, displayPhone, telHref, hoursRows, site, money } from '@/lib/site';
+import { copy, location, promos, specials, activeBanners, byCategory, displayPhone, telHref, hoursRows, site, money } from '@/lib/site';
 
 const focus: string = (location as any).homeFocus || 'hot-tub';
 const heroV: any = focus !== 'hot-tub' ? ((promos as any).heroByFocus || {})[focus] : null;
@@ -35,6 +35,9 @@ const faq = [
   { q: 'Which is better, Jacuzzi or a Wellness Shop Ontario hot tub?', a: 'Jacuzzi is the premium choice: patented jets, the most advanced water care, the SmartTub app and the strongest resale value. Our Wellness Shop Ontario series is built in the USA with two 6 HP pumps and Thermal Shield insulation, and it saves you several thousand dollars for a similar seat count. Both are on the showroom floor so you can compare them side by side.' },
   { q: 'What does it cost to run a hot tub through an Ontario winter?', a: 'A well insulated hot tub with a good cover typically adds $30 to $60 a month to a hydro bill in winter, less in summer. Jacuzzi and Wellness Shop tubs use full foam insulation and Smart Seal covers built for our climate, and we can show you the ratings for any model in the showroom.' }
 ];
+// Two store-written questions first so each site's FAQ (and FAQPage schema) differs.
+const localFaq: any[] = (copy.categories as any)[focus === 'sauna' ? 'sauna' : 'hot-tub']?.faq || [];
+faq.unshift(...localFaq.slice(0, 2));
 if (focus === 'sauna') {
   faq.unshift(
     { q: `How much does a sauna cost in ${location.city}?`, a: `Clearlight Sanctuary infrared cabins run from ${money(minSauna)} for the one-person Sanctuary 1 to $15,295 for the four-person Sanctuary Retreat, in Basswood or Mahogany. Serenity outdoor cedar saunas start at $14,995 in knotty cedar before the heater. Every model shows its sale price and a bi-weekly payment on this site, and all of them are set up and heated at the ${location.city} showroom.` },
@@ -72,7 +75,7 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
         </div>
       ) : (
         <div class="hero-side">
-          <span class="pill-tag pill-tag-photo"><RedTag line1={`Save up to ${money(maxSave)}`} line2="RED TAG PRICING" size={230} /></span>
+          <span class="pill-tag pill-tag-photo"><RedTag line1="Jacuzzi 20% off" line2="RED TAG CLEARANCE" size={230} /></span>
           <a class="hero-model" href="/hot-tubs/j-509/">
             <img src="/images/products/j-509.webp" alt="Jacuzzi J-509 hot tub" width="853" height="501" loading="eager" />
             <span><strong>Pictured: Jacuzzi J-500 series</strong><em>J-509, 8 seats, 76 jets, {money(hotTubs.find((p) => p.slug === 'j-509')?.sale)}</em></span>
@@ -91,6 +94,23 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
       </div>
     </section>
   )}
+
+  <section class="redtag-home" id="red-tag">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow" style="color:#ff7b72">Jacuzzi exclusive Red Tag · Inventory clearance</div>
+        <div class="big">20% OFF<small>every new 2026 Jacuzzi in stock</small></div>
+        <h2 style="margin-top:18px">All New Jacuzzis Must Go</h2>
+        <p class="lead" style="color:#d7dee6">The 2027 lineup needs the floor, so every remaining 2026 Jacuzzi across our Ontario showrooms is red tagged at 20% off until it is gone. Same tub, same full warranty, delivery and setup included. It is the lowest price of the year, and the {location.city} showroom has them on the floor, filled and running.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="/in-store-specials/#jacuzzi-red-tag-20" data-track="specials_click" data-loc="home-redtag"><Icons name="tag" /> Claim your Red Tag price</a>
+          <a class="btn btn-light" href="/hot-tubs/?brand=Jacuzzi">See what is still available</a>
+        </div>
+        <p class="fine" style="color:#9aa7b4">In-stock new 2026 Jacuzzi hot tubs only, while quantities last. Not combinable with the $1,000 off or free electrical offers.</p>
+      </div>
+      <a href="/in-store-specials/#red-tag-clearance" aria-label="Red Tag clearance details"><img src="/images/promo/redtag-tag-closeup.webp" alt="Red Tag reading 20% off hanging on a new Jacuzzi hot tub" width="900" height="1600" loading="lazy" style="max-height:560px;width:auto;margin:0 auto" /></a>
+    </div>
+  </section>
 
   {specials.length > 0 && (
     <section class="section soft" id="specials">
@@ -158,7 +178,9 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
       <div>
         <div class="eyebrow">Why buy in person</div>
         <h2>Come Sit in One</h2>
+        <p class="lead" style="margin-top:0">{copy.angle}</p>
         <p>{location.localIntro}</p>
+        {copy.showroom[0] && <p>{copy.showroom[0]}</p>}
         <p>{location.whyVisit}</p>
         <div class="steps" style="margin-top:22px">
           <div><h3>Try the seats and jets</h3><p style="color:var(--muted)">Book a wet test and feel the difference between a lounger and open seating before you commit.</p></div>

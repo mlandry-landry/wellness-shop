@@ -4,6 +4,7 @@ import StoreStrip from '@/components/StoreStrip.astro';
 import LeadForm from '@/components/LeadForm.astro';
 import ProductCard from '@/components/ProductCard.astro';
 import { location, byCategory, money, biweekly, financeNote } from '@/lib/site';
+import { copy } from '@/lib/site';
 const c = location.city;
 const picks = ['j-215', 'j-245', 'j-335', 'j-385', 'j-445', 'j-508'].map((s) => byCategory('hot-tub').find((p) => p.slug === s)!);
 const title = `Hot Tub Financing in ${c} | 0% for 12 Months OAC from $15 Bi-Weekly | ${location.name}`;
@@ -24,6 +25,7 @@ const schema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntit
         <div class="eyebrow">Financing</div>
         <h1>Hot Tub Financing in {c}</h1>
         <p class="lead">Own a Jacuzzi for about the cost of a family takeout night every two weeks. 0% for 12 months OAC on every hot tub, swim spa and sauna we sell, with the bi-weekly payment shown right on the product page.*</p>
+        <p>{copy.financing}</p>
         <div class="grid cols-3" style="margin:24px 0">{picks.map((p) => <ProductCard p={p} />)}</div>
         <div class="steps">
           <div><h3>Pick a model</h3><p style="color:var(--muted)">Every product page shows the sale price and the starting bi-weekly payment side by side.</p></div>

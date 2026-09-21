@@ -4,7 +4,7 @@ import StoreStrip from '@/components/StoreStrip.astro';
 import ProductCard from '@/components/ProductCard.astro';
 import LeadForm from '@/components/LeadForm.astro';
 import Icons from '@/components/Icons.astro';
-import { location, byCategory, categories, money, biweekly, financeNote, telHref, displayPhone, siteUrl, productPath, specials, site, type Product } from '@/lib/site';
+import { copy, tubSize, location, byCategory, categories, money, biweekly, financeNote, telHref, displayPhone, siteUrl, productPath, specials, site, type Product } from '@/lib/site';
 const { p } = Astro.props as { p: Product };
 const cat = categories[p.category as keyof typeof categories];
 const catLabel = cat.singular.toLowerCase();
@@ -12,6 +12,9 @@ const c = location.city;
 const siblings = byCategory(p.category as any).filter((x) => x.slug !== p.slug && (x.series === p.series || x.brand === p.brand)).slice(0, 4);
 const brandBlurb = (site.brands as any)[p.brand]?.blurb;
 const isClearance = p.notes && /clearance|flash/i.test(p.notes);
+const notes: any = copy.productNotes;
+const localNote: string = p.category === 'hot-tub' ? notes['hot-tub'][tubSize(p)] : (notes[p.category] || location.deliveryNote);
+const redTag20 = p.brand === 'Jacuzzi' && p.category === 'hot-tub' && !isClearance && (specials as any[]).some((s) => s.id === 'jacuzzi-red-tag-20');
 const priceLine = p.quoteOnly ? 'Showroom pricing' : p.sale ? `${money(p.sale)}, regular ${money(p.msrp)}` : money(p.msrp);
 const title = `${p.brand} ${p.model} ${cat.singular} in ${c} | ${p.quoteOnly ? 'Showroom Pricing' : money(p.sale || p.msrp)} | ${location.name}`;
 const description = `${p.brand} ${p.model}${p.seats ? `, ${p.seats} seats` : ''}${p.jets ? `, ${p.jets} jets` : ''}${p.lengthFt ? `, ${p.lengthFt} ft` : ''}. ${p.quoteOnly ? 'See it at' : `${priceLine}${p.biweekly ? ` or from ${biweekly(p.biweekly)} OAC` : ''}, on the floor at`} our ${location.locality} showroom. Wet tests, delivery and install across ${location.region}.`;
@@ -27,7 +30,9 @@ const specRows: [string, any][] = [
 const schema: any[] = [{
   '@context': 'https://schema.org', '@type': 'Product', name: `${p.brand} ${p.model}`, brand: { '@type': 'Brand', name: p.brand },
   category: cat.label, sku: p.slug.toUpperCase(), image: p.image ? siteUrl + p.image : undefined, description,
-  ...(p.sale || p.msrp ? { offers: { '@type': 'Offer', priceCurrency: 'CAD', price: p.sale || p.msrp, availability: 'https://schema.org/InStock', itemCondition: 'https://schema.org/NewCondition', url: siteUrl + productPath(p), seller: { '@id': `${siteUrl}/#store` }, areaServed: location.region } } : {})
+  ...(p.sale || p.msrp ? { offers: { '@type': 'Offer', priceCurrency: 'CAD', price: p.sale || p.msrp, availability: 'https://schema.org/InStoreOnly', itemCondition: 'https://schema.org/NewCondition', url: siteUrl + productPath(p), seller: { '@id': `${siteUrl}/#store` }, availableAtOrFrom: { '@id': `${siteUrl}/#store` }, areaServed: location.region,
+      ...(p.sale && p.msrp && p.msrp > p.sale ? { priceSpecification: [{ '@type': 'UnitPriceSpecification', priceType: 'https://schema.org/ListPrice', price: p.msrp, priceCurrency: 'CAD' }, { '@type': 'UnitPriceSpecification', priceType: 'https://schema.org/SalePrice', price: p.sale, priceCurrency: 'CAD' }] } : {}) } } : {}),
+  ...(p.seats ? { additionalProperty: [{ '@type': 'PropertyValue', name: 'Seats', value: p.seats }, ...(p.jets ? [{ '@type': 'PropertyValue', name: 'Jets', value: p.jets }] : []), ...(p.lengthFt ? [{ '@type': 'PropertyValue', name: 'Length', value: `${p.lengthFt} ft` }] : [])] } : {})
 }, { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
   { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl + '/' }, { '@type': 'ListItem', position: 2, name: cat.label, item: siteUrl + cat.path }, { '@type': 'ListItem', position: 3, name: `${p.brand} ${p.model}`, item: siteUrl + productPath(p) }] }];
 ---
@@ -59,6 +64,11 @@ const schema: any[] = [{
                 {p.saleClear && <div class="weekly" style="font-size:1rem">Knotty cedar shown. Clear cedar: <strong>{money(p.saleClear)}</strong> (regular {money(p.msrpClear)}), from {biweekly(p.biweeklyClear)}.</div>}
               </div>
             )}
+            {redTag20 && (
+              <a class="callout redtag-callout" href="/in-store-specials/#jacuzzi-red-tag-20" data-track="specials_click" data-loc="product-redtag" style="margin-top:12px;display:block;text-decoration:none">
+                <strong>Red Tag Clearance: 20% off this model while new 2026 stock lasts.</strong> The {c} showroom applies the 20% Jacuzzi inventory discount at the counter, and it replaces the $1,000 off and free electrical offers. Claim your Red Tag price &rarr;
+              </a>
+            )}
             {isClearance && <p class="callout" style="margin-top:12px"><strong>Floor model deal at the showroom.</strong> {p.notes}. Ask about it when you visit or call; these go fast and each store has one or two at most.</p>}
             {p.notes && !isClearance && p.notes.startsWith('Includes') && <p class="callout" style="margin-top:12px"><strong>{p.notes}</strong></p>}
             <div style="display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 10px">
@@ -81,9 +91,9 @@ const schema: any[] = [{
         <h2 style="font-size:1.5rem">{p.model} Specifications</h2>
         <table class="specs">{specRows.map(([k, v]) => <tr><th>{k}</th><td>{v}</td></tr>)}</table>
         {p.notes && !isClearance && !p.notes.startsWith('Includes') && <p style="margin-top:12px;color:var(--muted)">{p.notes}</p>}
-        <h2 style="font-size:1.5rem;margin-top:34px">Why buy the {p.model} in {c}</h2>
+        <h2 style="font-size:1.5rem;margin-top:34px">Owning the {p.model} in {c}</h2>
+        <p>{localNote}</p>
         <p>{location.whyVisit} The {p.model} is one of the models we keep on the floor, so you can see the cabinet colours, feel the seat depth and hear how quiet the pumps are before you decide.</p>
-        <p>{location.deliveryNote}</p>
         {specials.length > 0 && <p><strong>Showroom extras:</strong> see the <a href="/in-store-specials/">in-store specials</a> for floor model pricing and bundles you only get by visiting.</p>}
       </div>
       <div id="quote">

@@ -1,7 +1,28 @@
 {
  "_readme": "In-store specials. These only appear on the /in-store-specials/ page (top 3 also on the home page) and are written to be redeemed at the showroom. Fields: value = the big number/phrase in the card header (keep it to 2 or 3 words, e.g. 'Save $7,300', 'From $26,295', 'Free'); badge = small label; details = up to 3 short lines; claimCode = shown at the counter (null = no code needed); endsOn = YYYY-MM-DD or null; locations = ['all'] or store ids. Set active:false to hide. voucherDays = how many days a claimed voucher stays valid (default 7). voucherTerms = one line of fine print on the voucher.",
- "pageIntro": "These offers are only available when you visit the showroom. Show the claim code on your phone at the counter, or mention it when you call ahead.",
+ "pageIntro": "These offers are only available when you visit the showroom. Claim one to get a personal Red Tag voucher, show it on your phone at the counter, or mention the code when you call ahead.",
  "specials": [
+  {
+   "id": "jacuzzi-red-tag-20",
+   "active": true,
+   "locations": [
+    "all"
+   ],
+   "badge": "Jacuzzi exclusive Red Tag",
+   "value": "20% Off",
+   "valueSub": "every new 2026 Jacuzzi in stock",
+   "title": "Jacuzzi Clearance: 20% Off New 2026 Hot Tubs",
+   "summary": "Every remaining new 2026 Jacuzzi on our showroom floors carries the same red tag: 20% off until the floor is clear. Same 2026 models, same full Jacuzzi warranty, delivery and setup included. The only thing on clearance is the price.",
+   "details": [
+    "65 new Jacuzzi hot tubs across our Ontario showrooms, then it is over",
+    "Replaces the $1,000 off and free electrical offers, not combinable",
+    "0% financing for 12 months OAC on the reduced price"
+   ],
+   "claimCode": "REDTAG20",
+   "endsOn": null,
+   "voucherDays": 7,
+   "voucherTerms": "Applies to in-stock new 2026 Jacuzzi hot tub models while quantities last. Not combinable with the $1,000 off or free electrical offers. Present voucher with matching name and phone."
+  },
   {
    "id": "floor-model-clearance",
    "active": true,

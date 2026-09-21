@@ -15,20 +15,62 @@ interface Props {
   schema?: Record<string, any> | Record<string, any>[];
   noindex?: boolean;
 }
-const { title, description, image = '/images/brand/jacuzzi-collage-pergola.webp', schema, noindex = false } = Astro.props;
+const { title: rawTitle, description: rawDescription, image = `/images/brand/og-${location.id}.jpg`, schema, noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, siteUrl).href;
 const ogImage = new URL(image, siteUrl).href;
 
+// Title: pages pass "Main | Qualifier | <store name>". Keep the page part first, shorten the brand suffix, and drop
+// middle qualifiers until the whole thing fits in ~62 characters so it does not get cut off in search results.
+const brandShort = `Wellness Shop ${location.city}`;
+function seoTitle(t: string): string {
+  let parts = t.split(' | ').map((x) => x.trim()).filter(Boolean);
+  if (parts[parts.length - 1] === location.name) parts[parts.length - 1] = brandShort;
+  const join = () => parts.join(' | ');
+  while (join().length > 62 && parts.length > 2) parts.splice(parts.length - 2, 1);
+  if (join().length > 62 && parts.length === 2 && parts[1] === brandShort) parts[1] = 'Wellness Shop';
+  if (join().length > 65 && parts.length === 2) parts = [parts[0]];
+  return join();
+}
+// Description: cut at the last sentence end that keeps it under 158 characters.
+function seoDesc(d: string): string {
+  if (d.length <= 158) return d;
+  const cut = d.slice(0, 158);
+  const end = Math.max(cut.lastIndexOf('. '), cut.lastIndexOf('.'), cut.lastIndexOf('! '));
+  if (end > 70) return cut.slice(0, end + 1).trim();
+  return cut.slice(0, cut.lastIndexOf(' ')).trim();
+}
+const title = seoTitle(rawTitle);
+const description = seoDesc(rawDescription);
+
+// Breadcrumbs for every non-home page that did not supply its own BreadcrumbList.
+const segLabels: Record<string, string> = { 'hot-tubs': 'Hot Tubs', 'swim-spas': 'Swim Spas', saunas: 'Saunas', 'cold-plunge': 'Cold Plunge', 'massage-chairs': 'Massage Chairs', gazebos: 'Gazebos', 'in-store-specials': 'In-Store Specials', 'find-my-hot-tub': 'Product Finder', financing: 'Financing', showroom: 'Showroom', 'price-list': 'Price List', 'service-areas': 'Service Areas', voucher: 'Voucher', 'thank-you': 'Thank You', privacy: 'Privacy' };
+const segs = Astro.url.pathname.split('/').filter(Boolean);
+const given = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
+const hasCrumbs = given.some((g: any) => g && g['@type'] === 'BreadcrumbList');
+const autoCrumbs = !hasCrumbs && segs.length > 0 && !noindex ? {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl + '/' },
+    ...segs.map((seg, i) => ({ '@type': 'ListItem', position: i + 2, name: segLabels[seg] || (i > 0 && segs[i - 1] === 'service-areas' ? seg.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()) : seg.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())), item: `${siteUrl}/${segs.slice(0, i + 1).join('/')}/` }))]
+} : null;
+
+const logoUrl = `${siteUrl}/images/brand/wellness-shop-logo-stacked.svg`;
 const localBusiness = {
   '@context': 'https://schema.org',
-  '@type': 'HomeAndConstructionBusiness',
-  additionalType: 'https://schema.org/Store',
+  '@type': ['Store', 'HomeAndConstructionBusiness'],
   '@id': `${siteUrl}/#store`,
   name: location.name,
+  alternateName: `Wellness Shop ${location.city}`,
+  description: `${location.name} is a Jacuzzi hot tub, swim spa and sauna showroom serving ${location.region}. Jacuzzi, Nordic, Aquasolus, Wellness Shop, SwimLife, Clearlight and Serenity on the floor, with delivery, installation and service.`,
   url: siteUrl,
   telephone: `+1-${displayPhone}`,
-  image: ogImage,
+  image: [ogImage, `${siteUrl}/images/brand/backyard-jacuzzi.webp`],
+  logo: logoUrl,
   priceRange: '$$$',
+  currenciesAccepted: 'CAD',
+  paymentAccepted: 'Cash, Credit Card, Debit Card, Financing',
+  hasMap: location.directionsUrl,
+  brand: ['Jacuzzi', 'Nordic', 'Aquasolus', 'Wellness Shop', 'SwimLife', 'Clearlight', 'Serenity', 'Chill Tubs'].map((n) => ({ '@type': 'Brand', name: n })),
+  knowsAbout: ['Hot tubs', 'Swim spas', 'Infrared saunas', 'Outdoor cedar saunas', 'Cold plunge tubs', 'Hot tub delivery and installation', 'Hot tub service and water care'],
   address: {
     '@type': 'PostalAddress',
     streetAddress: location.street + (location.unit ? `, ${location.unit}` : ''),
@@ -40,13 +82,13 @@ const localBusiness = {
   geo: { '@type': 'GeoCoordinates', latitude: location.lat, longitude: location.lng },
   openingHoursSpecification: openingHoursSpec(),
   areaServed: [location.city, ...location.serviceAreas].map((n) => ({ '@type': 'City', name: n })),
-  parentOrganization: { '@type': 'Organization', name: site.brand, url: site.parentUrl },
+  parentOrganization: { '@type': 'Organization', name: site.brand, url: site.parentUrl, logo: logoUrl },
   sameAs: Object.values(site.social),
   ...(location.rating && location.reviewCount
     ? { aggregateRating: { '@type': 'AggregateRating', ratingValue: location.rating, reviewCount: location.reviewCount } }
     : {})
 };
-const schemas = [localBusiness, ...(schema ? (Array.isArray(schema) ? schema : [schema]) : [])];
+const schemas = [localBusiness, ...given, ...(autoCrumbs ? [autoCrumbs] : [])];
 // Each store has its own GTM container (and GA4 property); site.json is only a fallback.
 const gtm: string | null = (location as any).gtmId || site.analytics.gtmId;
 ---
@@ -57,16 +99,20 @@ const gtm: string | null = (location as any).gtmId || site.analytics.gtmId;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
-    {noindex && <meta name="robots" content="noindex,nofollow" />}
+    {!noindex && <link rel="canonical" href={canonical} />}
+    <meta name="robots" content={noindex ? 'noindex,nofollow' : 'index,follow,max-image-preview:large,max-snippet:-1'} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={location.name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
+    {image.startsWith('/images/brand/og-') && <><meta property="og:image:width" content="1200" /><meta property="og:image:height" content="630" /></>}
     <meta property="og:locale" content="en_CA" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
     <meta name="theme-color" content="#0b2239" />
     <meta name="geo.region" content="CA-ON" />
     <meta name="geo.placename" content={location.locality} />
@@ -113,7 +159,9 @@ const gtm: string | null = (location as any).gtmId || site.analytics.gtmId;
     )}
     <Header />
     <SaleCountdown />
-    <slot />
+    <main id="main">
+      <slot />
+    </main>
     <Footer />
     <ClaimModal />
     <ClaimPrompt />

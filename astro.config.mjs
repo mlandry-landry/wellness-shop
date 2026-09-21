@@ -21,7 +21,7 @@ export default defineConfig({
   site: `https://${loc.domain}`,
   output: 'static',
   adapter: vercel(),
-  integrations: [sitemap({ filter: (p) => !p.includes('/thank-you') })],
+  integrations: [sitemap({ filter: (p) => !/\/(thank-you|voucher|privacy|404)\/?$/.test(p), changefreq: 'weekly', priority: 0.7 })],
   trailingSlash: 'always',
   build: { format: 'directory' },
   vite: { define: { 'import.meta.env.SITE_ID': JSON.stringify(siteId) } }

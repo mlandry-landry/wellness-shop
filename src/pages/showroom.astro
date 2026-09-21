@@ -2,7 +2,8 @@
 import Base from '@/layouts/Base.astro';
 import LeadForm from '@/components/LeadForm.astro';
 import Icons from '@/components/Icons.astro';
-import { location, hoursRows, displayPhone, telHref, fullAddress, otherLocations, site } from '@/lib/site';
+import { location, hoursRows, displayPhone, telHref, fullAddress, otherLocations, site, copy } from '@/lib/site';
+import { copy } from '@/lib/site';
 const c = location.city;
 const title = `${c} Hot Tub Showroom | Hours, Directions, Wet Tests | ${location.name}`;
 const description = `Visit ${location.name} at ${fullAddress}. Open 7 days. Jacuzzi hot tubs, swim spas and saunas on the floor, wet tests by appointment, free parking. Call ${displayPhone}.`;
@@ -14,6 +15,7 @@ const description = `Visit ${location.name} at ${fullAddress}. Open 7 days. Jacu
         <div class="eyebrow">Showroom</div>
         <h1>{location.name}</h1>
         <p class="lead">{location.localIntro}</p>
+        {copy.showroom.map((para) => <p>{para}</p>)}
         <p>{location.whyVisit}</p>
         <div class="grid cols-2" style="margin-top:24px">
           <div class="form-card">

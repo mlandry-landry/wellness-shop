@@ -9,7 +9,10 @@ def slugify(s):
     return s
 def clean(s):
     if s in (None,'-',''): return None
-    if isinstance(s,str): return s.replace('™','').replace('®','').replace(' – ',' ').replace('–','-').replace('—',',').strip()
+    if isinstance(s,str):
+        s=s.replace('™','').replace('®','').replace(' – ',' ').replace('–','-').replace('—',',')
+        s=s.replace(' Not incl. in No-Tax sale.','').replace('Not incl. in No-Tax sale.','')  # stale promo note in the spreadsheet
+        return s.strip() or None
     return s
 products=[]
 # The spreadsheet's Clearlight prices were wrong (looked like old/USD figures). These were read from the live

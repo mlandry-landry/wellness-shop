@@ -1,0 +1,12 @@
+---
+// Inline Wellness Shop logo so it inherits the surrounding text colour (white on navy, ink on white).
+import horizontal from '../../public/images/brand/wellness-shop-logo.svg?raw';
+import stacked from '../../public/images/brand/wellness-shop-logo-stacked.svg?raw';
+import mark from '../../public/images/brand/wellness-shop-mark.svg?raw';
+interface Props { variant?: 'horizontal' | 'stacked' | 'mark'; height?: number; class?: string; }
+const { variant = 'horizontal', height = 30, class: cls = '' } = Astro.props;
+const src = variant === 'stacked' ? stacked : variant === 'mark' ? mark : horizontal;
+// Strip the fixed width/height so the height style controls size; keep the viewBox aspect ratio.
+const svg = src.replace(/\swidth="[^"]*"\sheight="[^"]*"/, ` style="height:${height}px;width:auto;display:block"`);
+---
+<span class={`ws-logo ${cls}`} set:html={svg} />

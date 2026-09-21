@@ -10,6 +10,13 @@ import barrie from '@/data/locations/barrie.json';
 import kitchener from '@/data/locations/kitchener.json';
 import london from '@/data/locations/london.json';
 
+import copyHamilton from '@/data/copy/hamilton.json';
+import copyWhitby from '@/data/copy/whitby.json';
+import copyBurlington from '@/data/copy/burlington.json';
+import copyBarrie from '@/data/copy/barrie.json';
+import copyKitchener from '@/data/copy/kitchener.json';
+import copyLondon from '@/data/copy/london.json';
+
 export type Location = typeof kitchener;
 export type Product = (typeof productsData)[number] & Record<string, any>;
 export type Special = (typeof specialsData.specials)[number];
@@ -20,6 +27,18 @@ const SITE_ID = (import.meta.env.SITE_ID as string) || 'kitchener';
 export const location: Location = allLocations[SITE_ID] ?? kitchener;
 export const siteId = location.id;
 export const siteUrl = `https://${location.domain}`;
+
+/** Store-specific written content (src/data/copy/<store>.json): category intros, FAQs, product notes, town pages. */
+export type StoreCopy = typeof copyKitchener;
+const allCopy: Record<string, StoreCopy> = { hamilton: copyHamilton, whitby: copyWhitby, burlington: copyBurlington, barrie: copyBarrie, kitchener: copyKitchener, london: copyLondon } as any;
+export const copy: StoreCopy = allCopy[siteId] ?? copyKitchener;
+/** Size bucket used to pick the local product note for a hot tub. */
+export function tubSize(p: Product): 'small' | 'medium' | 'large' {
+  if (p.category !== 'hot-tub') return 'medium';
+  if ((p.seats && p.seats <= 4) || /110V/i.test(p.model || '')) return 'small';
+  if (p.seats && p.seats >= 7) return 'large';
+  return 'medium';
+}
 export { site, promos };
 
 export const products: Product[] = productsData as Product[];
