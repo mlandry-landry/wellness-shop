@@ -1,0 +1,67 @@
+---
+// Spec comparison grid for a product page: the current model plus its closest siblings, sortable, current row highlighted.
+import { money, biweekly, productPath, type Product } from '@/lib/site';
+interface Props { current: Product; items: Product[]; label: string; }
+const { current, items, label } = Astro.props;
+const rows = [current, ...items.filter((p) => p.slug !== current.slug)];
+const isTub = current.category === 'hot-tub';
+const isSwim = current.category === 'swim-spa';
+const isSauna = current.category === 'sauna';
+const cols: { key: string; label: string; get: (p: Product) => string | number | null; num?: boolean }[] = [
+  { key: 'model', label: 'Model', get: (p) => `${p.brand} ${p.model}` },
+  ...(isTub || isSwim ? [{ key: 'seats', label: 'Seats', get: (p: Product) => p.seats ?? null, num: true }] : []),
+  ...(isSauna ? [{ key: 'seats', label: 'People', get: (p: Product) => p.seats ?? null, num: true }] : []),
+  ...(isTub || isSwim ? [{ key: 'jets', label: 'Jets', get: (p: Product) => p.jets ?? null, num: true }] : []),
+  ...(isSwim ? [{ key: 'lengthFt', label: 'Length', get: (p: Product) => p.lengthFt ? `${p.lengthFt} ft` : null, num: true }] : []),
+  ...(isTub ? [{ key: 'seating', label: 'Layout', get: (p: Product) => p.seating ?? null }] : []),
+  ...(isSauna ? [{ key: 'saunaType', label: 'Type', get: (p: Product) => p.saunaType ?? null }] : []),
+  { key: 'msrp', label: 'Regular', get: (p) => p.msrp ? money(p.msrp) : null, num: true },
+  { key: 'sale', label: 'Sale price', get: (p) => p.quoteOnly ? 'Showroom' : money(p.sale || p.msrp), num: true },
+  { key: 'savings', label: 'You save', get: (p) => p.sale && p.msrp && p.msrp > p.sale ? money(p.msrp - p.sale) : null, num: true },
+  { key: 'biweekly', label: 'Bi-weekly*', get: (p) => p.biweekly ? biweekly(p.biweekly).replace(' bi-weekly', '') : null, num: true }
+];
+const sortVal = (p: Product, key: string) => {
+  const v: any = (p as any)[key];
+  if (key === 'sale') return p.sale || p.msrp || 0;
+  if (key === 'savings') return p.sale && p.msrp ? p.msrp - p.sale : 0;
+  return typeof v === 'number' ? v : (v ?? '');
+};
+---
+<div class="cmp-wrap">
+  <table class="cmp" id="cmp-table" aria-label={`Compare ${label}`}>
+    <thead>
+      <tr>{cols.map((c, i) => <th scope="col" data-key={c.key} data-num={c.num ? '1' : '0'} class={i === 0 ? 'cmp-model' : ''}><button type="button">{c.label} <span aria-hidden="true">&#8597;</span></button></th>)}</tr>
+    </thead>
+    <tbody>
+      {rows.map((p) => (
+        <tr class={p.slug === current.slug ? 'cur' : ''} data-slug={p.slug} {...Object.fromEntries(cols.map((c) => [`data-s-${c.key}`, String(sortVal(p, c.key))]))}>
+          {cols.map((c, i) => i === 0
+            ? <th scope="row" class="cmp-model">{p.slug === current.slug ? <span><strong>{c.get(p)}</strong> <em>this page</em></span> : <a href={productPath(p)}>{c.get(p)}</a>}</th>
+            : <td class={c.key === 'sale' ? 'cmp-sale' : c.key === 'savings' ? 'cmp-save' : ''}>{c.get(p) ?? <span class="cmp-na">&ndash;</span>}</td>)}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+<script>
+  const table = document.getElementById('cmp-table');
+  if (table) {
+    const tbody = table.querySelector('tbody')!;
+    let dir = 1, active = '';
+    table.querySelectorAll('th[data-key] button').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const th = btn.parentElement as HTMLElement; const key = th.dataset.key!; const num = th.dataset.num === '1';
+        dir = active === key ? -dir : 1; active = key;
+        table.querySelectorAll('th[data-key]').forEach((h) => h.removeAttribute('aria-sort'));
+        th.setAttribute('aria-sort', dir === 1 ? 'ascending' : 'descending');
+        const rows = [...tbody.querySelectorAll('tr')];
+        rows.sort((a, b) => {
+          const av = a.dataset['s' + key.charAt(0).toUpperCase() + key.slice(1)] ?? a.getAttribute('data-s-' + key) ?? '';
+          const bv = b.dataset['s' + key.charAt(0).toUpperCase() + key.slice(1)] ?? b.getAttribute('data-s-' + key) ?? '';
+          return num ? (Number(av) - Number(bv)) * dir : av.localeCompare(bv) * dir;
+        });
+        rows.forEach((r) => tbody.appendChild(r));
+      });
+    });
+  }
+</script>

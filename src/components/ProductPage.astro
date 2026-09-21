@@ -4,12 +4,21 @@ import StoreStrip from '@/components/StoreStrip.astro';
 import ProductCard from '@/components/ProductCard.astro';
 import LeadForm from '@/components/LeadForm.astro';
 import Icons from '@/components/Icons.astro';
-import { copy, tubSize, location, byCategory, categories, money, biweekly, financeNote, telHref, displayPhone, siteUrl, productPath, specials, site, type Product } from '@/lib/site';
+import CompareTable from './CompareTable.astro';
+import { copy, tubSize, linkModels, location, byCategory, categories, money, biweekly, financeNote, telHref, displayPhone, siteUrl, productPath, specials, site, type Product } from '@/lib/site';
 const { p } = Astro.props as { p: Product };
 const cat = categories[p.category as keyof typeof categories];
 const catLabel = cat.singular.toLowerCase();
 const c = location.city;
-const siblings = byCategory(p.category as any).filter((x) => x.slug !== p.slug && (x.series === p.series || x.brand === p.brand)).slice(0, 4);
+const sameCat = byCategory(p.category as any).filter((x) => x.slug !== p.slug);
+const bySeries = sameCat.filter((x) => p.series && x.series === p.series);
+const byBrand = sameCat.filter((x) => x.brand === p.brand && !bySeries.includes(x));
+// Table: whole series plus nearest brand-mates by price, up to 7 rows besides this one.
+const nearest = (arr: typeof sameCat) => [...arr].sort((a, b) => Math.abs((a.sale || a.msrp || 0) - (p.sale || p.msrp || 0)) - Math.abs((b.sale || b.msrp || 0) - (p.sale || p.msrp || 0)));
+const compareRows = [...nearest(bySeries), ...nearest(byBrand)].slice(0, 7);
+const siblings = compareRows.slice(0, 4);
+const seriesLabel = p.series && /^J[2-5]$/.test(p.series) ? `J-${p.series[1]}00 series` : p.series;
+const compareLabel = bySeries.length ? `${p.brand} ${seriesLabel} ${cat.label.toLowerCase()}` : `${p.brand} ${cat.label.toLowerCase()}`;
 const brandBlurb = (site.brands as any)[p.brand]?.blurb;
 const isClearance = p.notes && /clearance|flash/i.test(p.notes);
 const notes: any = copy.productNotes;
@@ -92,7 +101,7 @@ const schema: any[] = [{
         <table class="specs">{specRows.map(([k, v]) => <tr><th>{k}</th><td>{v}</td></tr>)}</table>
         {p.notes && !isClearance && !p.notes.startsWith('Includes') && <p style="margin-top:12px;color:var(--muted)">{p.notes}</p>}
         <h2 style="font-size:1.5rem;margin-top:34px">Owning the {p.model} in {c}</h2>
-        <p>{localNote}</p>
+        <p set:html={linkModels(localNote, p.slug)} />
         <p>{location.whyVisit} The {p.model} is one of the models we keep on the floor, so you can see the cabinet colours, feel the seat depth and hear how quiet the pumps are before you decide.</p>
         {specials.length > 0 && <p><strong>Showroom extras:</strong> see the <a href="/in-store-specials/">in-store specials</a> for floor model pricing and bundles you only get by visiting.</p>}
       </div>
@@ -102,12 +111,17 @@ const schema: any[] = [{
     </div>
   </section>
 
-  {siblings.length > 0 && (
-    <section class="section">
+  {compareRows.length > 0 && (
+    <section class="section soft">
       <div class="wrap">
-        <h2 style="font-size:1.5rem">Compare with other {p.brand} {cat.label.toLowerCase()}</h2>
+        <div class="eyebrow">Side by side</div>
+        <h2 style="font-size:1.5rem">How the {p.model} compares with other {compareLabel}</h2>
+        <p style="color:var(--muted);max-width:720px">Tap a column heading to sort. Every model here is on the floor at the {c} showroom, so you can sit in your shortlist the same afternoon.</p>
+        <CompareTable current={p} items={compareRows} label={compareLabel} />
+        <p class="fine" style="color:var(--muted);font-size:.8rem;margin-top:10px">*{financeNote}</p>
+        <h3 style="font-size:1.15rem;margin-top:30px">Closest alternatives</h3>
         <div class="grid cols-4">{siblings.map((s) => <ProductCard p={s} />)}</div>
-        <p style="margin-top:18px"><a class="btn btn-outline btn-sm" href={cat.path}>All {cat.label.toLowerCase()}</a></p>
+        <p style="margin-top:18px"><a class="btn btn-outline btn-sm" href={`${cat.path}?brand=${encodeURIComponent(p.brand)}`}>All {p.brand} {cat.label.toLowerCase()}</a> <a class="btn btn-outline btn-sm" href={cat.path} style="margin-left:8px">All {cat.label.toLowerCase()}</a></p>
       </div>
     </section>
   )}

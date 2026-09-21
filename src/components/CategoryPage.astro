@@ -3,7 +3,7 @@ import Base from '@/layouts/Base.astro';
 import StoreStrip from '@/components/StoreStrip.astro';
 import ProductCard from '@/components/ProductCard.astro';
 import LeadForm from '@/components/LeadForm.astro';
-import { copy, location, byCategory, categories, money, biweekly, financeNote, telHref, displayPhone, siteUrl, productPath } from '@/lib/site';
+import { copy, linkModels, location, byCategory, categories, money, biweekly, financeNote, telHref, displayPhone, siteUrl, productPath } from '@/lib/site';
 interface Props { cat: keyof typeof categories; title: string; description: string; h1: string; intro: string; body: string[]; faq: { q: string; a: string }[]; filterKey?: 'brand' | 'series'; }
 const props = Astro.props;
 const local = (copy.categories as any)[props.cat];
@@ -44,10 +44,10 @@ const schema = [
   <section class="section soft">
     <div class="wrap two-col">
       <div>
-        {body.map((para) => <p>{para}</p>)}
+        {body.map((para) => <p set:html={linkModels(para)} />)}
         <div class="faq" style="margin-top:28px">
           <h2 style="font-size:1.5rem">{categories[cat].label} Questions</h2>
-          {faq.map((f) => <details><summary>{f.q}</summary><p>{f.a}</p></details>)}
+          {faq.map((f) => <details><summary>{f.q}</summary><p set:html={linkModels(f.a)} /></details>)}
         </div>
       </div>
       <div>

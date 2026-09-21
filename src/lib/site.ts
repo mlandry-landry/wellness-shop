@@ -115,3 +115,21 @@ export function otherLocations(): Location[] {
 export function cityTitle(s: string) {
   return `${s} | ${location.name}`;
 }
+
+/** Wrap every product model name in a paragraph with a link to its page (longest names first so J-508L wins over J-508). */
+const modelIndex = [...products]
+  .map((p) => ({ p, names: [p.model, ...(p.brand === 'Aquasolus' ? [p.model.replace(/^The /, '')] : [])] }))
+  .flatMap(({ p, names }) => names.map((n) => ({ p, n })))
+  .sort((a, b) => b.n.length - a.n.length);
+export function linkModels(text: string, exceptSlug?: string): string {
+  const esc = (t: string) => t.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' } as any)[c]);
+  let out = esc(text);
+  const used = new Set<string>();
+  for (const { p, n } of modelIndex) {
+    if (p.slug === exceptSlug || used.has(p.slug)) continue;
+    // Match the model name as a whole word, not already inside a link; link only the first mention.
+    const re = new RegExp(`(^|[^\\w>-])(${n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})(?![\\w-])`);
+    if (re.test(out)) { out = out.replace(re, (_, pre, name) => `${pre}<a href="${productPath(p)}">${name}</a>`); used.add(p.slug); }
+  }
+  return out;
+}

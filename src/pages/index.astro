@@ -7,7 +7,7 @@ import SpecialCard from '@/components/SpecialCard.astro';
 import LeadForm from '@/components/LeadForm.astro';
 import PromoBanner from '@/components/PromoBanner.astro';
 import RedTag from '@/components/RedTag.astro';
-import { copy, location, promos, specials, activeBanners, byCategory, displayPhone, telHref, hoursRows, site, money } from '@/lib/site';
+import { copy, linkModels, location, promos, specials, activeBanners, byCategory, displayPhone, telHref, hoursRows, site, money } from '@/lib/site';
 
 const focus: string = (location as any).homeFocus || 'hot-tub';
 const heroV: any = focus !== 'hot-tub' ? ((promos as any).heroByFocus || {})[focus] : null;
@@ -180,7 +180,7 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
         <h2>Come Sit in One</h2>
         <p class="lead" style="margin-top:0">{copy.angle}</p>
         <p>{location.localIntro}</p>
-        {copy.showroom[0] && <p>{copy.showroom[0]}</p>}
+        {copy.showroom[0] && <p set:html={linkModels(copy.showroom[0])} />}
         <p>{location.whyVisit}</p>
         <div class="steps" style="margin-top:22px">
           <div><h3>Try the seats and jets</h3><p style="color:var(--muted)">Book a wet test and feel the difference between a lounger and open seating before you commit.</p></div>

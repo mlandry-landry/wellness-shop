@@ -3,7 +3,7 @@ import Base from '@/layouts/Base.astro';
 import StoreStrip from '@/components/StoreStrip.astro';
 import ProductCard from '@/components/ProductCard.astro';
 import LeadForm from '@/components/LeadForm.astro';
-import { copy, location, byCategory, displayPhone, telHref, fullAddress, siteUrl, specials } from '@/lib/site';
+import { copy, linkModels, location, byCategory, displayPhone, telHref, fullAddress, siteUrl, specials } from '@/lib/site';
 export function getStaticPaths() {
   return location.serviceAreas.map((t) => ({ params: { town: t.toLowerCase().replace(/[^a-z]+/g, '-') }, props: { town: t } }));
 }
@@ -30,7 +30,7 @@ const schema = { '@context': 'https://schema.org', '@type': 'Service', name: `Ho
         {tc ? (
           <>
             <p class="lead">{tc.lead}</p>
-            {tc.body.map((para: string) => <p>{para}</p>)}
+            {tc.body.map((para: string) => <p set:html={linkModels(para)} />)}
             <p>Before you drive over, check the <a href="/in-store-specials/">in-store specials</a> and, if you want a specific model filled and heated, call ahead.</p>
           </>
         ) : (
