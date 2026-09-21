@@ -64,6 +64,7 @@ export function buildWebToLead(lead: any, oid: string, ip: string): URLSearchPar
   p.set('mobile', lead.phone || '');
   if (lead.city) { p.set('city', lead.city); p.set(SF_FIELDS.city, lead.city); }
   p.set('state', 'ON'); p.set('country', 'Canada');
+  if (lead.site) p.set('url', lead.site); // Lead.Website = the regional site the lead came from
   const loc = SF_LOCATION[lead.storeId]; if (loc) p.set(SF_FIELDS.closestLocation, loc);
   p.set(SF_FIELDS.interestedIn, sfInterest(lead.interest, lead.product));
   p.set(SF_FIELDS.entryType, 'Lead Form');
