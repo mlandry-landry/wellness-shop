@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { allLocations } from '@/lib/site';
+import { buildWebToLead, SF_ENDPOINT } from '@/lib/salesforce';
 export const prerender = false;
 
 /**
@@ -31,13 +32,24 @@ export const POST: APIRoute = async ({ request }) => {
     source: data.source || 'website', page: data.page || '',
     voucherCode: data.voucherCode || '', voucherExpires: data.voucherExpires || '',
     site: store ? `https://${store.domain}` : request.headers.get('origin') || '',
-    utm: Object.fromEntries(Object.entries(data).filter(([k]) => k.startsWith('utm_'))),
+    utm: Object.fromEntries(Object.entries(data).filter(([k]) => /^(utm_|gclid$|fbclid$)/.test(k))),
     userAgent: request.headers.get('user-agent') || ''
   };
   console.log('LEAD', JSON.stringify(lead));
 
   const results: Record<string, string> = {};
   const env = (k: string) => process.env[k] || (import.meta.env as any)[k];
+
+  // Salesforce Web-to-Lead (Wellness Shop org). Field mapping lives in src/lib/salesforce.ts.
+  if (env('SALESFORCE_WEB_TO_LEAD_OID')) {
+    try {
+      const ip = (request.headers.get('x-forwarded-for') || '').split(',')[0].trim();
+      const body = buildWebToLead(lead, env('SALESFORCE_WEB_TO_LEAD_OID'), ip);
+      if (env('SALESFORCE_DEBUG_EMAIL')) body.set('debug', '1'), body.set('debugEmail', env('SALESFORCE_DEBUG_EMAIL'));
+      const r = await fetch(SF_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body });
+      results.salesforce = r.ok ? 'ok' : `http ${r.status}`; // Web-to-Lead always returns 200; failures arrive by email to the default lead creator
+    } catch (e: any) { results.salesforce = 'error ' + e.message; }
+  }
 
   if (env('LEAD_WEBHOOK_URL')) {
     try {

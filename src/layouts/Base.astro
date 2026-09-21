@@ -85,6 +85,17 @@ const gtm = site.analytics.gtmId;
       window.wsTrack = function (event, extra) {
         window.dataLayer.push(Object.assign({ event: event, store_id: storeId, store_name: storeName }, extra || {}));
       };
+      // Remember acquisition params for the session and attach them to every lead form
+      try {
+        var q = new URLSearchParams(location.search), keep = {};
+        ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','gclid','fbclid'].forEach(function (k) { if (q.get(k)) keep[k] = q.get(k); });
+        if (Object.keys(keep).length) sessionStorage.setItem('ws_attr', JSON.stringify(keep));
+        document.addEventListener('submit', function (e) {
+          var f = e.target; if (!f || !f.action || f.action.indexOf('/api/lead') < 0) return;
+          var attr = JSON.parse(sessionStorage.getItem('ws_attr') || '{}');
+          Object.keys(attr).forEach(function (k) { if (!f.querySelector('[name="' + k + '"]')) { var i = document.createElement('input'); i.type = 'hidden'; i.name = k; i.value = attr[k]; f.appendChild(i); } });
+        }, true);
+      } catch (err) {}
       document.addEventListener('click', function (e) {
         var a = e.target.closest && e.target.closest('a');
         if (!a) return;

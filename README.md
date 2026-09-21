@@ -34,7 +34,8 @@ Sitemap at `/sitemap-index.xml`. Schema.org LocalBusiness on every page, Product
 ## Leads
 
 `POST /api/lead` (Vercel function). Every lead is stamped with `storeId`, `source` and `page`, then:
-1. POSTed as JSON to `LEAD_WEBHOOK_URL` if set (Salesforce lead handler, Zapier, Make, etc.)
+1. Posted to Salesforce Web-to-Lead when `SALESFORCE_WEB_TO_LEAD_OID` is set (mapping in `src/lib/salesforce.ts`: Closest Location picklist per store, Interested In, Entry Type = Lead Form, Lead Source = Website, Source, Lead Source - Digital, Pardot Page, UTM/GCLID/FBCLID, Submitter IP, description with product, voucher and message)
+1b. POSTed as JSON to `LEAD_WEBHOOK_URL` if set (Zapier, Make, a Pardot form handler relay, etc.)
 2. Emailed via Resend if `RESEND_API_KEY` + `LEAD_TO_EMAIL` are set
 3. Always written to the Vercel function log
 
