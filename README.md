@@ -73,3 +73,20 @@ insulation and water care, savings ratio and price per seat, or premium series).
 a step-up and a step-down alternative, "Book a wet test" (opens the claim modal) and an optional "Email my matches" form that sends the
 answers and picks to the lead handler as `source: quiz`. Events: `quiz_start`, `quiz_step`, `quiz_complete`.
 To tune the recommendations edit the `scoreHotTub` / `scoreSwim` / `scoreSauna` functions in `src/pages/find-my-hot-tub.astro`.
+
+## Analytics (GTM + GA4)
+
+Each store has its own Google Tag Manager container and GA4 property (Tag Manager account "Wellness Shop", GA4 account "Aquatic Home Living Ontario Inc."). The container id lives in `src/data/locations/<store>.json` -> `gtmId`.
+
+| Store | GTM container | GA4 measurement id |
+|---|---|---|
+| Hamilton | GTM-KL4N34B | G-80CLE6BS01 |
+| Whitby | GTM-MXXZ4WT | G-JY4HQ7S641 |
+| London | GTM-T54MNSJ | G-GR6JCWHN9J |
+| Burlington | GTM-TL59G3K | G-3MVJVZL79C |
+| Barrie | GTM-WD6CMXS | G-QM1XXGN3KQ |
+| Kitchener | GTM-NXQFDGW | G-8YN7JM7EXE |
+
+The site pushes dataLayer events via `window.wsTrack` (see `src/layouts/Base.astro`): call_click, directions_click, specials_click, product_cta, promo_click, salebar_click, lead_submit, lead_thank_you, claim_open, claim_submit, claim_prompt_view, voucher_view, quiz_start, quiz_step, quiz_complete. Every event carries store_id and store_name.
+
+`node scripts/build-gtm-import.mjs` writes `gtm/<store>.json`, a GTM container import (Admin > Import Container > Default Workspace > Merge) that adds: data layer variables, a GA4 measurement id constant, custom event triggers, a "GA4 Event - Wellness Shop site events" tag (event name = {{Event}}, parameters store_id, store_name, phone_number, click_location, lead_source, special_id, quiz_step, quiz_type, recommended_product) and a "generate_lead" tag fired on lead_submit and claim_submit. When new events are added to the site, add them to EVENTS in that script, regenerate, re-import and publish.
