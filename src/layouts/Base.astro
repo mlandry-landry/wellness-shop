@@ -47,7 +47,8 @@ const localBusiness = {
     : {})
 };
 const schemas = [localBusiness, ...(schema ? (Array.isArray(schema) ? schema : [schema]) : [])];
-const gtm = site.analytics.gtmId;
+// Each store has its own GTM container (and GA4 property); site.json is only a fallback.
+const gtm: string | null = (location as any).gtmId || site.analytics.gtmId;
 ---
 <!doctype html>
 <html lang="en-CA">
@@ -107,6 +108,9 @@ const gtm = site.analytics.gtmId;
     </script>
   </head>
   <body>
+    {gtm && (
+      <noscript><iframe src={`https://www.googletagmanager.com/ns.html?id=${gtm}`} height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    )}
     <Header />
     <SaleCountdown />
     <slot />

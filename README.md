@@ -21,7 +21,7 @@ from the project name (or from a `SITE_ID` env var if set). Each project gets it
 | Add, edit, pause or expire an in-store special | `src/data/specials.json`. Each card has: `badge` (small label), `value` (big header line, 2 or 3 words like `Save $7,300` or `Free`), `valueSub`, `title`, `summary`, up to 3 `details`, `claimCode` (null = no code), `endsOn`, `locations`, `active` |
 | Change a store's phone, tracking number, hours, address, staff, service towns, local copy, or what its home page leads with (`homeFocus`: hot-tub, sauna or swim-spa) | `src/data/locations/<site>.json` (hero variants per focus live in `promos.json` -> `heroByFocus`) |
 | Swap or add a product image | `public/images/products/<slug>.webp` |
-| Turn on GTM / GA4 | `src/data/site.json` -> `analytics.gtmId` |
+| GTM / GA4 container per store | `src/data/locations/<store>.json` -> `gtmId` (each store has its own GTM container and GA4 property; `site.json` `analytics.gtmId` is only a fallback) |
 
 Commit and push. Vercel redeploys all six in about a minute each.
 
