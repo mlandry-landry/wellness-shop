@@ -44,9 +44,10 @@ if (focus === 'sauna') {
 const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) };
 ---
 <Base title={title} description={description} schema={faqSchema}>
-  <section class="hero">
+  <section class={`hero ${heroV ? '' : 'hero-photo'}`}>
+    {!heroV && <><img class="hero-bg" src="/images/brand/backyard-jacuzzi.webp" alt="" width="1800" height="927" fetchpriority="high" /><div class="hero-shade"></div></>}
     <div class="wrap">
-      <div>
+      <div class="hero-copy">
         <div class="eyebrow" style="color:#9fd3e3">{location.name}</div>
         <h1>{heroV ? heroV.headline : promos.heroHeadline}</h1>
         <p class="lead">{heroV ? heroV.sub : promos.heroSub} Everything is on the floor at our {location.locality} showroom, {location.landmark}.</p>
@@ -63,14 +64,23 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
           {location.rating && <span><Icons name="star" /> {location.rating} stars on Google</span>}
         </div>
       </div>
-      <div class="art">
-        <span class="pill-tag"><RedTag line1={heroV ? heroV.tagLine1 : `Save up to ${money(maxSave)}`} line2={heroV ? heroV.tagLine2 : 'RED TAG PRICING'} size={190} /></span>
-        {heroV
-          ? <img class="hero-img-tall" src={heroV.image} alt={heroV.imageAlt} width="453" height="484" fetchpriority="high" />
-          : <img src="/images/products/j-509.webp" alt="Jacuzzi J-509 hot tub, the flagship J5 series" width="853" height="501" fetchpriority="high" />}
-        <a class="hero-caption" href={heroV ? heroV.imageLink : '/hot-tubs/j-509/'}>{heroV ? heroV.imageCaption : 'Jacuzzi J-509, 8 seats, 76 jets'} &rarr;</a>
-      </div>
+      {heroV ? (
+        <div class="art">
+          <span class="pill-tag"><RedTag line1={heroV.tagLine1} line2={heroV.tagLine2} size={190} /></span>
+          <img class="hero-img-tall" src={heroV.image} alt={heroV.imageAlt} width="453" height="484" fetchpriority="high" />
+          <a class="hero-caption" href={heroV.imageLink}>{heroV.imageCaption} &rarr;</a>
+        </div>
+      ) : (
+        <div class="hero-side">
+          <span class="pill-tag pill-tag-photo"><RedTag line1={`Save up to ${money(maxSave)}`} line2="RED TAG PRICING" size={230} /></span>
+          <a class="hero-model" href="/hot-tubs/j-509/">
+            <img src="/images/products/j-509.webp" alt="Jacuzzi J-509 hot tub" width="853" height="501" loading="eager" />
+            <span><strong>Pictured: Jacuzzi J-500 series</strong><em>J-509, 8 seats, 76 jets, {money(hotTubs.find((p) => p.slug === 'j-509')?.sale)}</em></span>
+          </a>
+        </div>
+      )}
     </div>
+    {!heroV && <div class="hero-foot"><div class="wrap"><span class="open-badge-lite"><span class="dot"></span>Showroom open 7 days</span><span>{location.street}{location.unit ? `, ${location.unit}` : ''}, {location.locality}</span><a href={location.directionsUrl} target="_blank" rel="noopener" data-loc="hero-foot">Directions &rarr;</a></div></div>}
   </section>
   <StoreStrip />
 
