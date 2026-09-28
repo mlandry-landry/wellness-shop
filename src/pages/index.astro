@@ -47,7 +47,7 @@ if (focus === 'sauna') {
 }
 const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) };
 const vid: any = ui.commercial || { eyebrow: 'Watch the commercial', heading: 'Make Your Backyard Dreams a Reality', lead: `Sixty seconds on what a hot tub, swim spa or sauna does for a backyard. Then come to the ${location.city} showroom and sit in one.` };
-const can: any = ui.buyCanadian || { heading: 'Buy Canadian', lead: 'The Wellness Shop is an Ontario company with eight showrooms across the province. Buy here and the sale, the delivery and the service stay local.', points: ['An Ontario company for 25 years', 'Local delivery crews and service technicians', 'Serenity saunas built in Canada from Western red cedar'] };
+const can: any = ui.buyCanadian || { heading: 'Buy Canadian', lead: 'The Wellness Shop is an Ontario company with eight showrooms across the province. Buy here and the sale, the delivery and the service stay local.', points: ['Canadian-owned and operated for 25 years', 'Local delivery crews and service technicians', 'Serenity saunas built in Canada from Western red cedar'] };
 ---
 <Base title={title} description={description} schema={faqSchema}>
   <section class={`hero ${heroV ? '' : 'hero-photo'}`}>
