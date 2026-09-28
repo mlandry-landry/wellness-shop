@@ -2,7 +2,7 @@
 import Base from '@/layouts/Base.astro';
 import StoreStrip from '@/components/StoreStrip.astro';
 import Icons from '@/components/Icons.astro';
-import { location, byCategory, specials, displayPhone, telHref, siteUrl } from '@/lib/site';
+import { location, byCategory, specials, displayPhone, telHref, siteUrl, ui } from '@/lib/site';
 const c = location.city;
 const pick = (p: any) => ({ slug: p.slug, cat: p.category, brand: p.brand, model: p.model, series: p.series, seats: p.seats, jets: p.jets, seating: p.seating, sale: p.sale || p.msrp, msrp: p.msrp, savings: p.savings || 0, biweekly: p.biweekly, electrical: p.electrical || '', waterCare: p.waterCare || '', volumeL: p.volumeL, lengthFt: p.lengthFt, sub: p.subcategory, image: p.image, notes: p.notes || '' });
 const data = JSON.stringify([...byCategory('hot-tub'), ...byCategory('swim-spa'), ...byCategory('sauna')].map(pick));
@@ -16,7 +16,7 @@ const description = `Answer four quick questions and we match you to the right J
     <div class="wrap" style="max-width:860px">
       <div class="eyebrow">Product finder</div>
       <h1 style="font-size:clamp(1.9rem,4vw,2.8rem)">Find the Right One in 60 Seconds</h1>
-      <p class="lead">Four quick questions, no email needed. We match you to the models on the {c} showroom floor with real prices, and tell you why.</p>
+      <p class="lead">{ui.finderPageLead || `Four quick questions, no email needed. We match you to the models on the ${c} showroom floor with real prices, and tell you why.`}</p>
 
       <div class="quiz" id="quiz" data-products={data} data-city={c} data-wettest={hasWetTest ? '1' : ''}>
         <div class="quiz-progress"><div class="quiz-bar" id="q-bar"></div></div>
@@ -37,7 +37,7 @@ const description = `Answer four quick questions and we match you to the right J
         <div class="two-col" style="margin-top:34px">
           <div class="form-card">
             <h3>Send me my matches</h3>
-            <p style="color:var(--muted);margin-bottom:12px">We will email your three picks with prices and set aside a time for you to try them in {c}. Optional, but handy.</p>
+            <p style="color:var(--muted);margin-bottom:12px">{ui.finderEmailNote || `We will email your three picks with prices and set aside a time for you to try them in ${c}. Optional, but handy.`}</p>
             <form class="form" method="post" action="/api/lead" id="q-form">
               <input type="hidden" name="source" value="quiz" /><input type="hidden" name="store" value={location.id} /><input type="hidden" name="page" value="/find-my-hot-tub/" />
               <input type="hidden" name="product" id="q-product" /><input type="hidden" name="message" id="q-message" /><input type="hidden" name="interest" id="q-interest" />

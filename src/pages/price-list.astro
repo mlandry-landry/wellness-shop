@@ -2,7 +2,7 @@
 import Base from '@/layouts/Base.astro';
 import StoreStrip from '@/components/StoreStrip.astro';
 import LeadForm from '@/components/LeadForm.astro';
-import { location, byCategory, money, biweekly, financeNote } from '@/lib/site';
+import { location, byCategory, money, biweekly, financeNote, ui } from '@/lib/site';
 const c = location.city;
 const hot = byCategory('hot-tub').filter((p) => p.sale).sort((a, b) => a.sale! - b.sale!);
 const title = `Hot Tub Price List ${new Date().getFullYear()} | ${c} | ${location.name}`;
@@ -15,7 +15,7 @@ const description = `Download the current ${c} price list for every Jacuzzi, Nor
       <div>
         <div class="eyebrow">Price list</div>
         <h1>{c} Hot Tub, Swim Spa and Sauna Price List</h1>
-        <p class="lead">Every price on this site is already public. The downloadable price list adds the pieces we do not publish: payment tables at every term, delivery and electrical checklists, the current floor model inventory at the {c} showroom, and the in-store offers that go with it.</p>
+        <p class="lead">{ui.priceListLead || `Every price on this site is already public. The downloadable price list adds the pieces we do not publish: payment tables at every term, delivery zones and the in-store offers.`}</p>
         <h2 style="font-size:1.4rem;margin-top:28px">Hot tubs at a glance</h2>
         <div style="overflow-x:auto">
         <table class="specs">

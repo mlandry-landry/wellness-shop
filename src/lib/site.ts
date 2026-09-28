@@ -32,6 +32,10 @@ export const siteUrl = `https://${location.domain}`;
 export type StoreCopy = typeof copyKitchener;
 const allCopy: Record<string, StoreCopy> = { hamilton: copyHamilton, whitby: copyWhitby, burlington: copyBurlington, barrie: copyBarrie, kitchener: copyKitchener, london: copyLondon } as any;
 export const copy: StoreCopy = allCopy[siteId] ?? copyKitchener;
+/** Store-written UI strings (src/data/copy/<store>.json -> ui). */
+export const ui: any = (copy as any).ui || {};
+/** Store-written paragraph for a product page. */
+export function productBlurb(slug: string): string | undefined { return ((copy as any).productBlurbs || {})[slug]; }
 /** Size bucket used to pick the local product note for a hot tub. */
 export function tubSize(p: Product): 'small' | 'medium' | 'large' {
   if (p.category !== 'hot-tub') return 'medium';
@@ -60,9 +64,10 @@ export function productPath(p: Product): string {
 }
 
 /** Active specials for this store (global 'all' plus store-specific). */
-export const specials: Special[] = specialsData.specials.filter(
-  (s) => s.active && (s.locations.includes('all') || s.locations.includes(siteId))
-);
+const storeSummaries: Record<string, string> = ((allCopy[siteId] as any)?.ui?.specialSummaries) || {};
+export const specials: Special[] = specialsData.specials
+  .filter((s) => s.active && (s.locations.includes('all') || s.locations.includes(siteId)))
+  .map((s) => (storeSummaries[s.id] ? { ...s, summary: storeSummaries[s.id] } : s));
 export const specialsIntro = specialsData.pageIntro;
 const focus = (location as any).homeFocus || 'hot-tub';
 export const activeBanners = (promos.banners as any[]).filter((b) => b.active).sort((a, b) => (b.category === focus ? 1 : 0) - (a.category === focus ? 1 : 0)).slice(0, 3);

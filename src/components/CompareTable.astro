@@ -37,7 +37,7 @@ const sortVal = (p: Product, key: string) => {
         <tr class={p.slug === current.slug ? 'cur' : ''} data-slug={p.slug} {...Object.fromEntries(cols.map((c) => [`data-s-${c.key}`, String(sortVal(p, c.key))]))}>
           {cols.map((c, i) => i === 0
             ? <th scope="row" class="cmp-model">{p.slug === current.slug ? <span><strong>{c.get(p)}</strong> <em>this page</em></span> : <a href={productPath(p)}>{c.get(p)}</a>}</th>
-            : <td class={c.key === 'sale' ? 'cmp-sale' : c.key === 'savings' ? 'cmp-save' : ''}>{c.get(p) ?? <span class="cmp-na">&ndash;</span>}</td>)}
+            : <td class={c.key === 'sale' ? 'cmp-sale' : c.key === 'savings' ? 'cmp-save' : ''}>{c.get(p) ?? <span class="cmp-na">n/a</span>}</td>)}
         </tr>
       ))}
     </tbody>

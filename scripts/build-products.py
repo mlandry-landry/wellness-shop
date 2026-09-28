@@ -21,7 +21,7 @@ CLEARLIGHT={
  'sanctuary-1':dict(msrp=11495,sale=10495,bw=21.09,msrpM=11995,saleM=10995,bwM=22.04,seats=1,notes='Includes a free AROMA ONE aromatherapy diffuser.'),
  'sanctuary-2':dict(msrp=12795,sale=11795,bw=23.56,msrpM=13295,saleM=12295,bwM=24.51,seats=2,notes=None),
  'sanctuary-3':dict(msrp=13995,sale=12995,bw=25.84,msrpM=14495,saleM=13495,bwM=26.79,seats=3,notes=None),
- 'sanctuary-5':dict(msrp=14995,sale=13995,bw=27.74,msrpM=15495,saleM=14495,bwM=28.69,seats=3),
+ 'sanctuary-5':dict(msrp=14995,sale=13995,bw=27.74,msrpM=15495,saleM=14495,bwM=28.69,seats=5),
  'sanctuary-y':dict(msrp=14995,sale=13995,bw=27.74,msrpM=15495,saleM=14495,bwM=28.69,seats=4,notes=None),
  'sanctuary-c':dict(msrp=15495,sale=14495,bw=28.69,msrpM=16495,saleM=15495,bwM=30.59,seats=4),
  'sanctuary-retreat':dict(msrp=16295,sale=15295,bw=30.21,msrpM=16795,saleM=15795,bwM=31.16,seats=4),

@@ -5,8 +5,13 @@ import SpecialCard from '@/components/SpecialCard.astro';
 import LeadForm from '@/components/LeadForm.astro';
 import PromoBanner from '@/components/PromoBanner.astro';
 import Icons from '@/components/Icons.astro';
-import { location, specials, specialsIntro, activeBanners, hoursRows, displayPhone, telHref, fullAddress, siteUrl } from '@/lib/site';
+import { location, specials, specialsIntro, activeBanners, hoursRows, displayPhone, telHref, fullAddress, siteUrl, ui } from '@/lib/site';
 const c = location.city;
+const rt: any = ui.redTagWhy || {
+  heading: 'Why Would We Take 20% Off a Brand New Jacuzzi?', lead: 'Three honest reasons, and none of them are about the tubs.',
+  reasons: [['New model year.', 'The 2027 Jacuzzi lineup needs the floor space, so every remaining 2026 unit has to move.'], ['Stock on hand.', 'There are 65 new 2026 Jacuzzi hot tubs across our Ontario showrooms, already here and already paid for.'], ['A two month window.', `We would rather deliver them to backyards in ${c} before the snow than store them over winter.`]],
+  summary: 'So we replaced both old Red Tag offers, $1,000 off and free electrical, with one bigger one: 20% off every new 2026 Jacuzzi in stock. Same model, same full Jacuzzi warranty, delivery and setup included. The only thing on clearance is the price.'
+};
 const title = `In-Store Specials and Walk-In Deals | ${location.name}`;
 const description = `Showroom-only hot tub, swim spa and sauna offers at ${location.name}, ${fullAddress}. Floor model clearance, bundles and flash pricing you can only get by visiting. Open 7 days.`;
 const schema = [
@@ -21,7 +26,7 @@ const schema = [
       <div style="max-width:760px">
         <div class="eyebrow" style="color:#ffd9cc">Showroom only · {c}</div>
         <h1>In-Store Specials at the {c} Showroom</h1>
-        <p class="lead">Claim an offer below and we create a personal Red Tag voucher with your name, a code and a countdown. Show it on your phone at the {c} showroom. You will not find these prices on wellnessshop.ca or anywhere else online.</p>
+        <p class="lead">{ui.specialsHeroLead || `Claim an offer below and we create a personal Red Tag voucher with your name, a code and a countdown. Show it on your phone at the ${c} showroom. You will not find these prices on wellnessshop.ca or anywhere else online.`}</p>
         <div class="cta-row">
           <a class="btn btn-primary" href={location.directionsUrl} target="_blank" rel="noopener" data-loc="specials-hero"><Icons name="pin" /> Get directions</a>
           <a class="btn btn-light" href={telHref} data-loc="specials-hero"><Icons name="phone" /> Call ahead {displayPhone}</a>
@@ -36,14 +41,12 @@ const schema = [
     <div class="wrap two-col" style="align-items:center">
       <div>
         <div class="eyebrow" style="color:#e5352b">Jacuzzi exclusive Red Tag · Inventory clearance</div>
-        <h2>Why Would We Take 20% Off a Brand New Jacuzzi?</h2>
-        <p class="lead">Three honest reasons, and none of them are about the tubs.</p>
+        <h2>{rt.heading}</h2>
+        <p class="lead">{rt.lead}</p>
         <ol class="reasons">
-          <li><b>New model year.</b> The 2027 Jacuzzi lineup needs the floor space, so every remaining 2026 unit has to move.</li>
-          <li><b>Stock on hand.</b> There are 65 new 2026 Jacuzzi hot tubs across our Ontario showrooms, already here and already paid for.</li>
-          <li><b>A two month window.</b> We would rather deliver them to backyards in {c} before the snow than store them over winter.</li>
+          {rt.reasons.map(([b, t]: [string, string]) => <li><b>{b}</b> {t}</li>)}
         </ol>
-        <p>So we replaced both old Red Tag offers, $1,000 off and free electrical, with one bigger one: 20% off every new 2026 Jacuzzi in stock. Same model, same full Jacuzzi warranty, delivery and setup included. The only thing on clearance is the price.</p>
+        <p>{rt.summary}</p>
         <div class="cta-row">
           <a class="btn btn-primary" href="#jacuzzi-red-tag-20"><Icons name="tag" /> Claim your Red Tag price</a>
           <a class="btn btn-navy" href="/hot-tubs/?brand=Jacuzzi">See the 2026 Jacuzzi models</a>
@@ -65,7 +68,7 @@ const schema = [
     <div class="wrap">
       <div class="eyebrow">Claim at the counter</div>
       <h2 style="margin-bottom:6px">Showroom Offers in {c}</h2>
-      <p class="lead" style="margin-top:0">{specialsIntro}</p>
+      <p class="lead" style="margin-top:0">{ui.specialsIntro || specialsIntro}</p>
       {specials.length === 0 ? (
         <p class="lead">New showroom offers are being loaded. Call {displayPhone} and ask what is on the floor this week.</p>
       ) : (
@@ -80,14 +83,16 @@ const schema = [
         <div class="eyebrow">How it works</div>
         <h2>Three Steps to the Showroom Deal</h2>
         <div class="steps" style="margin-top:20px">
-          <div><h3>Claim your offer</h3><p style="color:var(--muted)">Tap Claim, give us your name and mobile, and your Red Tag voucher appears instantly with a code and a 7 day countdown.</p></div>
-          <div><h3>We hold it for you</h3><p style="color:var(--muted)">The {c} team gets your voucher the moment you claim it, so the floor model or wet test is set aside under your name.</p></div>
-          <div><h3>Show it at the counter</h3><p style="color:var(--muted)">Open the voucher on your phone or print it. The offer is applied to your showroom quote.</p></div>
+          {(ui.claimSteps || [
+            { title: 'Claim your offer', text: 'Tap Claim, give us your name and mobile, and your Red Tag voucher appears instantly with a code and a 7 day countdown.' },
+            { title: 'We hold it for you', text: `The ${c} team gets your voucher the moment you claim it, so the floor model or wet test is set aside under your name.` },
+            { title: 'Show it at the counter', text: 'Open the voucher on your phone or print it. The offer is applied to your showroom quote.' }
+          ]).map((st: any) => <div><h3>{st.title}</h3><p style="color:var(--muted)">{st.text}</p></div>)}
         </div>
         {activeBanners.length > 0 && (
           <div style="margin-top:34px">
             <h2 style="font-size:1.4rem">Also On Right Now</h2>
-            <p style="color:var(--muted)">These run on every model and stack with the showroom offers above.</p>
+            <p style="color:var(--muted)">{ui.alsoOnIntro || 'These run on every model and stack with the showroom offers above.'}</p>
             <div class="promos" style="grid-template-columns:1fr">{activeBanners.map((b) => <PromoBanner b={b} />)}</div>
           </div>
         )}

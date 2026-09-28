@@ -5,7 +5,7 @@ import ProductCard from '@/components/ProductCard.astro';
 import LeadForm from '@/components/LeadForm.astro';
 import Icons from '@/components/Icons.astro';
 import CompareTable from './CompareTable.astro';
-import { copy, tubSize, linkModels, location, byCategory, categories, money, biweekly, financeNote, telHref, displayPhone, siteUrl, productPath, specials, site, type Product } from '@/lib/site';
+import { copy, tubSize, linkModels, ui, productBlurb, location, byCategory, categories, money, biweekly, financeNote, telHref, displayPhone, siteUrl, productPath, specials, site, type Product } from '@/lib/site';
 const { p } = Astro.props as { p: Product };
 const cat = categories[p.category as keyof typeof categories];
 const catLabel = cat.singular.toLowerCase();
@@ -22,7 +22,8 @@ const compareLabel = bySeries.length ? `${p.brand} ${seriesLabel} ${cat.label.to
 const brandBlurb = (site.brands as any)[p.brand]?.blurb;
 const isClearance = p.notes && /clearance|flash/i.test(p.notes);
 const notes: any = copy.productNotes;
-const localNote: string = p.category === 'hot-tub' ? notes['hot-tub'][tubSize(p)] : (notes[p.category] || location.deliveryNote);
+const localNote: string = productBlurb(p.slug) || (p.category === 'hot-tub' ? notes['hot-tub'][tubSize(p)] : (notes[p.category] || location.deliveryNote));
+const floorLine: string = (ui.productFloorLine || `The {model} is one of the models we keep on the floor, so you can see the cabinet colours, feel the seat depth and hear how quiet the pumps are before you decide.`).replace('{model}', p.model);
 const redTag20 = p.brand === 'Jacuzzi' && p.category === 'hot-tub' && !isClearance && (specials as any[]).some((s) => s.id === 'jacuzzi-red-tag-20');
 const priceLine = p.quoteOnly ? 'Showroom pricing' : p.sale ? `${money(p.sale)}, regular ${money(p.msrp)}` : money(p.msrp);
 const title = `${p.brand} ${p.model} ${cat.singular} in ${c} | ${p.quoteOnly ? 'Showroom Pricing' : money(p.sale || p.msrp)} | ${location.name}`;
@@ -75,7 +76,7 @@ const schema: any[] = [{
             )}
             {redTag20 && (
               <a class="callout redtag-callout" href="/in-store-specials/#jacuzzi-red-tag-20" data-track="specials_click" data-loc="product-redtag" style="margin-top:12px;display:block;text-decoration:none">
-                <strong>Red Tag Clearance: 20% off this model while new 2026 stock lasts.</strong> The {c} showroom applies the 20% Jacuzzi inventory discount at the counter, and it replaces the $1,000 off and free electrical offers. Claim your Red Tag price &rarr;
+                {ui.redTagCallout ? <><strong>Red Tag Clearance: 20% off this model.</strong> {ui.redTagCallout} Claim your Red Tag price &rarr;</> : <><strong>Red Tag Clearance: 20% off this model while new 2026 stock lasts.</strong> The {c} showroom applies the 20% Jacuzzi inventory discount at the counter, and it replaces the $1,000 off and free electrical offers. Claim your Red Tag price &rarr;</>}
               </a>
             )}
             {isClearance && <p class="callout" style="margin-top:12px"><strong>Floor model deal at the showroom.</strong> {p.notes}. Ask about it when you visit or call; these go fast and each store has one or two at most.</p>}
@@ -85,9 +86,9 @@ const schema: any[] = [{
               <a class="btn btn-outline" href={telHref} data-loc="product"><Icons name="phone" /> {displayPhone}</a>
               <a class="btn btn-outline" href={location.directionsUrl} target="_blank" rel="noopener" data-loc="product"><Icons name="pin" /> See it in {location.locality}</a>
             </div>
-            <p class="fine" style="color:var(--muted);font-size:.85rem">On the floor at {location.name}, {location.street}, {location.locality}. Wet tests by appointment. Prices in CAD and include the current sale; delivery within our service area, electrical by a licensed electrician.</p>
+            <p class="fine" style="color:var(--muted);font-size:.85rem">{ui.productTrust || `On the floor at ${location.name}, ${location.street}, ${location.locality}. Wet tests by appointment. Prices in CAD and include the current sale; delivery within our service area, electrical by a licensed electrician.`}</p>
             {p.biweekly && <p class="fine" style="color:var(--muted);font-size:.8rem">*{financeNote}</p>}
-            {brandBlurb && <p style="margin-top:14px">{brandBlurb}</p>}
+            {brandBlurb && <p style="margin-top:14px">{(ui.brandBlurbs || {})[p.brand] || brandBlurb}</p>}
           </div>
         </div>
       </div>
@@ -102,11 +103,11 @@ const schema: any[] = [{
         {p.notes && !isClearance && !p.notes.startsWith('Includes') && <p style="margin-top:12px;color:var(--muted)">{p.notes}</p>}
         <h2 style="font-size:1.5rem;margin-top:34px">Owning the {p.model} in {c}</h2>
         <p set:html={linkModels(localNote, p.slug)} />
-        <p>{location.whyVisit} The {p.model} is one of the models we keep on the floor, so you can see the cabinet colours, feel the seat depth and hear how quiet the pumps are before you decide.</p>
-        {specials.length > 0 && <p><strong>Showroom extras:</strong> see the <a href="/in-store-specials/">in-store specials</a> for floor model pricing and bundles you only get by visiting.</p>}
+        <p>{location.whyVisit} {floorLine}</p>
+        {specials.length > 0 && <p><strong>Showroom extras:</strong> {ui.productExtras || 'floor model pricing and bundles you only get by visiting.'} <a href="/in-store-specials/">See the in-store specials</a>.</p>}
       </div>
       <div id="quote">
-        <LeadForm source={`product:${p.slug}`} product={`${p.brand} ${p.model}`} title={`Ask about the ${p.model}`} sub={`Get current showroom pricing, delivery timing and what colours are on the floor in ${c}.`} button="Get my quote" compact />
+        <LeadForm source={`product:${p.slug}`} product={`${p.brand} ${p.model}`} title={`Ask about the ${p.model}`} sub={(ui.productFormSub || `Get current showroom pricing, delivery timing and what colours are on the floor in ${c}.`).replace('{model}', p.model)} button="Get my quote" compact />
       </div>
     </div>
   </section>
@@ -116,7 +117,7 @@ const schema: any[] = [{
       <div class="wrap">
         <div class="eyebrow">Side by side</div>
         <h2 style="font-size:1.5rem">How the {p.model} compares with other {compareLabel}</h2>
-        <p style="color:var(--muted);max-width:720px">Tap a column heading to sort. Every model here is on the floor at the {c} showroom, so you can sit in your shortlist the same afternoon.</p>
+        <p style="color:var(--muted);max-width:720px">{(ui.compareIntro || `Tap a column heading to sort. Every model here is on the floor at the ${c} showroom, so you can sit in your shortlist the same afternoon.`).replace('{model}', p.model)}</p>
         <CompareTable current={p} items={compareRows} label={compareLabel} />
         <p class="fine" style="color:var(--muted);font-size:.8rem;margin-top:10px">*{financeNote}</p>
         <h3 style="font-size:1.15rem;margin-top:30px">Closest alternatives</h3>

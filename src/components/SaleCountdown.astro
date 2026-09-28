@@ -1,5 +1,5 @@
 ---
-import { promos } from '@/lib/site';
+import { promos, ui } from '@/lib/site';
 const sale = (promos as any).sale;
 // 'month-end' rolls to the last day of the current month in the browser; a fixed date is checked at build time.
 const rolling = sale && sale.endsOn === 'month-end';
@@ -10,7 +10,7 @@ const fixedLabel = fixedEnd ? new Date(sale.endsOn + 'T12:00:00').toLocaleDateSt
 {on && (
   <a class="salebar" href="/in-store-specials/" data-track="salebar_click" data-ends={rolling ? 'month-end' : sale.endsOn + 'T23:59:00-04:00'}>
     <span class="salebar-tag">{sale.name}</span>
-    <span class="salebar-text">{sale.text}{' '}<span class="salebar-when" id="salebar-when">{fixedLabel}</span></span>
+    <span class="salebar-text">{ui.salebarText || sale.text}{' '}<span class="salebar-when" id="salebar-when">{fixedLabel}</span></span>
     <span class="salebar-timer" id="salebar-timer" aria-live="polite">
       <span class="t"><b data-u="d">--</b><small>days</small></span>
       <span class="t"><b data-u="h">--</b><small>hrs</small></span>

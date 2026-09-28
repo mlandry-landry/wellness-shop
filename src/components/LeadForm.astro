@@ -1,5 +1,5 @@
 ---
-import { location, byCategory } from '@/lib/site';
+import { location, byCategory, ui } from '@/lib/site';
 interface Props { title?: string; sub?: string; source: string; product?: string; button?: string; compact?: boolean; }
 const { title = 'Get Showroom Pricing', sub = `Tell us what you are looking for and the ${location.city} team will call or text you back, usually within the hour during showroom hours.`, source, product, button = 'Send my request', compact = false } = Astro.props;
 const interests = ['Hot tub', 'Swim spa / all season pool', 'Infrared sauna', 'Outdoor sauna', 'Cold plunge', 'Not sure yet'];
@@ -29,7 +29,7 @@ const fid = 'f' + Math.random().toString(36).slice(2, 7);
     )}
     {!compact && <label>Anything else?<textarea name="message" rows="3" placeholder="Backyard size, timeline, models you like, trade-in..."></textarea></label>}
     <button class="btn btn-primary" type="submit">{button}</button>
-    <p class="fine">No spam, no obligation. We will only contact you about your request. Prefer to talk now? Call <a href={`tel:+1${location.phone.replace(/\D/g,'')}`}>{location.phone}</a>.</p>
+    <p class="fine">{ui.leadReassure || 'No spam, no obligation. We will only contact you about your request. Prefer to talk now?'}{' '}Call <a href={`tel:+1${location.phone.replace(/\D/g,'')}`}>{location.phone}</a>.</p>
     <div class="msg" role="status"></div>
   </form>
 </div>
