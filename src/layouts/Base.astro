@@ -43,7 +43,7 @@ const title = seoTitle(rawTitle);
 const description = seoDesc(rawDescription);
 
 // Breadcrumbs for every non-home page that did not supply its own BreadcrumbList.
-const segLabels: Record<string, string> = { 'hot-tubs': 'Hot Tubs', 'swim-spas': 'Swim Spas', saunas: 'Saunas', 'cold-plunge': 'Cold Plunge', 'massage-chairs': 'Massage Chairs', gazebos: 'Gazebos', 'in-store-specials': 'In-Store Specials', 'find-my-hot-tub': 'Product Finder', financing: 'Financing', showroom: 'Showroom', 'price-list': 'Price List', 'service-areas': 'Service Areas', voucher: 'Voucher', 'thank-you': 'Thank You', privacy: 'Privacy' };
+const segLabels: Record<string, string> = { 'hot-tubs': 'Hot Tubs', 'swim-spas': 'Swim Spas', saunas: 'Saunas', 'cold-plunge': 'Cold Plunge', 'massage-chairs': 'Massage Chairs', gazebos: 'Gazebos', 'in-store-specials': 'In-Store Specials', 'find-my-hot-tub': 'Product Finder', financing: 'Financing', showroom: 'Showroom', 'price-list': 'Price List', 'service-areas': 'Service Areas', 'buy-canadian': 'Buy Canadian', voucher: 'Voucher', 'thank-you': 'Thank You', privacy: 'Privacy' };
 const segs = Astro.url.pathname.split('/').filter(Boolean);
 const given = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
 const hasCrumbs = given.some((g: any) => g && g['@type'] === 'BreadcrumbList');

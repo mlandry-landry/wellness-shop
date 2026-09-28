@@ -379,6 +379,36 @@
       "floor-model-clearance": "Our 2025 J-400 floor models, inspected and fully warranted, at markdown pricing. Availability is whatever the Burlington floor has this week.",
       "wet-test": "A private half hour in a heated tub at the Burlington showroom, by appointment, at no charge. Bring a swimsuit.",
       "j-275-flash": "The six seat J-275 with lounger, 38 jets and CLEARRAY water care at $14,695 while the 2025 units last."
+    },
+    "commercial": {
+      "eyebrow": "Watch the commercial",
+      "heading": "Make Your Burlington Backyard the Reason You Stay Home",
+      "lead": "Sixty seconds on what a hot tub, swim spa or sauna does for a yard in Aldershot, Millcroft or up in Waterdown. Then pull off the QEW and try one at the North Service Road showroom."
+    },
+    "buyCanadian": {
+      "heading": "Buy Canadian. Buy From Burlington.",
+      "lead": "What began as one local hot tub store is now eight Wellness Shop showrooms across Ontario, 25 years later. Buying on the North Service Road keeps the sale, the delivery and the service in Halton.",
+      "points": [
+        "An Ontario company for 25 years, with the Burlington showroom staffed by people who live in Halton.",
+        "Delivery crews and service technicians based here, covering Oakville, Milton and Waterdown from Burlington.",
+        "Serenity outdoor saunas built in Canada from Western red cedar, running beside the Jacuzzi lineup on the floor."
+      ],
+      "pageLead": "Buying Canadian is about where the money and the responsibility end up. Here the company is based in Ontario, the crew that sets the tub on your pad lives in Halton, and the technician who takes a January call is minutes off the QEW.",
+      "body": [
+        "The Wellness Shop started as a single local hot tub store and has grown over 25 years into eight showrooms across Ontario. Burlington covers Halton and the lakeshore, from Aldershot to Oakville and up the escarpment to Milton, with staff who use the same QEW ramps you do. The sale, the delivery and the warranty work all stay in the province.",
+        "The brands are the ones you came in for. We are an authorized Jacuzzi dealer, so every tub carries the full factory warranty. Serenity saunas are built in Canada from Western red cedar. Our Wellness Shop Ontario series was specified for winters on the lake, with full foam insulation and covers that hold up to the wind off the water. Buy Canadian here means choosing where the money and the service live, not giving up the model you wanted.",
+        "It pays off after the truck leaves. Cover replacements, filter changes, a pump under warranty: all of it runs through the Burlington showroom with parts on hand and a crew that has already been to your address."
+      ],
+      "faq": [
+        {
+          "q": "Is the Wellness Shop a Canadian company?",
+          "a": "Yes. The Wellness Shop is an Ontario company that started as one local hot tub store and now runs eight showrooms across the province, including the Burlington showroom on the North Service Road. Sales, delivery and service are handled by Ontario staff."
+        },
+        {
+          "q": "Are your hot tubs and saunas Canadian made?",
+          "a": "Serenity outdoor saunas are built in Canada from Western red cedar. Jacuzzi and our Wellness Shop Ontario series hot tubs are built in the United States, Nordic in Michigan and Aquasolus in Europe. Every one is sold by a Canadian company and delivered and serviced by the Burlington team."
+        }
+      ]
     }
   }
 }

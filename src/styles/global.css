@@ -79,7 +79,7 @@ p { margin: 0 0 1em; }
 .header { background: var(--navy); color: #fff; position: sticky; top: 0; z-index: 50; }
 .topbar { background: #071626; font-size: .85rem; }
 .topbar .addr { display: none; }
-@media (min-width: 700px) { .topbar .addr { display: inline; } }
+@media (min-width: 700px) { .topbar .addr { display: inline; margin-left: auto; } }
 .topbar .wrap { display: flex; justify-content: space-between; align-items: center; min-height: 34px; gap: 12px; flex-wrap: wrap; }
 .topbar a { color: #cfe6ef; }
 .open-badge { display: inline-flex; align-items: center; }
@@ -409,3 +409,39 @@ h2 { font-size: clamp(1.75rem, 3.2vw, 2.5rem); letter-spacing: -0.02em; }
 .cmp .cmp-sale { font-weight: 700; color: var(--navy); }
 .cmp .cmp-save { color: #1a7f4b; font-weight: 600; }
 .cmp .cmp-na { color: #b6bec7; }
+
+/* YouTube click-to-play facade */
+.yt { position: relative; aspect-ratio: 16 / 9; border-radius: var(--radius); overflow: hidden; background: #000; box-shadow: var(--shadow); }
+.yt img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: .92; transition: transform .3s, opacity .3s; }
+.yt:hover img { transform: scale(1.02); opacity: 1; }
+.yt-play { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: transparent; cursor: pointer; display: grid; place-items: center; }
+.yt-play svg { filter: drop-shadow(0 6px 18px rgba(0,0,0,.45)); transition: transform .15s; }
+.yt-play:hover svg { transform: scale(1.08); }
+.yt-label { position: absolute; left: 0; right: 0; bottom: 0; padding: 26px 16px 12px; color: #fff; font-size: .9rem; font-weight: 600; background: linear-gradient(transparent, rgba(0,0,0,.65)); pointer-events: none; }
+.yt.playing iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+/* Homepage commercial */
+.commercial { background: var(--navy); color: #fff; padding: 56px 0; }
+.commercial .wrap { display: grid; grid-template-columns: minmax(280px, 1fr) minmax(0, 1.6fr); gap: 40px; align-items: center; }
+.commercial h2 { color: #fff; }
+.commercial p { color: #cfe0ea; }
+@media (max-width: 860px) { .commercial .wrap { grid-template-columns: 1fr; } }
+
+/* Buy Canadian */
+.leaf { width: 16px; height: 16px; vertical-align: -3px; }
+.topbar .canada { display: inline-flex; align-items: center; gap: 6px; color: #fff; font-weight: 700; background: #c8102e; padding: 4px 10px; border-radius: 999px; font-size: .78rem; white-space: nowrap; }
+.topbar .canada:hover { background: #a80d26; }
+.canada-band { background: linear-gradient(135deg, #fff 0%, #fff5f5 100%); border-top: 4px solid #c8102e; padding: 56px 0; }
+.canada-band .wrap { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(280px, 1fr); gap: 40px; align-items: center; }
+.canada-band .eyebrow { color: #c8102e; }
+.canada-points { list-style: none; padding: 0; margin: 18px 0 22px; display: grid; gap: 10px; }
+.canada-points li { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; }
+.canada-points .leaf { color: #c8102e; margin-top: 3px; }
+@media (max-width: 860px) { .canada-band .wrap { grid-template-columns: 1fr; } }
+.canada-hero { background: #c8102e; color: #fff; padding: 52px 0 44px; }
+.canada-hero h1, .canada-hero .eyebrow { color: #fff; }
+.canada-hero .lead { color: #ffe3e6; }
+.canada-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-top: 26px; }
+.canada-stats div { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; box-shadow: var(--shadow); }
+.canada-stats b { display: block; font-family: var(--font-head); font-size: 1.6rem; color: #c8102e; line-height: 1.1; }
+.canada-stats span { color: var(--muted); font-size: .9rem; }

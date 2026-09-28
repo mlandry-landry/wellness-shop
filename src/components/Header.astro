@@ -20,6 +20,7 @@ const cur = (h: string) => (path.startsWith(h) ? 'page' : undefined);
     <div class="wrap">
       <OpenBadge />
       <a class="addr" href={location.directionsUrl} target="_blank" rel="noopener" data-loc="topbar">{fullAddress}</a>
+      <a class="canada" href="/buy-canadian/" data-track="buy_canadian_click" data-loc="topbar"><Icons name="leaf" class="leaf" /> Buy Canadian</a>
     </div>
   </div>
   <div class="wrap nav">
@@ -38,6 +39,7 @@ const cur = (h: string) => (path.startsWith(h) ? 'page' : undefined);
   <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile">
     {links.map(([h, l]) => <a href={h}>{l}</a>)}
     <a href="/cold-plunge/">Cold Plunge</a>
+    <a href="/buy-canadian/">Buy Canadian</a>
     <a href="/price-list/">Download Price List</a>
     <a href={telHref}>Call {displayPhone}</a>
   </nav>

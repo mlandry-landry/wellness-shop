@@ -387,6 +387,36 @@
       "floor-model-clearance": "The 2025 J-400 units that ran on our Bryne Drive floor all year, inspected and fully warranted, at clearance pricing while they last.",
       "wet-test": "Half an hour in a filled, heated tub at the Barrie showroom, private and free, by appointment. Swimsuit required.",
       "j-275-flash": "A lounger, 38 jets and CLEARRAY water care in the six seat J-275 for $14,695 as long as 2025 stock holds."
+    },
+    "commercial": {
+      "eyebrow": "Watch the commercial",
+      "heading": "Backyard Dreams, Built for Simcoe County",
+      "lead": "One minute on what a hot tub, swim spa or sauna does for a yard in Barrie, a lot in Innisfil or a cottage on Georgian Bay. Every model is filled and heated on Bryne Drive, off the 400 at Mapleview."
+    },
+    "buyCanadian": {
+      "heading": "Buy Canadian. Buy From Barrie.",
+      "lead": "The Wellness Shop grew from one local hot tub store into eight Ontario showrooms over 25 years. Buying in Barrie keeps the sale, the delivery crew and the service technician in Simcoe County.",
+      "points": [
+        "An Ontario company for 25 years, with the Bryne Drive showroom staffed by people who live in Simcoe County.",
+        "Delivery crews and service technicians who work out of Barrie, from Alliston to Orillia and Collingwood.",
+        "Serenity outdoor saunas built in Canada from Western red cedar, set up beside the Jacuzzi floor models."
+      ],
+      "pageLead": "Buy Canadian does not mean a smaller tub. It means the company is headquartered in Ontario, the crew that gets the tub up a cottage road lives in Barrie, and the technician who answers a call in February starts the day on Bryne Drive.",
+      "body": [
+        "The Wellness Shop began as a single local hot tub store and, 25 years later, runs eight showrooms across Ontario. Barrie covers Simcoe County and cottage country, from Innisfil to Midland and over to Collingwood, with staff who drive the 400 in the same snow you do. The sale, the delivery and the warranty work stay in the province.",
+        "We carry the names buyers come in for. As an authorized Jacuzzi dealer, every tub we sell carries the full factory warranty. Serenity saunas are built in Canada from Western red cedar. Our Wellness Shop Ontario series was specified for winters north of the city, with full foam insulation and covers that carry a real snow load. Buy Canadian here means the money and the service stay close, whichever badge is on the cabinet.",
+        "It shows most a few winters in, when a heater needs a look or a cover needs replacing. All of that runs through the Barrie showroom, with parts on the shelf and a crew that already knows your road."
+      ],
+      "faq": [
+        {
+          "q": "Is the Wellness Shop a Canadian company?",
+          "a": "Yes. The Wellness Shop is an Ontario company that grew from one local hot tub store into eight showrooms across the province, including the Barrie showroom on Bryne Drive. Sales, delivery and service are all handled by Ontario staff."
+        },
+        {
+          "q": "Which products are made in Canada?",
+          "a": "Serenity outdoor saunas are built in Canada from Western red cedar. Jacuzzi hot tubs and our Wellness Shop Ontario series are built in the United States, Nordic tubs in Michigan and Aquasolus in Europe. Every one is sold by a Canadian company and delivered and serviced by the Barrie team."
+        }
+      ]
     }
   }
 }

@@ -1,6 +1,6 @@
 {
   "exportFormatVersion": 2,
-  "exportTime": "2026-09-21 18:53:36",
+  "exportTime": "2026-09-28 20:39:46",
   "containerVersion": {
     "path": "accounts/1395168673/containers/118505925/versions/0",
     "accountId": "1395168673",
@@ -171,6 +171,21 @@
                     "type": "TEMPLATE",
                     "key": "parameterValue",
                     "value": "{{DLV - top}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "video_id"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DLV - video}}"
                   }
                 ]
               }
@@ -346,7 +361,7 @@
               {
                 "type": "TEMPLATE",
                 "key": "arg1",
-                "value": "^(call_click|directions_click|specials_click|product_cta|promo_click|salebar_click|lead_submit|lead_thank_you|claim_open|claim_submit|claim_prompt_view|voucher_view|quiz_start|quiz_step|quiz_complete)$"
+                "value": "^(call_click|directions_click|specials_click|product_cta|promo_click|salebar_click|lead_submit|lead_thank_you|claim_open|claim_submit|claim_prompt_view|voucher_view|quiz_start|quiz_step|quiz_complete|video_play|buy_canadian_click)$"
               }
             ]
           }
@@ -666,6 +681,31 @@
             "type": "TEMPLATE",
             "key": "name",
             "value": "top"
+          }
+        ]
+      },
+      {
+        "accountId": "1395168673",
+        "containerId": "118505925",
+        "variableId": "110",
+        "name": "DLV - video",
+        "type": "v",
+        "parentFolderId": "900",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "setDefaultValue",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "video"
           }
         ]
       }

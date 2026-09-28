@@ -7,6 +7,7 @@ import SpecialCard from '@/components/SpecialCard.astro';
 import LeadForm from '@/components/LeadForm.astro';
 import PromoBanner from '@/components/PromoBanner.astro';
 import RedTag from '@/components/RedTag.astro';
+import VideoEmbed from '@/components/VideoEmbed.astro';
 import { copy, linkModels, ui, location, promos, specials, activeBanners, byCategory, displayPhone, telHref, hoursRows, site, money } from '@/lib/site';
 
 const focus: string = (location as any).homeFocus || 'hot-tub';
@@ -45,6 +46,8 @@ if (focus === 'sauna') {
   );
 }
 const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) };
+const vid: any = ui.commercial || { eyebrow: 'Watch the commercial', heading: 'Make Your Backyard Dreams a Reality', lead: `Sixty seconds on what a hot tub, swim spa or sauna does for a backyard. Then come to the ${location.city} showroom and sit in one.` };
+const can: any = ui.buyCanadian || { heading: 'Buy Canadian', lead: 'The Wellness Shop is an Ontario company with eight showrooms across the province. Buy here and the sale, the delivery and the service stay local.', points: ['An Ontario company for 25 years', 'Local delivery crews and service technicians', 'Serenity saunas built in Canada from Western red cedar'] };
 ---
 <Base title={title} description={description} schema={faqSchema}>
   <section class={`hero ${heroV ? '' : 'hero-photo'}`}>
@@ -107,6 +110,21 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
         <p class="fine" style="color:#9aa7b4">In-stock new 2026 Jacuzzi hot tubs only, while quantities last. Not combinable with the $1,000 off or free electrical offers.</p>
       </div>
       <a href="/in-store-specials/#red-tag-clearance" aria-label="Red Tag clearance details"><img src="/images/promo/redtag-tag-closeup.webp" alt="Red Tag reading 20% off hanging on a new Jacuzzi hot tub" width="900" height="1600" loading="lazy" style="max-height:560px;width:auto;margin:0 auto" /></a>
+    </div>
+  </section>
+
+  <section class="commercial" id="video">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow" style="color:#9fd3e3">{vid.eyebrow}</div>
+        <h2>{vid.heading}</h2>
+        <p class="lead">{vid.lead}</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="/showroom/" data-loc="home-video">Book a showroom visit</a>
+          <a class="btn btn-light" href="/find-my-hot-tub/" data-track="quiz_start" data-loc="home-video">Find my hot tub</a>
+        </div>
+      </div>
+      <VideoEmbed id="dyUVZuzOdy0" title="Make Your Backyard Dreams a Reality | The Wellness Shop" loc="home-commercial" />
     </div>
   </section>
 
@@ -200,6 +218,24 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
         </div>
         <iframe class="map" loading="lazy" title={`Map to ${location.name}`} referrerpolicy="no-referrer-when-downgrade" src={`https://www.google.com/maps?q=${encodeURIComponent(location.name + ' ' + location.street + ' ' + location.locality + ' ON')}&output=embed`}></iframe>
       </div>
+    </div>
+  </section>
+
+  <section class="canada-band" id="buy-canadian">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow"><Icons name="leaf" class="leaf" /> Proudly Ontario</div>
+        <h2>{can.heading}</h2>
+        <p class="lead" style="margin-top:0">{can.lead}</p>
+        <ul class="canada-points">
+          {can.points.map((t: string) => <li><Icons name="leaf" class="leaf" /><span>{t}</span></li>)}
+        </ul>
+        <div class="cta-row">
+          <a class="btn btn-navy" href="/buy-canadian/" data-track="buy_canadian_click" data-loc="home-band">Why buy Canadian</a>
+          <a class="btn btn-outline" href="/showroom/" data-loc="home-band">Visit the {location.city} showroom</a>
+        </div>
+      </div>
+      <VideoEmbed id="eB7wpYPPYUU" title="You're the One (That I Want) to Buy Canadian" loc="home-buy-canadian" />
     </div>
   </section>
 

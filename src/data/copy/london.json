@@ -387,6 +387,36 @@
       "floor-model-clearance": "The 2025 J-400 series units that spent the year running on our Westmount floor, inspected, fully warranted and priced to move.",
       "wet-test": "Book a private half hour in a filled and heated tub on Southdale Road West. Bring a swimsuit; there is no charge and no pressure.",
       "j-275-flash": "Six seats, a lounger, 38 jets and CLEARRAY water care in the J-275 at $14,695 while 2025 stock remains."
+    },
+    "commercial": {
+      "eyebrow": "Watch the commercial",
+      "heading": "Backyard Dreams, London Edition",
+      "lead": "One minute on what a hot tub, swim spa or sauna adds to a yard in Byron, Oakridge or out toward St. Thomas. Every model in it is filled and heated on Southdale Road West."
+    },
+    "buyCanadian": {
+      "heading": "Buy Canadian. Buy From London.",
+      "lead": "The Wellness Shop grew from one local hot tub store into eight Ontario showrooms over 25 years. Buying at the Westmount showroom keeps the sale, the delivery crew and the service technician in Southwestern Ontario.",
+      "points": [
+        "An Ontario company for 25 years, with London based staff at the Southdale Road showroom.",
+        "Delivery crews and service technicians who work out of London, from Sarnia to Woodstock.",
+        "Serenity outdoor saunas built in Canada from Western red cedar, set up beside the Jacuzzi floor models."
+      ],
+      "pageLead": "Buying Canadian should not cost you the brand you wanted. It means the company is headquartered in Ontario, the crew that backs the trailer down your driveway lives in London, and the technician who answers a February call starts the morning in Westmount.",
+      "body": [
+        "The Wellness Shop started as a single local hot tub store and, 25 years on, runs eight showrooms across Ontario. The London showroom near Wonderland Road covers all of Southwestern Ontario, with staff who know the difference between a Byron lot and a farm outside Strathroy. The sale, the delivery and the warranty work never leave the province.",
+        "We carry the names buyers ask for. As an authorized Jacuzzi dealer, every tub we sell comes with the full factory warranty. Serenity saunas are built in Canada from Western red cedar. Our Wellness Shop Ontario series was specified for the snow belt winters between here and Lake Huron, with full foam insulation and covers rated for the load. Buy Canadian here means the money and the service stay close, whichever badge is on the cabinet.",
+        "It shows most in year three, when a jet needs a seal or the cover needs replacing. All of that runs through the London showroom, with parts on the shelf and a crew that already knows the route to your house."
+      ],
+      "faq": [
+        {
+          "q": "Is the Wellness Shop a Canadian company?",
+          "a": "Yes. The Wellness Shop is an Ontario company that grew from one local hot tub store into eight showrooms across the province, including the London showroom on Southdale Road West. Sales, delivery and service are all handled by Ontario staff."
+        },
+        {
+          "q": "Which of your products are made in Canada?",
+          "a": "Serenity outdoor saunas are built in Canada from Western red cedar. Jacuzzi hot tubs and our Wellness Shop Ontario series are built in the United States, Nordic tubs in Michigan and Aquasolus in Europe. Every one is sold by a Canadian company and delivered and serviced by the London team."
+        }
+      ]
     }
   }
 }

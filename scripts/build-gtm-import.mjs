@@ -17,12 +17,12 @@ const STORES = {
 const EVENTS = [
   'call_click', 'directions_click', 'specials_click', 'product_cta', 'promo_click', 'salebar_click',
   'lead_submit', 'lead_thank_you', 'claim_open', 'claim_submit', 'claim_prompt_view', 'voucher_view',
-  'quiz_start', 'quiz_step', 'quiz_complete'
+  'quiz_start', 'quiz_step', 'quiz_complete', 'video_play', 'buy_canadian_click'
 ];
 // dataLayer key -> GA4 parameter name
 const PARAMS = [
   ['store_id', 'store_id'], ['store_name', 'store_name'], ['phone', 'phone_number'], ['location', 'click_location'],
-  ['source', 'lead_source'], ['special', 'special_id'], ['step', 'quiz_step'], ['type', 'quiz_type'], ['top', 'recommended_product']
+  ['source', 'lead_source'], ['special', 'special_id'], ['step', 'quiz_step'], ['type', 'quiz_type'], ['top', 'recommended_product'], ['video', 'video_id']
 ];
 
 const T = (key, value) => ({ type: 'TEMPLATE', key, value });

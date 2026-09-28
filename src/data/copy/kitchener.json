@@ -387,6 +387,36 @@
       "floor-model-clearance": "Our 2025 J-400 floor models, inspected and fully warranted, at markdown prices. Stock is whatever the Kitchener floor is holding this week.",
       "wet-test": "A private half hour in a heated tub on Victoria Street North, by appointment and free of charge. Bring a swimsuit.",
       "j-275-flash": "The six seat J-275, lounger, 38 jets and CLEARRAY water care, at $14,695 while 2025 units remain."
+    },
+    "commercial": {
+      "eyebrow": "Watch the commercial",
+      "heading": "Make Your Waterloo Region Backyard a Reality",
+      "lead": "Sixty seconds on what a hot tub, swim spa or sauna does for a yard in Kitchener, Waterloo or Cambridge. Then come to Victoria Street North, a few minutes from the Conestoga Parkway, and sit in one."
+    },
+    "buyCanadian": {
+      "heading": "Buy Canadian. Buy From Kitchener.",
+      "lead": "Twenty five years ago the Wellness Shop was one local hot tub store. Now it is eight Ontario showrooms, and buying on Victoria Street keeps the sale, the delivery and the service in Waterloo Region.",
+      "points": [
+        "An Ontario company for 25 years, with the Kitchener showroom staffed by people who live in the Region.",
+        "Delivery crews and service technicians based in Kitchener, covering Waterloo, Cambridge, Guelph and Stratford.",
+        "Serenity outdoor saunas built in Canada from Western red cedar, running beside the Jacuzzi lineup on the floor."
+      ],
+      "pageLead": "Buying Canadian is about who stands behind the tub. Here the company is based in Ontario, the crew that walks the tub through your gate lives in Waterloo Region, and the technician who takes a January call comes from Kitchener, not a call centre.",
+      "body": [
+        "The Wellness Shop started as a single local hot tub store and has grown over 25 years into eight showrooms across Ontario. Kitchener covers Waterloo Region and the country around it, from Guelph to Stratford, with staff who know the Conestoga Parkway at rush hour. The sale, the delivery and the warranty work all stay in the province.",
+        "The brands are the ones you asked for. We are an authorized Jacuzzi dealer, so every J-200 through J-500 carries the full factory warranty. Serenity saunas are built in Canada from Western red cedar. Our Wellness Shop Ontario series was specified for the winters we get here, with full foam insulation and covers built for the snow. Buy Canadian here means choosing where the money and the service live, not giving up the model you wanted.",
+        "It pays off after delivery. Filter changes, cover replacements, a pump under warranty in year four: all of it runs through the Kitchener showroom with parts on hand and a crew that has already been to your address once."
+      ],
+      "faq": [
+        {
+          "q": "Is the Wellness Shop a Canadian company?",
+          "a": "Yes. The Wellness Shop is an Ontario company that started as one local hot tub store and now runs eight showrooms across the province, including the Kitchener showroom on Victoria Street North. Sales, delivery and service are handled by Ontario staff."
+        },
+        {
+          "q": "Are your hot tubs made in Canada?",
+          "a": "Serenity outdoor saunas are built in Canada from Western red cedar. Jacuzzi and our Wellness Shop Ontario series hot tubs are built in the United States, Nordic in Michigan and Aquasolus in Europe. Every one is sold by a Canadian company and delivered and serviced by the Kitchener team."
+        }
+      ]
     }
   }
 }

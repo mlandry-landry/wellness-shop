@@ -387,6 +387,36 @@
       "floor-model-clearance": "Our 2025 J-400 floor models, inspected and fully warranted, at clearance pricing. Stock is whatever is on the Whitby floor this week.",
       "wet-test": "Try before you decide: a private half hour in a filled, heated tub at the Whitby showroom, by appointment and free.",
       "j-275-flash": "A lounger, 38 jets and CLEARRAY water care in the six seat J-275 for $14,695, as long as the 2025 units last."
+    },
+    "commercial": {
+      "eyebrow": "Watch the commercial",
+      "heading": "Your Durham Backyard, Realized",
+      "lead": "A minute on what changes when a hot tub, swim spa or sauna goes in behind the house, from a Brooklin subdivision to a Bowmanville acre. The showroom on Dundas Street East has every one of them running."
+    },
+    "buyCanadian": {
+      "heading": "Buy Canadian. Buy From Whitby.",
+      "lead": "Twenty five years ago the Wellness Shop was one local hot tub store. Today it is eight Ontario showrooms, and the Whitby one means Durham Region buyers keep the sale, the delivery and the service inside the region.",
+      "points": [
+        "An Ontario company for 25 years, with the Dundas Street showroom staffed by people who live in Durham.",
+        "Delivery crews and service technicians dispatched from Whitby, whether you are in Pickering or Port Perry.",
+        "Serenity outdoor saunas built in Canada from Western red cedar, running on the floor beside the Jacuzzi hot tubs."
+      ],
+      "pageLead": "Buy Canadian is more than a sticker on the tub. The company taking your deposit is based in Ontario, the crew that carries the tub around the side of the house lives in Durham, and the technician who answers a January service call comes from Whitby, not a call centre.",
+      "body": [
+        "The Wellness Shop started as a single local hot tub store and has grown over 25 years into eight showrooms across Ontario. Whitby covers all of Durham Region, from Pickering through Oshawa and Clarington, with staff who commute on the same 401 you do. Nothing about the sale, the delivery or the warranty work leaves the province.",
+        "The brands are the ones you already know. We are an authorized Jacuzzi dealer, so every J-200 through J-500 carries the full factory warranty. Serenity saunas are built in Canada from Western red cedar. Our Wellness Shop Ontario series was specified for the winters that blow in off Lake Ontario, with full foam insulation and heavy covers. Choosing to buy Canadian here means choosing where the money and the service live, not giving up the brand you wanted.",
+        "The part that pays off is the decade after delivery. Filter changes, cover replacements, a heater under warranty: all of it runs through the Whitby showroom with parts on hand and a crew that has already been to your address once."
+      ],
+      "faq": [
+        {
+          "q": "Is the Wellness Shop a Canadian company?",
+          "a": "Yes. The Wellness Shop is an Ontario company that grew from one local hot tub store into eight showrooms across the province, including the Whitby showroom on Dundas Street East serving Durham Region. Sales, delivery and service are handled by Ontario staff."
+        },
+        {
+          "q": "Are your hot tubs made in Canada?",
+          "a": "Serenity outdoor saunas are built in Canada from Western red cedar. Jacuzzi and our Wellness Shop Ontario series hot tubs are built in the United States, Nordic in Michigan and Aquasolus in Europe. Every one is sold by a Canadian company and delivered and serviced by the Whitby team."
+        }
+      ]
     }
   }
 }

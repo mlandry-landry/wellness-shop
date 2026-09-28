@@ -387,6 +387,36 @@
       "floor-model-clearance": "The 2025 J-400 units that have been running on our floor are marked down, inspected and fully warranted. What Ancaster has is what Ancaster has, so ask before you drive.",
       "wet-test": "Bring a swimsuit and sit in the tub you are considering, filled and heated, with nobody hovering. Half an hour, by appointment, no charge.",
       "j-275-flash": "The six seat J-275 with a lounger, 38 jets and CLEARRAY water care at $14,695 while our 2025 stock holds out."
+    },
+    "commercial": {
+      "eyebrow": "Watch the commercial",
+      "heading": "Make Your Backyard Dreams a Reality in Hamilton",
+      "lead": "Sixty seconds on what a hot tub, swim spa or sauna does for a backyard, whether that yard is on the Mountain, in Dundas or on a Stoney Creek lot with a view of the lake. Then come to Ancaster and sit in one."
+    },
+    "buyCanadian": {
+      "heading": "Buy Canadian. Buy From Hamilton.",
+      "lead": "The Wellness Shop started as one local hot tub store and has spent 25 years growing into eight Ontario showrooms. When you buy in Ancaster, the sale, the delivery and every service call stay in Hamilton.",
+      "points": [
+        "An Ontario company for 25 years, with the Meadowlands showroom staffed by people who live in Hamilton.",
+        "Delivery crews and service technicians based here, not dispatched from another province.",
+        "Serenity outdoor saunas built in Canada from Western red cedar, on the floor beside the Jacuzzi lineup."
+      ],
+      "pageLead": "Buying Canadian does not have to mean settling for less. It means the company you hand your money to is headquartered in Ontario, the people who drop the tub on your pad live in Hamilton, and the technician who shows up in February is ten minutes away in Ancaster.",
+      "body": [
+        "The Wellness Shop began as a single local hot tub store and has grown over 25 years into eight showrooms across Ontario, from Barrie to London, with Hamilton served from the Meadowlands in Ancaster. Every showroom is run by Ontario staff, every delivery crew works out of an Ontario location, and every service call is handled by a technician who drives in from this side of the border.",
+        "We sell the brands people ask for by name. Jacuzzi has built hot tubs since 1956, and we are an authorized dealer with the full warranty behind every tub. Serenity saunas are built in Canada from Western red cedar. Our own Wellness Shop Ontario series was specified for the winters we get on the escarpment, with full foam insulation and covers that shrug off lake effect snow. Buying Canadian here means the money, the warranty and the service stay in the province, whichever brand you choose.",
+        "That matters most after the sale. A hot tub is a fifteen year relationship with whoever sold it to you. Water care refills, cover replacements, a pump under warranty in year four: all of that runs through the Ancaster showroom, with parts on the shelf and a crew that already knows your driveway."
+      ],
+      "faq": [
+        {
+          "q": "Is the Wellness Shop a Canadian company?",
+          "a": "Yes. The Wellness Shop is an Ontario company that started as one local hot tub store and now runs eight showrooms across the province, including the Hamilton showroom in Ancaster. Sales, delivery and service are all handled by Ontario staff."
+        },
+        {
+          "q": "Which hot tubs and saunas are made in Canada?",
+          "a": "Serenity outdoor saunas are built in Canada from Western red cedar. Jacuzzi hot tubs and our Wellness Shop Ontario series are built in the United States and Nordic tubs in Michigan, with Aquasolus made in Europe. Whatever you choose, you buy it from a Canadian company and it is delivered and serviced by our Hamilton team."
+        }
+      ]
     }
   }
 }

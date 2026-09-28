@@ -1,0 +1,88 @@
+---
+import Base from '@/layouts/Base.astro';
+import Icons from '@/components/Icons.astro';
+import LeadForm from '@/components/LeadForm.astro';
+import VideoEmbed from '@/components/VideoEmbed.astro';
+import ProductCard from '@/components/ProductCard.astro';
+import { location, ui, byCategory, displayPhone, telHref } from '@/lib/site';
+const c = location.city;
+const can: any = ui.buyCanadian || {};
+const heading: string = can.heading || `Buy Canadian. Buy From ${c}.`;
+const lead: string = can.pageLead || can.lead || 'The Wellness Shop is an Ontario company with eight showrooms across the province. Buy here and the sale, the delivery and the service stay local.';
+const points: string[] = can.points || ['An Ontario company for 25 years', 'Local delivery crews and service technicians', 'Serenity saunas built in Canada from Western red cedar'];
+const body: string[] = can.body || [];
+const faq: { q: string; a: string }[] = can.faq || [];
+const serenity = byCategory('sauna').filter((p) => p.brand === 'Serenity');
+const ontario = byCategory('hot-tub').filter((p) => p.brand === 'Wellness Shop').slice(0, 3);
+const title = `Buy Canadian Hot Tubs and Saunas in ${c} | ${location.name}`;
+const description = `Buy your hot tub, swim spa or sauna from an Ontario company. 25 years, eight showrooms, ${c} delivery crews and service, and Canadian-made Serenity cedar saunas on the floor.`;
+const schema = faq.length ? { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) } : undefined;
+---
+<Base title={title} description={description} schema={schema}>
+  <section class="canada-hero">
+    <div class="wrap two-col" style="align-items:center">
+      <div>
+        <div class="eyebrow"><Icons name="leaf" class="leaf" /> Proudly Ontario since day one</div>
+        <h1>{heading}</h1>
+        <p class="lead">{lead}</p>
+        <div class="cta-row">
+          <a class="btn btn-light" href="/showroom/" data-loc="canada-hero">Visit the {c} showroom</a>
+          <a class="btn btn-outline" style="border-color:#fff;color:#fff" href={telHref} data-loc="canada-hero"><Icons name="phone" /> {displayPhone}</a>
+        </div>
+      </div>
+      <VideoEmbed id="eB7wpYPPYUU" title="You're the One (That I Want) to Buy Canadian" loc="buy-canadian-page" />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap two-col">
+      <div>
+        <div class="eyebrow" style="color:#c8102e">What buying Canadian means here</div>
+        <h2>Ontario Company. {c} Crew. Same Brands.</h2>
+        {body.map((p) => <p>{p}</p>)}
+        <ul class="canada-points">
+          {points.map((t) => <li><Icons name="leaf" class="leaf" /><span>{t}</span></li>)}
+        </ul>
+        <div class="canada-stats">
+          <div><b>25 yrs</b><span>An Ontario company, started as one local hot tub store</span></div>
+          <div><b>8</b><span>Wellness Shop showrooms across Ontario</span></div>
+          <div><b>{c}</b><span>Where your delivery crew and service technician start the day</span></div>
+        </div>
+        <h2 style="font-size:1.4rem;margin-top:36px">Where each brand is built</h2>
+        <p>We would rather tell you plainly. Serenity outdoor saunas are built in Canada from Western red cedar. Jacuzzi hot tubs and swim spas, and our own Wellness Shop Ontario series, are built in the United States. Nordic hot tubs come from Michigan. Aquasolus tubs are built in Europe by Superior Wellness. Whichever you choose, you buy it from a Canadian company and the {c} team delivers it, sets it up and services it.</p>
+        {faq.length > 0 && (
+          <div class="faq" style="margin-top:30px">
+            <h2 style="font-size:1.4rem">Questions people ask</h2>
+            {faq.map((f) => <details><summary>{f.q}</summary><p>{f.a}</p></details>)}
+          </div>
+        )}
+      </div>
+      <div>
+        <LeadForm source="buy-canadian" title={`Talk to the ${c} team`} sub="Ask about delivery to your address, what is on the floor this week, or a wet test. A real person from the showroom replies." />
+      </div>
+    </div>
+  </section>
+
+  {serenity.length > 0 && (
+    <section class="section soft">
+      <div class="wrap">
+        <div class="eyebrow" style="color:#c8102e">Built in Canada</div>
+        <h2>Serenity Cedar Saunas</h2>
+        <p class="lead">Built in Canada from Western red cedar and set up at the {c} showroom, ready for a HUUM or Karhu heater. Come stand inside one.</p>
+        <div class="grid cols-3" style="margin-top:22px">{serenity.map((p) => <ProductCard p={p} />)}</div>
+      </div>
+    </section>
+  )}
+
+  {ontario.length > 0 && (
+    <section class="section">
+      <div class="wrap">
+        <div class="eyebrow">Specified for Ontario winters</div>
+        <h2>The Wellness Shop Ontario Series</h2>
+        <p class="lead">Our own hot tub line, specified by the Wellness Shop for the winters we get here, with two 6 HP pumps and Thermal Shield insulation. Built in the USA, sold and serviced in {c}.</p>
+        <div class="grid cols-3" style="margin-top:22px">{ontario.map((p) => <ProductCard p={p} />)}</div>
+        <p style="margin-top:18px"><a class="btn btn-outline btn-sm" href="/hot-tubs/?brand=Wellness%20Shop">All Wellness Shop hot tubs</a> <a class="btn btn-navy btn-sm" href="/in-store-specials/" data-track="specials_click" data-loc="buy-canadian">In-store specials</a></p>
+      </div>
+    </section>
+  )}
+</Base>
