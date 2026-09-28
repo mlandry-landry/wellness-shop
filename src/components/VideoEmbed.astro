@@ -1,13 +1,15 @@
 ---
 // Click-to-play YouTube facade. Nothing from YouTube loads until the visitor taps play, which keeps the
 // homepage fast (no 500 KB of player JS on load). Uses youtube-nocookie.com for the actual player.
-interface Props { id: string; title: string; loc?: string; class?: string; }
-const { id, title, loc = 'page', class: cls = '' } = Astro.props;
-const poster = `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`;
+// YouTube serves a 120x90 grey placeholder (HTTP 200) when maxresdefault does not exist, so the onload
+// check swaps to the next size down; pass `quality` to skip straight to a size known to exist.
+interface Props { id: string; title: string; loc?: string; class?: string; quality?: 'maxresdefault' | 'sddefault' | 'hqdefault'; }
+const { id, title, loc = 'page', class: cls = '', quality = 'maxresdefault' } = Astro.props;
+const poster = `https://i.ytimg.com/vi/${id}/${quality}.jpg`;
 const fallback = `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
 ---
 <div class={`yt ${cls}`} data-yt={id} data-loc={loc} data-title={title}>
-  <img src={poster} alt={title} width="1280" height="720" loading="lazy" decoding="async" onerror={`this.onerror=null;this.src='${fallback}'`} />
+  <img src={poster} alt={title} width="1280" height="720" loading="lazy" decoding="async" onerror={`this.onerror=null;this.src='${fallback}'`} onload={`if(this.naturalWidth<=120&&this.src.indexOf('hqdefault')<0){this.src=this.src.indexOf('maxres')>0?this.src.replace('maxresdefault','sddefault'):'${fallback}'}`} />
   <button type="button" class="yt-play" aria-label={`Play video: ${title}`}>
     <svg viewBox="0 0 68 48" width="68" height="48" aria-hidden="true"><path d="M66.5 7.7c-.8-2.9-3-5.2-5.9-6C55.4 0 34 0 34 0S12.6 0 7.4 1.7c-2.9.8-5.1 3.1-5.9 6C0 13 0 24 0 24s0 11 1.5 16.3c.8 2.9 3 5.2 5.9 6C12.6 48 34 48 34 48s21.4 0 26.6-1.7c2.9-.8 5.1-3.1 5.9-6C68 35 68 24 68 24s0-11-1.5-16.3z" fill="#e5352b"/><path d="M45 24 27 14v20" fill="#fff"/></svg>
   </button>
