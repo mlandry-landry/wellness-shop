@@ -23,6 +23,10 @@ export default defineConfig({
   adapter: vercel(),
   integrations: [sitemap({ filter: (p) => !/\/(thank-you|voucher|privacy|404)\/?$/.test(p), changefreq: 'weekly', priority: 0.7 })],
   trailingSlash: 'always',
+  // Astro's default origin check rejects form POSTs whose Origin header differs from the request host, which
+  // happens behind the custom domains (www/apex redirects and Vercel's proxy). The lead endpoint has its own
+  // honeypot and validation and only forwards to Salesforce, so the CSRF check adds nothing here.
+  security: { checkOrigin: false },
   build: { format: 'directory' },
   vite: { define: { 'import.meta.env.SITE_ID': JSON.stringify(siteId) } }
 });
