@@ -23,6 +23,25 @@ export const POST: APIRoute = async ({ request }) => {
   if (!name || !phone || !email) return json({ ok: false, error: 'Name, phone and email are required' }, 422);
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return json({ ok: false, error: 'Invalid email' }, 422);
 
+  // Require a valid Canadian phone number (NANP +1, Canadian area codes). Blocks most international / junk-number spam.
+  const CA_AREA_CODES = new Set([
+    '226','249','289','343','365','382','416','437','519','548','613','647','683','705','742','753','807','905', // ON
+    '263','354','367','418','438','450','468','514','579','581','819','873',                                     // QC
+    '236','250','257','604','672','778',                                                                         // BC
+    '368','403','587','780','825',                                                                               // AB
+    '204','431','584',                                                                                           // MB
+    '306','474','639',                                                                                           // SK
+    '782','902',                                                                                                 // NS / PE
+    '428','506',                                                                                                 // NB
+    '709','879',                                                                                                 // NL
+    '867'                                                                                                        // NT / NU / YT
+  ]);
+  let digits = phone.replace(/\D/g, '');
+  if (digits.length === 11 && digits[0] === '1') digits = digits.slice(1);
+  if (digits.length !== 10 || !/^[2-9]\d{2}[2-9]\d{6}$/.test(digits) || !CA_AREA_CODES.has(digits.slice(0, 3))) {
+    return json({ ok: false, error: 'Please enter a valid Canadian phone number' }, 422);
+  }
+
   const store = allLocations[data.store] || null;
   const lead = {
     receivedAt: new Date().toISOString(),

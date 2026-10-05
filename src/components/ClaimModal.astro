@@ -97,14 +97,14 @@ const specialsJson = JSON.stringify(specials.map((s: any) => ({ id: s.id, title:
       btn.disabled = true; btn.textContent = 'Creating your voucher...';
       try {
         const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
-        const data = await res.json(); if (!res.ok || !data.ok) throw new Error(data.error || 'failed');
+        const data = await res.json(); if (!res.ok || !data.ok) throw (res.status === 422 && data.error ? data.error : new Error('failed'));
         const v = { s: current.id, c: code, n: name, e: exp.toISOString(), t: Date.now() };
         try { localStorage.setItem('ws_voucher', JSON.stringify(v)); } catch {}
         (window as any).wsTrack && (window as any).wsTrack('claim_submit', { special: current.id });
         location.href = `/voucher/?s=${encodeURIComponent(v.s)}&c=${encodeURIComponent(v.c)}&n=${encodeURIComponent(v.n)}&e=${encodeURIComponent(v.e)}`;
-      } catch {
+      } catch (err) {
         msg.style.display = 'block'; msg.style.background = '#fdecec'; msg.style.color = '#b42318';
-        msg.textContent = 'Sorry, that did not go through. Call us and we will hold it for you.';
+        msg.textContent = typeof err === 'string' ? err : 'Sorry, that did not go through. Call us and we will hold it for you.';
         btn.disabled = false; btn.textContent = 'Try again';
       }
     });

@@ -214,9 +214,9 @@ const description = `Answer four quick questions and we match you to the right J
     }
     document.getElementById('q-form').addEventListener('submit', async function (e) {
       e.preventDefault(); var f = e.target, btn = f.querySelector('button'), msg = f.querySelector('.msg'); btn.disabled = true; btn.textContent = 'Sending...';
-      try { var r = await fetch(f.action, { method: 'POST', body: new FormData(f), headers: { Accept: 'application/json' } }); var d = await r.json(); if (!r.ok || !d.ok) throw 0;
+      try { var r = await fetch(f.action, { method: 'POST', body: new FormData(f), headers: { Accept: 'application/json' } }); var d = await r.json(); if (!r.ok || !d.ok) throw (r.status === 422 && d.error ? d.error : 0);
         window.wsTrack && window.wsTrack('lead_submit', { source: 'quiz' }); msg.style.display = 'block'; msg.textContent = 'Sent. The ' + city + ' team will be in touch shortly.'; btn.textContent = 'Sent';
-      } catch (err) { msg.style.display = 'block'; msg.style.background = '#fdecec'; msg.style.color = '#b42318'; msg.textContent = 'That did not go through. Please call us instead.'; btn.disabled = false; btn.textContent = 'Try again'; }
+      } catch (err) { msg.style.display = 'block'; msg.style.background = '#fdecec'; msg.style.color = '#b42318'; msg.textContent = typeof err === 'string' ? err : 'That did not go through. Please call us instead.'; btn.disabled = false; btn.textContent = 'Try again'; }
     });
     var pre = new URLSearchParams(location.search).get('type'); if (pre && flows[pre]) { answers.type = pre; history.push('type'); render(flow()[1]); } else render('type');
   })();

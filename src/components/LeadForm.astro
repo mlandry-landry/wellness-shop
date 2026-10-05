@@ -44,12 +44,12 @@ const fid = 'f' + Math.random().toString(36).slice(2, 7);
       try {
         const res = await fetch(f.action, { method: 'POST', body: new FormData(f), headers: { Accept: 'application/json' } });
         const data = await res.json();
-        if (!res.ok || !data.ok) throw new Error(data.error || 'Something went wrong');
+        if (!res.ok || !data.ok) { const e: any = new Error(data.error || 'Something went wrong'); e.validation = res.status === 422; throw e; }
         (window as any).wsTrack && (window as any).wsTrack('lead_submit', { source: (f.querySelector('[name=source]') as HTMLInputElement).value });
         window.location.href = '/thank-you/';
       } catch (err: any) {
         msg.style.display = 'block'; msg.style.background = '#fdecec'; msg.style.color = '#b42318';
-        msg.textContent = 'Sorry, that did not go through. Please call us instead.';
+        msg.textContent = err && err.validation ? err.message : 'Sorry, that did not go through. Please call us instead.';
         btn.disabled = false; btn.textContent = 'Try again';
       }
     });
