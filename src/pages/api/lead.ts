@@ -42,6 +42,13 @@ export const POST: APIRoute = async ({ request }) => {
     return json({ ok: false, error: 'Please enter a valid Canadian phone number' }, 422);
   }
 
+  // Reject messages that contain a link. Real buyers do not paste URLs into "Anything else?"; nearly every
+  // bot pitch does. Mentions of our own domains (wellnessshop.ca, hottubsin<city>.ca) are allowed.
+  const freeText = [data.message, data.name, data.city].filter(Boolean).join(' ');
+  const linkRe = /(?<![@\w.-])(?:https?:\/\/|www\.)?([a-z0-9-]+(?:\.[a-z0-9-]+)*\.(?:com|net|org|io|co|ca|us|uk|info|biz|xyz|site|online|shop|ai|ru|cn))(?:\/\S*)?/gi;
+  const foreignLinks = [...freeText.matchAll(linkRe)].map((m) => m[1].toLowerCase()).filter((host) => !/(^|\.)(wellnessshop\.ca|hottubsin[a-z]+\.ca|jacuzzi\.ca)$/.test(host));
+  if (foreignLinks.length) return json({ ok: false, error: 'Please remove any links from your message and try again' }, 422);
+
   const store = allLocations[data.store] || null;
   const lead = {
     receivedAt: new Date().toISOString(),
